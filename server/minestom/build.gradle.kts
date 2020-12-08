@@ -32,5 +32,5 @@ repositories {
 
 dependencies {
     api(project(":labymod-common"))
-    api("com.github.Minestom", "Minestom","1f2e4de0b3")
+    api("com.github.Minestom", "Minestom","91a000ab31")
 }

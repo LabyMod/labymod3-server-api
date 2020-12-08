@@ -66,4 +66,12 @@ public class DefaultPayloadBuffer implements PayloadBuffer {
 
     return this;
   }
+
+  /** {@inheritDoc} */
+  @Override
+  public byte[] getBytes() {
+    byte[] bytes = new byte[this.byteBuf.readableBytes()];
+    this.byteBuf.readBytes(bytes);
+    return bytes;
+  }
 }

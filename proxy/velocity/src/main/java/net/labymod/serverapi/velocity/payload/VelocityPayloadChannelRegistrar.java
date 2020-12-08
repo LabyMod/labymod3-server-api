@@ -7,9 +7,10 @@ import com.velocitypowered.api.proxy.messages.ChannelRegistrar;
 import com.velocitypowered.api.proxy.messages.LegacyChannelIdentifier;
 import com.velocitypowered.api.proxy.messages.MinecraftChannelIdentifier;
 import net.labymod.serverapi.api.payload.PayloadChannelRegistrar;
+import net.labymod.serverapi.api.payload.PayloadChannelType;
 
 /** The Velocity implementation of the {@link PayloadChannelRegistrar}. */
-public class VelocityPayloadChannelRegistrar implements PayloadChannelRegistrar {
+public class VelocityPayloadChannelRegistrar implements PayloadChannelRegistrar<ChannelIdentifier> {
 
   private final ChannelRegistrar channelRegistrar;
   private final Multimap<PayloadChannelType, ChannelIdentifier> channelIdentifiers;
@@ -79,6 +80,12 @@ public class VelocityPayloadChannelRegistrar implements PayloadChannelRegistrar 
   public void unregisterModernChannelIdentifier(String namespace, String path) {
     this.unregisterChannelIdentifier(
         namespace.toLowerCase() + ":" + path.toLowerCase(), PayloadChannelType.MODERN);
+  }
+
+  /** {@inheritDoc} */
+  @Override
+  public Multimap<PayloadChannelType, ChannelIdentifier> getChannelIdentifiers() {
+    return this.channelIdentifiers;
   }
 
   private void unregisterChannelIdentifier(

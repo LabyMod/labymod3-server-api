@@ -6,21 +6,32 @@ import com.velocitypowered.api.event.proxy.ProxyInitializeEvent;
 import com.velocitypowered.api.event.proxy.ProxyShutdownEvent;
 import com.velocitypowered.api.plugin.Plugin;
 import com.velocitypowered.api.proxy.ProxyServer;
+import com.velocitypowered.api.proxy.messages.ChannelIdentifier;
 import net.labymod.serverapi.api.payload.PayloadChannelRegistrar;
+import net.labymod.serverapi.api.payload.PayloadCommunicator;
+import net.labymod.serverapi.api.permission.PermissionService;
+import net.labymod.serverapi.common.permission.DefaultPermissionFactory;
+import net.labymod.serverapi.common.permission.DefaultPermissionService;
+import net.labymod.serverapi.velocity.connection.VelocityConnectionService;
 import net.labymod.serverapi.velocity.payload.VelocityPayloadChannelRegistrar;
-import org.slf4j.Logger;
+import net.labymod.serverapi.velocity.payload.VelocityPayloadCommunicator;
+import net.labymod.serverapi.velocity.payload.channel.VelocityLegacyLabyModPayloadChannel;
 
-@Plugin(id = "labymod_server_api", name = "LabyMod Server API", version = "%version%")
+@Plugin(
+    id = "labymod_server_api",
+    name = "LabyMod Server API",
+    version = "%version%",
+    authors = {"LabyMedia GmbH"})
 public class VelocityLabyModPlugin {
 
-  private final Logger logger;
   private final ProxyServer proxyServer;
 
-  private PayloadChannelRegistrar payloadChannelRegistrar;
+  private PayloadChannelRegistrar<ChannelIdentifier> payloadChannelRegistrar;
+  private PayloadCommunicator payloadCommunicator;
+  private PermissionService permissionService;
 
   @Inject
-  public VelocityLabyModPlugin(Logger logger, ProxyServer proxyServer) {
-    this.logger = logger;
+  public VelocityLabyModPlugin(ProxyServer proxyServer) {
     this.proxyServer = proxyServer;
   }
 
@@ -33,11 +44,28 @@ public class VelocityLabyModPlugin {
     this.payloadChannelRegistrar.registerModernLegacyChannelIdentifier("LMC");
     // LabyMod 4.0 Support
     this.payloadChannelRegistrar.registerModernChannelIdentifier("labymod", "main");
+
+    this.payloadCommunicator =
+        new VelocityPayloadCommunicator(this.proxyServer, this.payloadChannelRegistrar);
+
+    this.permissionService =
+        new DefaultPermissionService(
+            this.payloadCommunicator, DefaultPermissionFactory.getInstance());
+
+    this.proxyServer.getEventManager().register(this, new VelocityConnectionService(this));
+    this.proxyServer.getEventManager().register(this, payloadCommunicator);
+    this.proxyServer
+        .getEventManager()
+        .register(this, new VelocityLegacyLabyModPayloadChannel(this.proxyServer));
   }
 
   @Subscribe
   public void shutdown(ProxyShutdownEvent event) {
     this.payloadChannelRegistrar.unregisterModernLegacyChannelIdentifier("LMC");
     this.payloadChannelRegistrar.unregisterModernChannelIdentifier("labymod", "main");
+  }
+
+  public PermissionService getPermissionService() {
+    return permissionService;
   }
 }

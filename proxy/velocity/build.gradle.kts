@@ -1,5 +1,4 @@
 plugins {
-    id("org.spongepowered.plugin") version("0.9.0")
     id("java-library")
 }
 

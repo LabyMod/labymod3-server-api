@@ -3,8 +3,17 @@ package net.labymod.serverapi.api.permission;
 import com.google.gson.JsonObject;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 public interface PermissionService {
+
+  /**
+   * Register a new permission with the given name and the enabled state.
+   *
+   * @param internalName The internal name of the permission.
+   * @param enabled {@code true} if the permission should be enabled, otherwise {@code false}.
+   */
+  void registerPermission(String internalName, boolean enabled);
 
   /**
    * Registers a new permission with the given name and the enabled state.
@@ -43,15 +52,24 @@ public interface PermissionService {
    * Enables a permission with the given internal name.
    *
    * @param internalName The permission's internal name.
+   * @return This object for chaining.
    */
-  void enablePermission(String internalName);
+  PermissionService enablePermission(String internalName);
 
   /**
    * Disables a permission with the given internal name.
    *
    * @param internalName The permission's internal name.
+   * @return This object for chaining.
    */
-  void disablePermission(String internalName);
+  PermissionService disablePermission(String internalName);
+
+  /**
+   * Sends all registered permissions to the unique identifier.
+   *
+   * @param receiverUniqueId The receiver of the permissions.
+   */
+  void sendPermissions(UUID receiverUniqueId);
 
   /**
    * Retrieves the registered permission as a {@link JsonObject}.

@@ -1,22 +1,29 @@
 package net.labymod.serverapi.velocity.payload;
 
-import com.google.gson.JsonElement;
 import com.velocitypowered.api.event.Subscribe;
 import com.velocitypowered.api.event.connection.PluginMessageEvent;
+import com.velocitypowered.api.event.connection.PluginMessageEvent.ForwardResult;
 import com.velocitypowered.api.proxy.Player;
 import com.velocitypowered.api.proxy.ProxyServer;
+import com.velocitypowered.api.proxy.messages.ChannelIdentifier;
 import java.util.UUID;
-import net.labymod.serverapi.api.payload.PayloadCommunicator;
-import net.labymod.serverapi.velocity.VelocityLabyModPlugin;
-import net.labymod.serverapi.velocity.payload.event.ReceivePlayerPayloadEvent;
+import net.labymod.serverapi.api.payload.PayloadChannelRegistrar;
+import net.labymod.serverapi.api.payload.PayloadChannelType;
+import net.labymod.serverapi.common.payload.DefaultPayloadCommunicator;
+import net.labymod.serverapi.velocity.event.VelocitySendPayloadEvent;
+import net.labymod.serverapi.velocity.payload.event.VelocityReceivePlayerPayloadEvent;
+import net.labymod.serverapi.velocity.player.VelocityLabyModPlayerService;
 
-public class VelocityPayloadCommunicator implements PayloadCommunicator {
+public class VelocityPayloadCommunicator extends DefaultPayloadCommunicator {
 
   private final ProxyServer proxyServer;
+  private final PayloadChannelRegistrar<ChannelIdentifier> payloadChannelRegistrar;
 
-  public VelocityPayloadCommunicator(VelocityLabyModPlugin plugin, ProxyServer proxyServer) {
+  public VelocityPayloadCommunicator(
+      ProxyServer proxyServer, PayloadChannelRegistrar<ChannelIdentifier> payloadChannelRegistrar) {
+    super(VelocityLabyModPlayerService.getInstance());
     this.proxyServer = proxyServer;
-    this.proxyServer.getEventManager().register(plugin, this);
+    this.payloadChannelRegistrar = payloadChannelRegistrar;
   }
 
   /** {@inheritDoc} */
@@ -26,21 +33,29 @@ public class VelocityPayloadCommunicator implements PayloadCommunicator {
         .getPlayer(uniqueId)
         .ifPresent(
             player -> {
-              player.sendPluginMessage(null, payload);
+              PayloadChannelType channelType =
+                  identifier.contains(":") ? PayloadChannelType.MODERN : PayloadChannelType.LEGACY;
+
+              this.payloadChannelRegistrar.getChannelIdentifiers().get(channelType).stream()
+                  .filter(channelIdentifier -> channelIdentifier.getId().equals(identifier))
+                  .forEach(
+                      channelIdentifier -> {
+                        VelocitySendPayloadEvent velocitySendPayloadEvent =
+                            new VelocitySendPayloadEvent(player, channelIdentifier, payload);
+                        this.proxyServer.getEventManager().fire(velocitySendPayloadEvent);
+
+                        if (velocitySendPayloadEvent.getResult() == ForwardResult.forward()) {
+                          player.sendPluginMessage(channelIdentifier, payload);
+                        }
+                      });
             });
   }
-
-  @Override
-  public void sendLabyModMessage(UUID uniqueId, String messageKey, JsonElement messageContent) {
-    // TODO: 01.12.2020 Implementation
-  }
-
   /** {@inheritDoc} */
   @Override
   public void receive(UUID uniqueId, String identifier, byte[] payload) {
     this.proxyServer
         .getEventManager()
-        .fire(new ReceivePlayerPayloadEvent(uniqueId, identifier, payload));
+        .fire(new VelocityReceivePlayerPayloadEvent(uniqueId, identifier, payload));
   }
 
   @Subscribe
@@ -48,7 +63,7 @@ public class VelocityPayloadCommunicator implements PayloadCommunicator {
     if (event.getSource() instanceof Player) {
       receive(
           ((Player) event.getSource()).getUniqueId(),
-          event.getIdentifier().toString(),
+          event.getIdentifier().getId(),
           event.getData());
     }
   }

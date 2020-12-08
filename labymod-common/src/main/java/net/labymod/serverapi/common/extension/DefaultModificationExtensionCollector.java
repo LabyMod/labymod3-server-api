@@ -7,7 +7,6 @@ import java.util.Collections;
 import java.util.List;
 import net.labymod.serverapi.api.extension.ExtensionCollector;
 import net.labymod.serverapi.api.extension.ModificationExtension;
-import net.labymod.serverapi.api.extension.ModificationExtension.Factory;
 
 /**
  * Default implementation of the {@link ExtensionCollector} to collect {@link
@@ -16,16 +15,23 @@ import net.labymod.serverapi.api.extension.ModificationExtension.Factory;
 public class DefaultModificationExtensionCollector
     implements ExtensionCollector<ModificationExtension> {
 
+  private static final ExtensionCollector<ModificationExtension> INSTANCE =
+      new DefaultModificationExtensionCollector(DefaultModificationExtensionFactory.getInstance());
+
   private final ModificationExtension.Factory modificationExtensionFactory;
 
-  public DefaultModificationExtensionCollector(Factory modificationExtensionFactory) {
+  private DefaultModificationExtensionCollector(
+      ModificationExtension.Factory modificationExtensionFactory) {
     this.modificationExtensionFactory = modificationExtensionFactory;
   }
 
+  public static ExtensionCollector<ModificationExtension> getInstance() {
+    return INSTANCE;
+  }
   /** {@inheritDoc} */
   @Override
   public List<ModificationExtension> collect(JsonObject object) {
-    if (object.has("mods") || !object.get("mods").isJsonArray()) {
+    if (!object.has("mods") || !object.get("mods").isJsonArray()) {
       return Collections.emptyList();
     }
 
@@ -36,15 +42,17 @@ public class DefaultModificationExtensionCollector
         continue;
       }
 
-      JsonObject addonObject = element.getAsJsonObject();
+      JsonObject modificationObject = element.getAsJsonObject();
 
-      if (this.shouldString(addonObject, "hash") || this.shouldString(addonObject, "name")) {
+      if (this.shouldString(modificationObject, "hash")
+          || this.shouldString(modificationObject, "name")) {
         continue;
       }
 
       modificationExtensions.add(
           this.modificationExtensionFactory.create(
-              object.get("name").getAsString(), object.get("hash").getAsString()));
+              modificationObject.get("name").getAsString(),
+              modificationObject.get("hash").getAsString()));
     }
 
     return modificationExtensions;

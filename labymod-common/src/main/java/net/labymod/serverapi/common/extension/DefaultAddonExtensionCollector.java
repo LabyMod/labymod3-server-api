@@ -7,21 +7,27 @@ import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
 import net.labymod.serverapi.api.extension.AddonExtension;
-import net.labymod.serverapi.api.extension.AddonExtension.Factory;
 import net.labymod.serverapi.api.extension.ExtensionCollector;
 
 public class DefaultAddonExtensionCollector implements ExtensionCollector<AddonExtension> {
 
+  private static final ExtensionCollector<AddonExtension> INSTANCE =
+      new DefaultAddonExtensionCollector(DefaultAddonExtensionFactory.getInstance());
+
   private final AddonExtension.Factory addonExtensionFactory;
 
-  public DefaultAddonExtensionCollector(Factory addonExtensionFactory) {
+  private DefaultAddonExtensionCollector(AddonExtension.Factory addonExtensionFactory) {
     this.addonExtensionFactory = addonExtensionFactory;
+  }
+
+  public static ExtensionCollector<AddonExtension> getInstance() {
+    return INSTANCE;
   }
 
   /** {@inheritDoc} */
   @Override
   public List<AddonExtension> collect(JsonObject object) {
-    if (object.has("addons") || !object.get("addons").isJsonArray()) {
+    if (!object.has("addons") || !object.get("addons").isJsonArray()) {
       return Collections.emptyList();
     }
 
@@ -34,8 +40,7 @@ public class DefaultAddonExtensionCollector implements ExtensionCollector<AddonE
 
       JsonObject addonObject = element.getAsJsonObject();
 
-      if (this.shouldString(addonObject, "uuid")
-          || this.shouldString(addonObject, "name")) {
+      if (this.shouldString(addonObject, "uuid") || this.shouldString(addonObject, "name")) {
         continue;
       }
 
@@ -48,7 +53,7 @@ public class DefaultAddonExtensionCollector implements ExtensionCollector<AddonE
       }
 
       addonExtensions.add(
-          this.addonExtensionFactory.create(object.get("name").getAsString(), uniqueId));
+          this.addonExtensionFactory.create(addonObject.get("name").getAsString(), uniqueId));
     }
 
     return addonExtensions;

@@ -14,4 +14,5 @@ java {
 dependencies {
     api("io.netty", "netty-buffer", "4.1.54.Final")
     api("com.google.code.gson", "gson", "2.8.6")
+    api("com.google.guava:guava:21.0")
 }

@@ -10,4 +10,6 @@ public interface PayloadBuffer {
 
   PayloadBuffer writeVarIntInfoBuffer(int input);
 
+  byte[] getBytes();
+
 }

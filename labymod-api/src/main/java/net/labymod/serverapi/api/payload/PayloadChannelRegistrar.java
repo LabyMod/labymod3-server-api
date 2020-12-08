@@ -1,7 +1,9 @@
 package net.labymod.serverapi.api.payload;
 
+import com.google.common.collect.Multimap;
+
 /** Represents a registrar to register and unregister payload channel's. */
-public interface PayloadChannelRegistrar {
+public interface PayloadChannelRegistrar<T> {
 
   /**
    * Registers a new modern and legacy payload channel.
@@ -48,4 +50,11 @@ public interface PayloadChannelRegistrar {
    * @param path The path of the modern payload channel to be unregistered.
    */
   void unregisterModernChannelIdentifier(String namespace, String path);
+
+  /**
+   * Retrieves a multimap with all registered channel identifiers.
+   *
+   * @return A multimap with all registered channel identifiers.
+   */
+  Multimap<PayloadChannelType, T> getChannelIdentifiers();
 }

@@ -4,25 +4,54 @@ import com.google.gson.JsonObject;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 import java.util.stream.Collectors;
+import net.labymod.serverapi.api.payload.PayloadCommunicator;
 import net.labymod.serverapi.api.permission.Permissible;
-import net.labymod.serverapi.api.permission.Permissible.Factory;
 import net.labymod.serverapi.api.permission.PermissionService;
 
 /** A default implementation of the {@link PermissionService}. */
 public class DefaultPermissionService implements PermissionService {
 
+  private static final String PERMISSIONS_KEY = "PERMISSIONS";
+
   private final List<Permissible> permissions;
+  private final PayloadCommunicator payloadCommunicator;
   private final Permissible.Factory permissionFactory;
 
   /**
    * Initializes a new {@link DefaultPermissionService} with the given {@link Permissible.Factory}.
    *
+   * @param payloadCommunicator The payload communicator.
    * @param permissionFactory The permission factory for creating permissions.
    */
-  public DefaultPermissionService(Factory permissionFactory) {
+  public DefaultPermissionService(
+      PayloadCommunicator payloadCommunicator, Permissible.Factory permissionFactory) {
+    this.payloadCommunicator = payloadCommunicator;
     this.permissionFactory = permissionFactory;
     this.permissions = new ArrayList<>();
+    this.loadDefaultPermissions();
+  }
+
+  private void loadDefaultPermissions() {
+    this.registerPermission("IMPROVED_LAVA", false);
+    this.registerPermission("CROSSHAIR_SYNC", false);
+    this.registerPermission("REFILL_FIX", false);
+    this.registerPermission("GUI_ALL", true);
+    this.registerPermission("GUI_POTION_EFFECTS", true);
+    this.registerPermission("GUI_ARMOR_HUD", true);
+    this.registerPermission("GUI_ITEM_HUD", true);
+    this.registerPermission("BLOCKBUILD", true);
+    this.registerPermission("TAGS", true);
+    this.registerPermission("CHAT", true);
+    this.registerPermission("ANIMATIONS", true);
+    this.registerPermission("SATURATION_BAR", true);
+  }
+
+  /** {@inheritDoc} */
+  @Override
+  public void registerPermission(String internalName, boolean enabled) {
+    this.registerPermission(internalName, internalName.toLowerCase(), enabled);
   }
 
   /** {@inheritDoc} */
@@ -62,22 +91,31 @@ public class DefaultPermissionService implements PermissionService {
 
   /** {@inheritDoc} */
   @Override
-  public void enablePermission(String internalName) {
+  public PermissionService enablePermission(String internalName) {
     this.getPermission(internalName)
         .ifPresent(
             permissible -> {
               permissible.setEnabled(true);
             });
+    return this;
   }
 
   /** {@inheritDoc} */
   @Override
-  public void disablePermission(String internalName) {
+  public PermissionService disablePermission(String internalName) {
     this.getPermission(internalName)
         .ifPresent(
             permissible -> {
               permissible.setEnabled(false);
             });
+    return this;
+  }
+
+  /** {@inheritDoc} */
+  @Override
+  public void sendPermissions(UUID receiverUniqueId) {
+    this.payloadCommunicator.sendLabyModMessage(
+        receiverUniqueId, PERMISSIONS_KEY, this.getPermissionsAsJson());
   }
 
   /** {@inheritDoc} */

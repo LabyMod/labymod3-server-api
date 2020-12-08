@@ -8,6 +8,19 @@ import net.labymod.serverapi.api.extension.PackageExtension;
 
 public class DefaultPackageExtensionCollector implements ExtensionCollector<PackageExtension> {
 
+  private static final ExtensionCollector<PackageExtension> INSTANCE =
+      new DefaultPackageExtensionCollector(DefaultPackageExtensionFactory.getInstance());
+
+  private final PackageExtension.Factory packageExtensionFactory;
+
+  private DefaultPackageExtensionCollector(PackageExtension.Factory packageExtensionFactory) {
+    this.packageExtensionFactory = packageExtensionFactory;
+  }
+
+  public static ExtensionCollector<PackageExtension> getInstance() {
+    return INSTANCE;
+  }
+
   /** {@inheritDoc} */
   @Override
   public List<PackageExtension> collect(JsonObject object) {

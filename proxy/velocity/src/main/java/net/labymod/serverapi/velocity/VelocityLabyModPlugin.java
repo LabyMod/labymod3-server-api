@@ -20,7 +20,7 @@ import net.labymod.serverapi.velocity.payload.channel.VelocityLegacyLabyModPaylo
 @Plugin(
     id = "labymod_server_api",
     name = "LabyMod Server API",
-    version = "%version%",
+    version = "2.0.0",
     authors = {"LabyMedia GmbH"})
 public class VelocityLabyModPlugin {
 

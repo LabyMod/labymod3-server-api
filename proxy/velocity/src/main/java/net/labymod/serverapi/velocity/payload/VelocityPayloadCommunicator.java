@@ -11,7 +11,7 @@ import net.labymod.serverapi.api.payload.PayloadChannelRegistrar;
 import net.labymod.serverapi.api.payload.PayloadChannelType;
 import net.labymod.serverapi.common.payload.DefaultPayloadCommunicator;
 import net.labymod.serverapi.velocity.event.VelocitySendPayloadEvent;
-import net.labymod.serverapi.velocity.payload.event.VelocityReceivePlayerPayloadEvent;
+import net.labymod.serverapi.velocity.event.VelocityReceivePayloadEvent;
 import net.labymod.serverapi.velocity.player.VelocityLabyModPlayerService;
 
 public class VelocityPayloadCommunicator extends DefaultPayloadCommunicator {
@@ -55,7 +55,7 @@ public class VelocityPayloadCommunicator extends DefaultPayloadCommunicator {
   public void receive(UUID uniqueId, String identifier, byte[] payload) {
     this.proxyServer
         .getEventManager()
-        .fire(new VelocityReceivePlayerPayloadEvent(uniqueId, identifier, payload));
+        .fire(new VelocityReceivePayloadEvent(uniqueId, identifier, payload));
   }
 
   @Subscribe

@@ -38,7 +38,7 @@ public class VelocitySendPayloadEvent implements ResultedEvent<ForwardResult> {
   /**
    * Retrieves the channel identifier to which the payload is sent.
    *
-   * @return The channel identifier to
+   * @return The channel identifier to which the payload is sent.
    */
   public ChannelIdentifier getChannelIdentifier() {
     return channelIdentifier;

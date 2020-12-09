@@ -102,6 +102,6 @@ public class VelocityPayloadChannelRegistrar implements PayloadChannelRegistrar<
       return;
     }
 
-    this.channelIdentifiers.remove(PayloadChannelType.MODERN, toRemove);
+    this.channelIdentifiers.remove(payloadChannelType, toRemove);
   }
 }

@@ -1,30 +1,23 @@
-package net.labymod.serverapi.velocity.payload.event;
+package net.labymod.serverapi.bungee.event;
 
 import java.util.UUID;
+import net.md_5.bungee.api.plugin.Event;
 
 /** Fired when a custom payload message is received from the client. */
-public class VelocityReceivePlayerPayloadEvent {
+public class BungeeReceivePayloadEvent extends Event {
 
   private final UUID uniqueId;
   private final String identifier;
   private final byte[] payload;
 
-  /**
-   * Initializes a new {@link VelocityReceivePlayerPayloadEvent} with the given {@code uniqueId},
-   * {@code identifier} and {@code payload}.
-   *
-   * @param uniqueId The unique identifier of the client player.
-   * @param identifier The channel identifier to which the payload was sent.
-   * @param payload The sent payload.
-   */
-  public VelocityReceivePlayerPayloadEvent(UUID uniqueId, String identifier, byte[] payload) {
+  public BungeeReceivePayloadEvent(UUID uniqueId, String identifier, byte[] payload) {
     this.uniqueId = uniqueId;
     this.identifier = identifier;
     this.payload = payload;
   }
 
   /**
-   * Retrieves the unique identifier of the client player..
+   * Retrieves the unique identiifer of the client player.
    *
    * @return The unique identifier of the client player.
    */

@@ -44,11 +44,11 @@ public class BungeePayloadCommunicator extends DefaultPayloadCommunicator implem
         .filter(channelIdentifier -> channelIdentifier.equals(identifier))
         .forEach(
             channelIdentifier -> {
-              BungeeSendPayloadEvent velocitySendPayloadEvent =
+              BungeeSendPayloadEvent bungeeSendPayloadEvent =
                   new BungeeSendPayloadEvent(proxiedPlayer, channelIdentifier, payload);
-              this.pluginManager.callEvent(velocitySendPayloadEvent);
+              this.pluginManager.callEvent(bungeeSendPayloadEvent);
 
-              if (velocitySendPayloadEvent.isCancelled()) {
+              if (bungeeSendPayloadEvent.isCancelled()) {
                 return;
               }
 

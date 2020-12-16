@@ -144,6 +144,7 @@ public class DefaultPermissionService implements PermissionService {
     return optional;
   }
 
+  /** {@inheritDoc} */
   @Override
   public boolean shouldPermissionRegister(String internalName) {
     return this.permissions.stream()

@@ -1,18 +1,26 @@
-package net.labymod.serverapi.bungee.payload;
+package net.labymod.serverapi.bukkit.payload;
 
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
 import net.labymod.serverapi.api.payload.PayloadChannelRegistrar;
 import net.labymod.serverapi.api.payload.PayloadChannelType;
-import net.md_5.bungee.api.ProxyServer;
+import net.labymod.serverapi.api.payload.PayloadCommunicator;
+import net.labymod.serverapi.bukkit.BukkitLabyModPlugin;
+import org.bukkit.plugin.messaging.Messenger;
+import org.bukkit.plugin.messaging.PluginMessageListener;
 
-public class BungeePayloadChannelRegistrar implements PayloadChannelRegistrar<String> {
+public class BukkitPayloadChannelRegistrar implements PayloadChannelRegistrar<String> {
 
+  private final BukkitLabyModPlugin plugin;
+  private final Messenger messenger;
   private final Multimap<PayloadChannelType, String> channelIdentifiers;
-  private final ProxyServer proxyServer;
 
-  public BungeePayloadChannelRegistrar(ProxyServer proxyServer) {
-    this.proxyServer = proxyServer;
+  private final PayloadCommunicator payloadCommunicator;
+
+  public BukkitPayloadChannelRegistrar(BukkitLabyModPlugin plugin) {
+    this.plugin = plugin;
+    this.messenger = this.plugin.getServer().getMessenger();
+    this.payloadCommunicator = new BukkitPayloadCommunicator(plugin, this);
     this.channelIdentifiers = HashMultimap.create();
   }
 
@@ -27,15 +35,15 @@ public class BungeePayloadChannelRegistrar implements PayloadChannelRegistrar<St
   @Override
   public void registerLegacyChannelIdentifier(String channelIdentifier) {
 
-    for (String identifier : this.channelIdentifiers.get(PayloadChannelType.MODERN)) {
-
+    for (String identifier : this.channelIdentifiers.get(PayloadChannelType.LEGACY)) {
       if (identifier.equals(channelIdentifier)) {
         return;
       }
     }
 
-    this.proxyServer.registerChannel(channelIdentifier);
-    this.channelIdentifiers.put(PayloadChannelType.LEGACY, channelIdentifier);
+    this.messenger.registerOutgoingPluginChannel(this.plugin, channelIdentifier);
+    this.messenger.registerIncomingPluginChannel(
+        this.plugin, channelIdentifier, (PluginMessageListener) this.payloadCommunicator);
   }
 
   /** {@inheritDoc} */
@@ -45,14 +53,14 @@ public class BungeePayloadChannelRegistrar implements PayloadChannelRegistrar<St
     channelIdentifier = channelIdentifier.toLowerCase();
 
     for (String identifier : this.channelIdentifiers.get(PayloadChannelType.MODERN)) {
-
-      if (identifier.equals(namespace + ":" + path)) {
+      if (identifier.equals(channelIdentifier)) {
         return;
       }
     }
 
-    this.proxyServer.registerChannel(channelIdentifier);
-    this.channelIdentifiers.put(PayloadChannelType.MODERN, channelIdentifier);
+    this.messenger.registerOutgoingPluginChannel(this.plugin, channelIdentifier);
+    this.messenger.registerIncomingPluginChannel(
+        this.plugin, channelIdentifier, (PluginMessageListener) this.payloadCommunicator);
   }
 
   /** {@inheritDoc} */
@@ -71,10 +79,10 @@ public class BungeePayloadChannelRegistrar implements PayloadChannelRegistrar<St
   /** {@inheritDoc} */
   @Override
   public void unregisterModernChannelIdentifier(String namespace, String path) {
-    namespace = namespace.toLowerCase();
-    path = path.toLowerCase();
+    String channelIdentifier = namespace + ":" + path;
+    channelIdentifier = channelIdentifier.toLowerCase();
 
-    this.unregisterChannelIdentifier(namespace + ":" + path, PayloadChannelType.MODERN);
+    this.unregisterChannelIdentifier(channelIdentifier, PayloadChannelType.MODERN);
   }
 
   /** {@inheritDoc} */
@@ -89,7 +97,8 @@ public class BungeePayloadChannelRegistrar implements PayloadChannelRegistrar<St
     for (String identifier : this.channelIdentifiers.get(payloadChannelType)) {
       if (identifier.equals(channelIdentifier)) {
         toRemove = identifier;
-        this.proxyServer.unregisterChannel(identifier);
+        this.messenger.unregisterIncomingPluginChannel(this.plugin, identifier);
+        this.messenger.unregisterOutgoingPluginChannel(this.plugin, identifier);
       }
     }
 

@@ -15,7 +15,7 @@ import net.labymod.serverapi.api.player.LabyModPlayer;
 import net.labymod.serverapi.api.player.LabyModPlayerService;
 import net.labymod.serverapi.api.protocol.ChunkCachingProtocol;
 import net.labymod.serverapi.api.protocol.ShadowProtocol;
-import net.labymod.serverapi.common.connection.ConnectionService;
+import net.labymod.serverapi.api.connection.ConnectionService;
 import net.labymod.serverapi.velocity.event.VelocityLabyModPlayerLoginEvent;
 
 @Singleton

@@ -14,7 +14,7 @@ import net.labymod.serverapi.api.player.LabyModPlayerService;
 import net.labymod.serverapi.api.protocol.ChunkCachingProtocol;
 import net.labymod.serverapi.api.protocol.ShadowProtocol;
 import net.labymod.serverapi.bukkit.event.BukkitLabyModPlayerLoginEvent;
-import net.labymod.serverapi.common.connection.ConnectionService;
+import net.labymod.serverapi.api.connection.ConnectionService;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;

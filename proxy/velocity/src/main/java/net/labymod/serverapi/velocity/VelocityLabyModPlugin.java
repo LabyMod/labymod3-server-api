@@ -11,7 +11,7 @@ import com.velocitypowered.api.proxy.ProxyServer;
 import com.velocitypowered.api.proxy.messages.ChannelIdentifier;
 import net.labymod.serverapi.api.payload.PayloadChannelRegistrar;
 import net.labymod.serverapi.api.payload.PayloadCommunicator;
-import net.labymod.serverapi.common.connection.ConnectionService;
+import net.labymod.serverapi.api.connection.ConnectionService;
 import net.labymod.serverapi.common.guice.LabyModInjector;
 import net.labymod.serverapi.common.payload.DefaultLegacyLabyModPayloadChannel;
 import net.labymod.serverapi.velocity.guice.LabyModVelocityModule;

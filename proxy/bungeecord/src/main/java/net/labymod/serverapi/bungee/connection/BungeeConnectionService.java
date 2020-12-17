@@ -14,7 +14,7 @@ import net.labymod.serverapi.api.player.LabyModPlayerService;
 import net.labymod.serverapi.api.protocol.ChunkCachingProtocol;
 import net.labymod.serverapi.api.protocol.ShadowProtocol;
 import net.labymod.serverapi.bungee.event.BungeeLabyModPlayerLoginEvent;
-import net.labymod.serverapi.common.connection.ConnectionService;
+import net.labymod.serverapi.api.connection.ConnectionService;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 import net.md_5.bungee.api.event.PlayerDisconnectEvent;
 import net.md_5.bungee.api.plugin.Listener;

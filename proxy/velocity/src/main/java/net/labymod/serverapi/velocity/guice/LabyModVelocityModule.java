@@ -7,7 +7,7 @@ import net.labymod.serverapi.api.payload.PayloadChannelRegistrar;
 import net.labymod.serverapi.api.payload.PayloadCommunicator;
 import net.labymod.serverapi.api.player.LabyModPlayer;
 import net.labymod.serverapi.api.player.LabyModPlayerService;
-import net.labymod.serverapi.common.connection.ConnectionService;
+import net.labymod.serverapi.api.connection.ConnectionService;
 import net.labymod.serverapi.common.guice.LabyModAbstractModule;
 import net.labymod.serverapi.common.payload.DefaultLegacyLabyModPayloadChannel;
 import net.labymod.serverapi.velocity.connection.VelocityConnectionService;

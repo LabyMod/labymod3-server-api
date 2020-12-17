@@ -11,7 +11,7 @@ import net.labymod.serverapi.bungee.payload.BungeePayloadCommunicator;
 import net.labymod.serverapi.bungee.payload.channel.BungeeLegacyLabyModPayloadChannel;
 import net.labymod.serverapi.bungee.player.BungeeLabyModPlayerFactory;
 import net.labymod.serverapi.bungee.player.BungeeLabyModPlayerService;
-import net.labymod.serverapi.common.connection.ConnectionService;
+import net.labymod.serverapi.api.connection.ConnectionService;
 import net.labymod.serverapi.common.guice.LabyModAbstractModule;
 import net.labymod.serverapi.common.payload.DefaultLegacyLabyModPayloadChannel;
 import net.md_5.bungee.api.connection.ProxiedPlayer;

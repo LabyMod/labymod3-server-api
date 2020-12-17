@@ -11,7 +11,7 @@ import net.labymod.serverapi.bukkit.payload.BukkitPayloadCommunicator;
 import net.labymod.serverapi.bukkit.payload.channel.BukkitLegacyLabyModPayloadChannel;
 import net.labymod.serverapi.bukkit.player.BukkitLabyModPlayerFactory;
 import net.labymod.serverapi.bukkit.player.BukkitLabyModPlayerService;
-import net.labymod.serverapi.common.connection.ConnectionService;
+import net.labymod.serverapi.api.connection.ConnectionService;
 import net.labymod.serverapi.common.guice.LabyModAbstractModule;
 import net.labymod.serverapi.common.payload.DefaultLegacyLabyModPayloadChannel;
 import org.bukkit.entity.Player;

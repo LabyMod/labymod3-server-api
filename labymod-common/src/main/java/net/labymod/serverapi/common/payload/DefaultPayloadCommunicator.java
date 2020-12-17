@@ -1,8 +1,10 @@
 package net.labymod.serverapi.common.payload;
 
 import com.google.gson.JsonElement;
+import com.google.inject.Inject;
 import java.util.UUID;
 import net.labymod.serverapi.api.payload.PayloadBuffer;
+import net.labymod.serverapi.api.payload.PayloadBuffer.Factory;
 import net.labymod.serverapi.api.payload.PayloadCommunicator;
 import net.labymod.serverapi.api.player.LabyModPlayerService;
 
@@ -12,9 +14,12 @@ public abstract class DefaultPayloadCommunicator implements PayloadCommunicator 
   private static final String MODERN_LEGACY_CHANNEL = "legacy:lmc";
 
   private final LabyModPlayerService<?> labyModPlayerService;
+  private final PayloadBuffer.Factory payloadBufferFactory;
 
-  public DefaultPayloadCommunicator(LabyModPlayerService<?> labyModPlayerService) {
+  public DefaultPayloadCommunicator(
+      LabyModPlayerService<?> labyModPlayerService, Factory payloadBufferFactory) {
     this.labyModPlayerService = labyModPlayerService;
+    this.payloadBufferFactory = payloadBufferFactory;
   }
 
   @Override
@@ -23,7 +28,7 @@ public abstract class DefaultPayloadCommunicator implements PayloadCommunicator 
         .getPlayer(uniqueId)
         .ifPresent(
             player -> {
-              PayloadBuffer payloadBuffer = new DefaultPayloadBuffer();
+              PayloadBuffer payloadBuffer = payloadBufferFactory.create();
 
               payloadBuffer.writeString(messageKey);
               payloadBuffer.writeString(messageContent.toString());

@@ -1,25 +1,18 @@
-package net.labymod.serverapi.bungee.player;
+package net.labymod.serverapi.common.connection;
 
-import com.google.inject.Singleton;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 import net.labymod.serverapi.api.extension.AddonExtension;
 import net.labymod.serverapi.api.extension.ModificationExtension;
 import net.labymod.serverapi.api.extension.PackageExtension;
-import net.labymod.serverapi.api.player.LabyModPlayer;
 import net.labymod.serverapi.api.protocol.ChunkCachingProtocol;
 import net.labymod.serverapi.api.protocol.ShadowProtocol;
-import net.labymod.serverapi.common.player.DefaultLabyModPlayerFactory;
-import net.md_5.bungee.api.connection.ProxiedPlayer;
 
-@Singleton
-public class BungeeLabyModPlayerFactory extends DefaultLabyModPlayerFactory<ProxiedPlayer> {
+public interface ConnectionService<T> {
 
-  /** {@inheritDoc} */
-  @Override
-  public LabyModPlayer<ProxiedPlayer> create(
-      ProxiedPlayer player,
+  default void login(
+      T player,
       String username,
       UUID uniqueId,
       String version,
@@ -27,10 +20,10 @@ public class BungeeLabyModPlayerFactory extends DefaultLabyModPlayerFactory<Prox
       ShadowProtocol shadowProtocol,
       List<AddonExtension> addons,
       List<ModificationExtension> modifications) {
-    return this.create(
+    this.login(
         player,
-        player.getName(),
-        player.getUniqueId(),
+        username,
+        uniqueId,
         version,
         chunkCachingProtocol,
         shadowProtocol,
@@ -39,10 +32,8 @@ public class BungeeLabyModPlayerFactory extends DefaultLabyModPlayerFactory<Prox
         new ArrayList<>());
   }
 
-  /** {@inheritDoc} */
-  @Override
-  public LabyModPlayer<ProxiedPlayer> create(
-      ProxiedPlayer player,
+  void login(
+      T player,
       String username,
       UUID uniqueId,
       String version,
@@ -50,8 +41,7 @@ public class BungeeLabyModPlayerFactory extends DefaultLabyModPlayerFactory<Prox
       ShadowProtocol shadowProtocol,
       List<AddonExtension> addons,
       List<ModificationExtension> modifications,
-      List<PackageExtension> packages) {
-    return new BungeeLabyModPlayer(
-        player, version, chunkCachingProtocol, shadowProtocol, addons, modifications, packages);
-  }
+      List<PackageExtension> packages);
+
+  void disconnect(UUID uniqueId);
 }

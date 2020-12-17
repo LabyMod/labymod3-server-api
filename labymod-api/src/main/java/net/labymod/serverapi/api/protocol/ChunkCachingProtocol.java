@@ -1,5 +1,7 @@
 package net.labymod.serverapi.api.protocol;
 
+import com.google.inject.assistedinject.Assisted;
+
 /** Represents the chunk caching protocol. */
 public interface ChunkCachingProtocol extends Protocol {
 
@@ -14,6 +16,6 @@ public interface ChunkCachingProtocol extends Protocol {
      * @param enabled {@code true} if the chunk caching protocol enabled, otherwise {@code false}.
      * @return A created chunk caching protocol.
      */
-    ChunkCachingProtocol create(int version, boolean enabled);
+    ChunkCachingProtocol create(@Assisted int version, @Assisted boolean enabled);
   }
 }

@@ -1,5 +1,7 @@
 package net.labymod.serverapi.api.protocol;
 
+import com.google.inject.assistedinject.Assisted;
+
 /** Represents the shadow protocol. */
 public interface ShadowProtocol extends Protocol {
 
@@ -14,6 +16,6 @@ public interface ShadowProtocol extends Protocol {
      * @param enabled {@code true} if the shadow protocol enabled, otherwise {@code false}.
      * @return A created shadow protocol.
      */
-    ShadowProtocol create(int version, boolean enabled);
+    ShadowProtocol create(@Assisted int version, @Assisted boolean enabled);
   }
 }

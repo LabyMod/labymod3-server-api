@@ -1,6 +1,7 @@
 package net.labymod.serverapi.api.emote;
 
 import com.google.gson.JsonObject;
+import com.google.inject.assistedinject.Assisted;
 import java.util.UUID;
 
 /** Represents an emote. */
@@ -37,6 +38,6 @@ public interface Emote {
      * @param emoteId The identifier of an emote.
      * @return A created emote.
      */
-    Emote create(UUID npcUniqueId, int emoteId);
+    Emote create(@Assisted UUID npcUniqueId, @Assisted int emoteId);
   }
 }

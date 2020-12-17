@@ -1,5 +1,7 @@
 package net.labymod.serverapi.common.payload;
 
+import com.google.inject.assistedinject.Assisted;
+import com.google.inject.assistedinject.AssistedInject;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import java.nio.charset.StandardCharsets;
@@ -9,11 +11,13 @@ public class DefaultPayloadBuffer implements PayloadBuffer {
 
   private final ByteBuf byteBuf;
 
-  public DefaultPayloadBuffer() {
+  @AssistedInject
+  private DefaultPayloadBuffer() {
     this(Unpooled.buffer());
   }
 
-  public DefaultPayloadBuffer(ByteBuf byteBuf) {
+  @AssistedInject
+  private DefaultPayloadBuffer(@Assisted ByteBuf byteBuf) {
     this.byteBuf = byteBuf;
   }
 

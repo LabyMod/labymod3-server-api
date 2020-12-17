@@ -1,6 +1,7 @@
 package net.labymod.serverapi.api.extension.addon;
 
 import com.google.gson.JsonObject;
+import com.google.inject.assistedinject.Assisted;
 import java.util.UUID;
 
 /** Represents a recommended addon. */
@@ -46,6 +47,6 @@ public interface RecommendedAddon {
      *     false}.
      * @return A created recommended addon.
      */
-    RecommendedAddon create(UUID publishedUniqueId, boolean required);
+    RecommendedAddon create(@Assisted UUID publishedUniqueId, @Assisted boolean required);
   }
 }

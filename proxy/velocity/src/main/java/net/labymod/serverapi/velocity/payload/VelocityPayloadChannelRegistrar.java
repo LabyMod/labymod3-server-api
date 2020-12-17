@@ -2,6 +2,9 @@ package net.labymod.serverapi.velocity.payload;
 
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
+import com.google.inject.Inject;
+import com.google.inject.Singleton;
+import com.velocitypowered.api.proxy.ProxyServer;
 import com.velocitypowered.api.proxy.messages.ChannelIdentifier;
 import com.velocitypowered.api.proxy.messages.ChannelRegistrar;
 import com.velocitypowered.api.proxy.messages.LegacyChannelIdentifier;
@@ -10,13 +13,15 @@ import net.labymod.serverapi.api.payload.PayloadChannelRegistrar;
 import net.labymod.serverapi.api.payload.PayloadChannelType;
 
 /** The Velocity implementation of the {@link PayloadChannelRegistrar}. */
+@Singleton
 public class VelocityPayloadChannelRegistrar implements PayloadChannelRegistrar<ChannelIdentifier> {
 
   private final ChannelRegistrar channelRegistrar;
   private final Multimap<PayloadChannelType, ChannelIdentifier> channelIdentifiers;
 
-  public VelocityPayloadChannelRegistrar(ChannelRegistrar channelRegistrar) {
-    this.channelRegistrar = channelRegistrar;
+  @Inject
+  private VelocityPayloadChannelRegistrar(ProxyServer proxyServer) {
+    this.channelRegistrar = proxyServer.getChannelRegistrar();
     this.channelIdentifiers = HashMultimap.create();
   }
 

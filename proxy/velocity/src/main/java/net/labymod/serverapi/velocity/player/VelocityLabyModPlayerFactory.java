@@ -1,5 +1,6 @@
 package net.labymod.serverapi.velocity.player;
 
+import com.google.inject.Singleton;
 import com.velocitypowered.api.proxy.Player;
 import java.util.ArrayList;
 import java.util.List;
@@ -13,15 +14,8 @@ import net.labymod.serverapi.api.protocol.ChunkCachingProtocol;
 import net.labymod.serverapi.api.protocol.ShadowProtocol;
 import net.labymod.serverapi.common.player.DefaultLabyModPlayerFactory;
 
+@Singleton
 public class VelocityLabyModPlayerFactory extends DefaultLabyModPlayerFactory<Player> {
-
-  private static final LabyModPlayer.Factory<Player> INSTANCE = new VelocityLabyModPlayerFactory();
-
-  private VelocityLabyModPlayerFactory() {}
-
-  public static Factory<Player> getInstance() {
-    return INSTANCE;
-  }
 
   /** {@inheritDoc} */
   @Override

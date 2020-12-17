@@ -1,6 +1,8 @@
 package net.labymod.serverapi.common.extension.addon;
 
 import com.google.gson.JsonArray;
+import com.google.inject.Inject;
+import com.google.inject.Singleton;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -9,13 +11,15 @@ import net.labymod.serverapi.api.extension.addon.AddonRecommendation;
 import net.labymod.serverapi.api.extension.addon.RecommendedAddon;
 import net.labymod.serverapi.api.payload.PayloadCommunicator;
 
+@Singleton
 public class DefaultAddonRecommendation implements AddonRecommendation {
 
   private static final String ADDON_RECOMMENDATION_CHANNEL = "addon_recommendation";
   private final PayloadCommunicator payloadCommunicator;
   private final List<RecommendedAddon> recommendedAddons;
 
-  public DefaultAddonRecommendation(PayloadCommunicator payloadCommunicator) {
+  @Inject
+  private DefaultAddonRecommendation(PayloadCommunicator payloadCommunicator) {
     this.payloadCommunicator = payloadCommunicator;
     this.recommendedAddons = new ArrayList<>();
   }

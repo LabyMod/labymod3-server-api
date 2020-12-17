@@ -1,11 +1,14 @@
 package net.labymod.serverapi.common.serverinteraction.actionmenu;
 
 import com.google.gson.JsonArray;
+import com.google.inject.Inject;
+import com.google.inject.Singleton;
 import java.util.UUID;
 import net.labymod.serverapi.api.payload.PayloadCommunicator;
 import net.labymod.serverapi.api.serverinteraction.actionmenu.Menu;
 import net.labymod.serverapi.api.serverinteraction.actionmenu.MenuEntry;
 
+@Singleton
 public class DefaultMenu implements Menu {
 
   private static final String USER_MENU_ACTIONS_CHANNEL = "user_menu_actions";
@@ -13,7 +16,8 @@ public class DefaultMenu implements Menu {
   private final PayloadCommunicator payloadCommunicator;
   private final JsonArray entries;
 
-  public DefaultMenu(PayloadCommunicator payloadCommunicator) {
+  @Inject
+  private DefaultMenu(PayloadCommunicator payloadCommunicator) {
     this.payloadCommunicator = payloadCommunicator;
     this.entries = new JsonArray();
   }

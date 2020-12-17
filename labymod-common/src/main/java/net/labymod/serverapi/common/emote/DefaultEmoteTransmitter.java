@@ -1,6 +1,8 @@
 package net.labymod.serverapi.common.emote;
 
 import com.google.gson.JsonArray;
+import com.google.inject.Inject;
+import com.google.inject.Singleton;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -10,6 +12,7 @@ import net.labymod.serverapi.api.emote.EmoteTransmitter;
 import net.labymod.serverapi.api.payload.PayloadCommunicator;
 
 /** Default implementation of the {@link EmoteTransmitter}. */
+@Singleton
 public class DefaultEmoteTransmitter implements EmoteTransmitter {
 
   private static final String EMOTE_API_CHANNEL = "emote_api";
@@ -17,7 +20,8 @@ public class DefaultEmoteTransmitter implements EmoteTransmitter {
   private final PayloadCommunicator payloadCommunicator;
   private final List<Emote> emotes;
 
-  public DefaultEmoteTransmitter(PayloadCommunicator payloadCommunicator) {
+  @Inject
+  private DefaultEmoteTransmitter(PayloadCommunicator payloadCommunicator) {
     this.payloadCommunicator = payloadCommunicator;
     this.emotes = new ArrayList<>();
   }

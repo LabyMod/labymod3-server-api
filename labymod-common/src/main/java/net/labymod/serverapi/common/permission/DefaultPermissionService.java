@@ -1,6 +1,8 @@
 package net.labymod.serverapi.common.permission;
 
 import com.google.gson.JsonObject;
+import com.google.inject.Inject;
+import com.google.inject.Singleton;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -11,6 +13,7 @@ import net.labymod.serverapi.api.permission.Permissible;
 import net.labymod.serverapi.api.permission.PermissionService;
 
 /** A default implementation of the {@link PermissionService}. */
+@Singleton
 public class DefaultPermissionService implements PermissionService {
 
   private static final String PERMISSIONS_KEY = "PERMISSIONS";
@@ -25,7 +28,8 @@ public class DefaultPermissionService implements PermissionService {
    * @param payloadCommunicator The payload communicator.
    * @param permissionFactory The permission factory for creating permissions.
    */
-  public DefaultPermissionService(
+  @Inject
+  private DefaultPermissionService(
       PayloadCommunicator payloadCommunicator, Permissible.Factory permissionFactory) {
     this.payloadCommunicator = payloadCommunicator;
     this.permissionFactory = permissionFactory;

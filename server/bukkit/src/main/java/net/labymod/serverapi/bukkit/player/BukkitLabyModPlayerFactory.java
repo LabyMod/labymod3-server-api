@@ -1,5 +1,7 @@
 package net.labymod.serverapi.bukkit.player;
 
+import com.google.inject.Singleton;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 import net.labymod.serverapi.api.extension.AddonExtension;
@@ -12,15 +14,8 @@ import net.labymod.serverapi.api.protocol.ShadowProtocol;
 import net.labymod.serverapi.common.player.DefaultLabyModPlayerFactory;
 import org.bukkit.entity.Player;
 
+@Singleton
 public class BukkitLabyModPlayerFactory extends DefaultLabyModPlayerFactory<Player> {
-
-  private static final LabyModPlayer.Factory<Player> INSTANCE = new BukkitLabyModPlayerFactory();
-
-  private BukkitLabyModPlayerFactory() {}
-
-  public static Factory<Player> getInstance() {
-    return INSTANCE;
-  }
 
   /** {@inheritDoc} */
   @Override
@@ -41,7 +36,8 @@ public class BukkitLabyModPlayerFactory extends DefaultLabyModPlayerFactory<Play
         chunkCachingProtocol,
         shadowProtocol,
         addons,
-        modifications);
+        modifications,
+        new ArrayList<>());
   }
 
   /** {@inheritDoc} */

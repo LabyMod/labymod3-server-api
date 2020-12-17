@@ -1,6 +1,8 @@
 package net.labymod.serverapi.common.serverinteraction.actionmenu;
 
 import com.google.gson.JsonObject;
+import com.google.inject.assistedinject.Assisted;
+import com.google.inject.assistedinject.AssistedInject;
 import net.labymod.serverapi.api.serverinteraction.actionmenu.ActionType;
 import net.labymod.serverapi.api.serverinteraction.actionmenu.MenuEntry;
 
@@ -11,7 +13,11 @@ public class DefaultMenuEntry implements MenuEntry {
   private final ActionType actionType;
   private final JsonObject entryObject;
 
-  public DefaultMenuEntry(String displayName, String value, ActionType actionType) {
+  @AssistedInject
+  private DefaultMenuEntry(
+      @Assisted("displayName") String displayName,
+      @Assisted("value") String value,
+      @Assisted ActionType actionType) {
     this.displayName = displayName;
     this.value = value;
     this.actionType = actionType;

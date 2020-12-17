@@ -1,5 +1,7 @@
 package net.labymod.serverapi.common.permission;
 
+import com.google.inject.assistedinject.Assisted;
+import com.google.inject.assistedinject.AssistedInject;
 import net.labymod.serverapi.api.permission.Permissible;
 
 /** A default implementation of the {@link Permissible}. */
@@ -17,7 +19,9 @@ public class DefaultPermission implements Permissible {
    * @param internalName The internal name of the permission.
    * @param name The name of the permission.
    */
-  public DefaultPermission(String internalName, String name) {
+  @AssistedInject
+  private DefaultPermission(
+      @Assisted("internalName") String internalName, @Assisted("name") String name) {
     this(internalName, name, true);
   }
 
@@ -28,7 +32,11 @@ public class DefaultPermission implements Permissible {
    * @param name The name of the permission.
    * @param enabled {@code true} if the permission should be enabled, otherwise {@code false}.
    */
-  public DefaultPermission(String internalName, String name, boolean enabled) {
+  @AssistedInject
+  private DefaultPermission(
+      @Assisted("internalName") String internalName,
+      @Assisted("name") String name,
+      @Assisted("enabled") boolean enabled) {
     this.internalName = internalName;
     this.name = name;
     this.enabled = enabled;

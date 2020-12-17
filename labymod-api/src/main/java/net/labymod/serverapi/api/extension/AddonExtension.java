@@ -1,5 +1,6 @@
 package net.labymod.serverapi.api.extension;
 
+import com.google.inject.assistedinject.Assisted;
 import java.util.UUID;
 
 /** Represents an addon of the LabyMod. */
@@ -15,6 +16,6 @@ public interface AddonExtension extends Extension<String, UUID> {
      * @param uniqueId The unique identifier of the addon.
      * @return A created addon extension.
      */
-    AddonExtension create(String name, UUID uniqueId);
+    AddonExtension create(@Assisted String name, @Assisted UUID uniqueId);
   }
 }

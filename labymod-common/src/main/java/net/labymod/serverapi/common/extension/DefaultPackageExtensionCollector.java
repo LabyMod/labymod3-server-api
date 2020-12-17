@@ -1,24 +1,21 @@
 package net.labymod.serverapi.common.extension;
 
 import com.google.gson.JsonObject;
+import com.google.inject.Inject;
+import com.google.inject.Singleton;
 import java.util.Collections;
 import java.util.List;
 import net.labymod.serverapi.api.extension.ExtensionCollector;
 import net.labymod.serverapi.api.extension.PackageExtension;
 
+@Singleton
 public class DefaultPackageExtensionCollector implements ExtensionCollector<PackageExtension> {
-
-  private static final ExtensionCollector<PackageExtension> INSTANCE =
-      new DefaultPackageExtensionCollector(DefaultPackageExtensionFactory.getInstance());
 
   private final PackageExtension.Factory packageExtensionFactory;
 
+  @Inject
   private DefaultPackageExtensionCollector(PackageExtension.Factory packageExtensionFactory) {
     this.packageExtensionFactory = packageExtensionFactory;
-  }
-
-  public static ExtensionCollector<PackageExtension> getInstance() {
-    return INSTANCE;
   }
 
   /** {@inheritDoc} */

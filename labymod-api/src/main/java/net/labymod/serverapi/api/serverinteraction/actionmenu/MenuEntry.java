@@ -1,6 +1,7 @@
 package net.labymod.serverapi.api.serverinteraction.actionmenu;
 
 import com.google.gson.JsonObject;
+import com.google.inject.assistedinject.Assisted;
 
 /** Represents a menu entry. */
 public interface MenuEntry {
@@ -49,6 +50,9 @@ public interface MenuEntry {
      * @param actionType The action type for the menu entry.
      * @return A created menu entry.
      */
-    MenuEntry create(String displayName, String value, ActionType actionType);
+    MenuEntry create(
+        @Assisted("displayName") String displayName,
+        @Assisted("value") String value,
+        @Assisted ActionType actionType);
   }
 }

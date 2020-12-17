@@ -1,6 +1,8 @@
 package net.labymod.serverapi.common.extension.addon;
 
 import com.google.gson.JsonObject;
+import com.google.inject.assistedinject.Assisted;
+import com.google.inject.assistedinject.AssistedInject;
 import java.util.UUID;
 import net.labymod.serverapi.api.extension.addon.RecommendedAddon;
 
@@ -10,7 +12,8 @@ public class DefaultRecommendedAddon implements RecommendedAddon {
   private final JsonObject recommendAddonObject;
   private boolean required;
 
-  public DefaultRecommendedAddon(UUID publishedUniqueId, boolean required) {
+  @AssistedInject
+  private DefaultRecommendedAddon(@Assisted UUID publishedUniqueId, @Assisted boolean required) {
     this.publishedUniqueId = publishedUniqueId;
     this.recommendAddonObject = new JsonObject();
     this.required = required;

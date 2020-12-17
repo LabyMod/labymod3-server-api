@@ -2,40 +2,50 @@ package net.labymod.serverapi.bukkit.payload.channel;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
+import com.google.inject.Inject;
+import com.google.inject.Singleton;
 import io.netty.buffer.Unpooled;
 import java.util.List;
 import net.labymod.serverapi.api.extension.AddonExtension;
+import net.labymod.serverapi.api.extension.ExtensionCollector;
 import net.labymod.serverapi.api.extension.ModificationExtension;
+import net.labymod.serverapi.api.payload.PayloadBuffer;
 import net.labymod.serverapi.api.protocol.ChunkCachingProtocol;
+import net.labymod.serverapi.api.protocol.ChunkCachingProtocol.Factory;
 import net.labymod.serverapi.api.protocol.ShadowProtocol;
 import net.labymod.serverapi.bukkit.BukkitLabyModPlugin;
 import net.labymod.serverapi.bukkit.event.BukkitLabyModPlayerLoginEvent;
 import net.labymod.serverapi.bukkit.event.BukkitMessageReceiveEvent;
 import net.labymod.serverapi.bukkit.event.BukkitReceivePayloadEvent;
-import net.labymod.serverapi.common.extension.DefaultAddonExtensionCollector;
-import net.labymod.serverapi.common.extension.DefaultModificationExtensionCollector;
 import net.labymod.serverapi.common.payload.DefaultLegacyLabyModPayloadChannel;
-import net.labymod.serverapi.common.payload.DefaultPayloadBuffer;
-import net.labymod.serverapi.common.protocol.DefaultChunkCachingProtocolFactory;
-import net.labymod.serverapi.common.protocol.DefaultShadowProtocolFactory;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 
+@Singleton
 public class BukkitLegacyLabyModPayloadChannel extends DefaultLegacyLabyModPayloadChannel
     implements Listener {
 
   private static final JsonParser JSON_PARSER = new JsonParser();
 
   private final BukkitLabyModPlugin plugin;
+  private final PayloadBuffer.Factory payloadBufferFactory;
 
-  public BukkitLegacyLabyModPayloadChannel(BukkitLabyModPlugin plugin) {
+  @Inject
+  private BukkitLegacyLabyModPayloadChannel(
+      ExtensionCollector<AddonExtension> addonExtensionCollector,
+      ExtensionCollector<ModificationExtension> modificationExtensionCollector,
+      Factory chunkCachingProtocolFactory,
+      ShadowProtocol.Factory shadowProtocolFactory,
+      BukkitLabyModPlugin plugin,
+      PayloadBuffer.Factory payloadBufferFactory) {
     super(
-        DefaultAddonExtensionCollector.getInstance(),
-        DefaultModificationExtensionCollector.getInstance(),
-        DefaultChunkCachingProtocolFactory.getInstance(),
-        DefaultShadowProtocolFactory.getInstance());
+        addonExtensionCollector,
+        modificationExtensionCollector,
+        chunkCachingProtocolFactory,
+        shadowProtocolFactory);
     this.plugin = plugin;
+    this.payloadBufferFactory = payloadBufferFactory;
   }
 
   @EventHandler
@@ -50,7 +60,8 @@ public class BukkitLegacyLabyModPayloadChannel extends DefaultLegacyLabyModPaylo
       return;
     }
 
-    this.readPayload(player, new DefaultPayloadBuffer(Unpooled.wrappedBuffer(event.getPayload())));
+    this.readPayload(
+        player, this.payloadBufferFactory.create(Unpooled.wrappedBuffer(event.getPayload())));
   }
 
   @Override

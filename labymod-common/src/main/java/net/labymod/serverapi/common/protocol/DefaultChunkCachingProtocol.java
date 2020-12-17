@@ -1,5 +1,7 @@
 package net.labymod.serverapi.common.protocol;
 
+import com.google.inject.assistedinject.Assisted;
+import com.google.inject.assistedinject.AssistedInject;
 import net.labymod.serverapi.api.protocol.ChunkCachingProtocol;
 
 public class DefaultChunkCachingProtocol implements ChunkCachingProtocol {
@@ -7,7 +9,8 @@ public class DefaultChunkCachingProtocol implements ChunkCachingProtocol {
   private final int version;
   private final boolean enabled;
 
-  public DefaultChunkCachingProtocol(int version, boolean enabled) {
+  @AssistedInject
+  private DefaultChunkCachingProtocol(@Assisted int version, @Assisted boolean enabled) {
     this.version = version;
     this.enabled = enabled;
   }

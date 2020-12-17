@@ -47,7 +47,6 @@ val compileJava8Jar = task("compileJava8Jar", type = Jar::class) {
 
     configurations.all {
         exclude(group = "com.google.code.gson")
-        exclude(group = "com.google.guava")
         exclude(group = "io.netty")
         exclude(group = "net.md-5")
         exclude(group = "com.velocitypowered")

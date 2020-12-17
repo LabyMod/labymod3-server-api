@@ -1,10 +1,7 @@
-package net.labymod.serverapi.velocity.connection;
+package net.labymod.serverapi.bukkit.connection;
 
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
-import com.velocitypowered.api.event.Subscribe;
-import com.velocitypowered.api.event.connection.DisconnectEvent;
-import com.velocitypowered.api.proxy.Player;
 import java.util.List;
 import java.util.UUID;
 import net.labymod.serverapi.api.extension.AddonExtension;
@@ -12,46 +9,45 @@ import net.labymod.serverapi.api.extension.ModificationExtension;
 import net.labymod.serverapi.api.extension.PackageExtension;
 import net.labymod.serverapi.api.permission.PermissionService;
 import net.labymod.serverapi.api.player.LabyModPlayer;
+import net.labymod.serverapi.api.player.LabyModPlayer.Factory;
 import net.labymod.serverapi.api.player.LabyModPlayerService;
 import net.labymod.serverapi.api.protocol.ChunkCachingProtocol;
 import net.labymod.serverapi.api.protocol.ShadowProtocol;
+import net.labymod.serverapi.bukkit.event.BukkitLabyModPlayerLoginEvent;
 import net.labymod.serverapi.common.connection.ConnectionService;
-import net.labymod.serverapi.velocity.event.VelocityLabyModPlayerLoginEvent;
+import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
 
 @Singleton
-public class VelocityConnectionService implements ConnectionService<Player> {
+public class BukkitConnectionService implements ConnectionService<Player>, Listener {
 
   private final PermissionService permissionService;
   private final LabyModPlayer.Factory<Player> labyModPlayerFactory;
   private final LabyModPlayerService<Player> labyModPlayerService;
 
   @Inject
-  private VelocityConnectionService(
+  private BukkitConnectionService(
       PermissionService permissionService,
-      LabyModPlayer.Factory<Player> labyModPlayerFactory,
+      Factory<Player> labyModPlayerFactory,
       LabyModPlayerService<Player> labyModPlayerService) {
     this.permissionService = permissionService;
     this.labyModPlayerFactory = labyModPlayerFactory;
     this.labyModPlayerService = labyModPlayerService;
   }
 
-  @Subscribe
-  public void login(VelocityLabyModPlayerLoginEvent event) {
+  @EventHandler
+  public void login(BukkitLabyModPlayerLoginEvent event) {
     Player player = event.getPlayer();
     this.login(
         player,
-        player.getUsername(),
+        player.getName(),
         player.getUniqueId(),
         event.getVersion(),
         event.getChunkCachingProtocol(),
         event.getShadowProtocol(),
         event.getAddonExtensions(),
         event.getModificationExtensions());
-  }
-
-  @Subscribe
-  public void disconnect(DisconnectEvent event) {
-    this.disconnect(event.getPlayer().getUniqueId());
   }
 
   /** {@inheritDoc} */

@@ -1,6 +1,8 @@
 package net.labymod.serverapi.common.sticker;
 
 import com.google.gson.JsonArray;
+import com.google.inject.Inject;
+import com.google.inject.Singleton;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -9,6 +11,7 @@ import net.labymod.serverapi.api.payload.PayloadCommunicator;
 import net.labymod.serverapi.api.sticker.Sticker;
 import net.labymod.serverapi.api.sticker.StickerTransmitter;
 
+@Singleton
 public class DefaultStickerTransmitter implements StickerTransmitter {
 
   private static final String STICKER_API_CHANNEL = "sticker_api";
@@ -16,7 +19,8 @@ public class DefaultStickerTransmitter implements StickerTransmitter {
   private final PayloadCommunicator payloadCommunicator;
   private final List<Sticker> stickers;
 
-  public DefaultStickerTransmitter(PayloadCommunicator payloadCommunicator) {
+  @Inject
+  private DefaultStickerTransmitter(PayloadCommunicator payloadCommunicator) {
     this.payloadCommunicator = payloadCommunicator;
     this.stickers = new ArrayList<>();
   }

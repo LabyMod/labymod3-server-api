@@ -1,16 +1,20 @@
 package net.labymod.serverapi.common.labychat;
 
 import com.google.gson.JsonObject;
+import com.google.inject.Inject;
+import com.google.inject.Singleton;
 import java.util.UUID;
 import net.labymod.serverapi.api.labychat.PlayingGameMode;
 import net.labymod.serverapi.api.payload.PayloadCommunicator;
 
+@Singleton
 public class DefaultPlayingGameMode implements PlayingGameMode {
 
   private static final String SERVER_GAMEMODE_CHANNEL = "server_gamemode";
   private final PayloadCommunicator payloadCommunicator;
 
-  public DefaultPlayingGameMode(PayloadCommunicator payloadCommunicator) {
+  @Inject
+  private DefaultPlayingGameMode(PayloadCommunicator payloadCommunicator) {
     this.payloadCommunicator = payloadCommunicator;
   }
 

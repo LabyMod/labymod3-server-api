@@ -2,6 +2,8 @@ package net.labymod.serverapi.bukkit.payload;
 
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
+import com.google.inject.Inject;
+import com.google.inject.Singleton;
 import net.labymod.serverapi.api.payload.PayloadChannelRegistrar;
 import net.labymod.serverapi.api.payload.PayloadChannelType;
 import net.labymod.serverapi.api.payload.PayloadCommunicator;
@@ -9,6 +11,7 @@ import net.labymod.serverapi.bukkit.BukkitLabyModPlugin;
 import org.bukkit.plugin.messaging.Messenger;
 import org.bukkit.plugin.messaging.PluginMessageListener;
 
+@Singleton
 public class BukkitPayloadChannelRegistrar implements PayloadChannelRegistrar<String> {
 
   private final BukkitLabyModPlugin plugin;
@@ -17,10 +20,12 @@ public class BukkitPayloadChannelRegistrar implements PayloadChannelRegistrar<St
 
   private final PayloadCommunicator payloadCommunicator;
 
-  public BukkitPayloadChannelRegistrar(BukkitLabyModPlugin plugin) {
+  @Inject
+  private BukkitPayloadChannelRegistrar(
+      BukkitLabyModPlugin plugin, PayloadCommunicator payloadCommunicator) {
     this.plugin = plugin;
     this.messenger = this.plugin.getServer().getMessenger();
-    this.payloadCommunicator = new BukkitPayloadCommunicator(plugin, this);
+    this.payloadCommunicator = payloadCommunicator;
     this.channelIdentifiers = HashMultimap.create();
   }
 
@@ -41,6 +46,7 @@ public class BukkitPayloadChannelRegistrar implements PayloadChannelRegistrar<St
       }
     }
 
+    this.channelIdentifiers.put(PayloadChannelType.LEGACY, channelIdentifier);
     this.messenger.registerOutgoingPluginChannel(this.plugin, channelIdentifier);
     this.messenger.registerIncomingPluginChannel(
         this.plugin, channelIdentifier, (PluginMessageListener) this.payloadCommunicator);
@@ -58,6 +64,7 @@ public class BukkitPayloadChannelRegistrar implements PayloadChannelRegistrar<St
       }
     }
 
+    this.channelIdentifiers.put(PayloadChannelType.MODERN, channelIdentifier);
     this.messenger.registerOutgoingPluginChannel(this.plugin, channelIdentifier);
     this.messenger.registerIncomingPluginChannel(
         this.plugin, channelIdentifier, (PluginMessageListener) this.payloadCommunicator);

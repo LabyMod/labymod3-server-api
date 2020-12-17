@@ -1,18 +1,22 @@
 package net.labymod.serverapi.common.serverinteraction.economy;
 
 import com.google.gson.JsonObject;
+import com.google.inject.Inject;
+import com.google.inject.Singleton;
 import java.util.UUID;
 import net.labymod.serverapi.api.payload.PayloadCommunicator;
 import net.labymod.serverapi.api.serverinteraction.economy.EconomyBalanceType;
 import net.labymod.serverapi.api.serverinteraction.economy.EconomyDisplay;
 
+@Singleton
 public class DefaultEconomyDisplay implements EconomyDisplay {
 
   private static final String ECONOMY_CHANNEL = "economy";
 
   private final PayloadCommunicator payloadCommunicator;
 
-  public DefaultEconomyDisplay(PayloadCommunicator payloadCommunicator) {
+  @Inject
+  private DefaultEconomyDisplay(PayloadCommunicator payloadCommunicator) {
     this.payloadCommunicator = payloadCommunicator;
   }
 

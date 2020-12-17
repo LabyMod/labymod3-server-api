@@ -1,6 +1,8 @@
 package net.labymod.serverapi.common.sticker;
 
 import com.google.gson.JsonObject;
+import com.google.inject.assistedinject.Assisted;
+import com.google.inject.assistedinject.AssistedInject;
 import java.util.UUID;
 import net.labymod.serverapi.api.sticker.Sticker;
 
@@ -10,7 +12,8 @@ public class DefaultSticker implements Sticker {
   private final short stickerId;
   private final JsonObject stickerObject;
 
-  public DefaultSticker(UUID npcUniqueId, short stickerId) {
+  @AssistedInject
+  private DefaultSticker(@Assisted UUID npcUniqueId, @Assisted short stickerId) {
     this.npcUniqueId = npcUniqueId;
     this.stickerId = stickerId;
     this.stickerObject = new JsonObject();

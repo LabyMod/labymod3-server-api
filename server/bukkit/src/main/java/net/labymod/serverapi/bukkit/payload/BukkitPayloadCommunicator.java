@@ -1,26 +1,34 @@
 package net.labymod.serverapi.bukkit.payload;
 
+import com.google.inject.Inject;
+import com.google.inject.Singleton;
 import java.util.UUID;
+import net.labymod.serverapi.api.payload.PayloadBuffer.Factory;
 import net.labymod.serverapi.api.payload.PayloadChannelRegistrar;
 import net.labymod.serverapi.api.payload.PayloadChannelType;
+import net.labymod.serverapi.api.player.LabyModPlayerService;
 import net.labymod.serverapi.bukkit.BukkitLabyModPlugin;
 import net.labymod.serverapi.bukkit.event.BukkitReceivePayloadEvent;
 import net.labymod.serverapi.bukkit.event.BukkitSendPayloadEvent;
 import net.labymod.serverapi.bukkit.payload.transmitter.BukkitPayloadTransmitter;
-import net.labymod.serverapi.bukkit.player.BukkitLabyModPlayerService;
 import net.labymod.serverapi.common.payload.DefaultPayloadCommunicator;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.messaging.PluginMessageListener;
 
+@Singleton
 public class BukkitPayloadCommunicator extends DefaultPayloadCommunicator
     implements PluginMessageListener {
 
   private final BukkitLabyModPlugin plugin;
   private final PayloadChannelRegistrar<String> payloadChannelRegistrar;
 
-  public BukkitPayloadCommunicator(
-      BukkitLabyModPlugin plugin, PayloadChannelRegistrar<String> payloadChannelRegistrar) {
-    super(BukkitLabyModPlayerService.getInstance());
+  @Inject
+  private BukkitPayloadCommunicator(
+      LabyModPlayerService<Player> labyModPlayerService,
+      Factory payloadBufferFactory,
+      BukkitLabyModPlugin plugin,
+      PayloadChannelRegistrar<String> payloadChannelRegistrar) {
+    super(labyModPlayerService, payloadBufferFactory);
     this.plugin = plugin;
     this.payloadChannelRegistrar = payloadChannelRegistrar;
   }

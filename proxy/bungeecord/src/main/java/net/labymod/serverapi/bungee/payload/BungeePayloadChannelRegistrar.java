@@ -2,17 +2,22 @@ package net.labymod.serverapi.bungee.payload;
 
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
+import com.google.inject.Inject;
+import com.google.inject.Singleton;
 import net.labymod.serverapi.api.payload.PayloadChannelRegistrar;
 import net.labymod.serverapi.api.payload.PayloadChannelType;
+import net.labymod.serverapi.bungee.BungeeLabyModPlugin;
 import net.md_5.bungee.api.ProxyServer;
 
+@Singleton
 public class BungeePayloadChannelRegistrar implements PayloadChannelRegistrar<String> {
 
   private final Multimap<PayloadChannelType, String> channelIdentifiers;
-  private final ProxyServer proxyServer;
+  private final BungeeLabyModPlugin plugin;
 
-  public BungeePayloadChannelRegistrar(ProxyServer proxyServer) {
-    this.proxyServer = proxyServer;
+  @Inject
+  private BungeePayloadChannelRegistrar(BungeeLabyModPlugin plugin) {
+    this.plugin = plugin;
     this.channelIdentifiers = HashMultimap.create();
   }
 
@@ -34,7 +39,7 @@ public class BungeePayloadChannelRegistrar implements PayloadChannelRegistrar<St
       }
     }
 
-    this.proxyServer.registerChannel(channelIdentifier);
+    this.plugin.getProxy().registerChannel(channelIdentifier);
     this.channelIdentifiers.put(PayloadChannelType.LEGACY, channelIdentifier);
   }
 
@@ -51,7 +56,7 @@ public class BungeePayloadChannelRegistrar implements PayloadChannelRegistrar<St
       }
     }
 
-    this.proxyServer.registerChannel(channelIdentifier);
+    this.plugin.getProxy().registerChannel(channelIdentifier);
     this.channelIdentifiers.put(PayloadChannelType.MODERN, channelIdentifier);
   }
 
@@ -89,7 +94,7 @@ public class BungeePayloadChannelRegistrar implements PayloadChannelRegistrar<St
     for (String identifier : this.channelIdentifiers.get(payloadChannelType)) {
       if (identifier.equals(channelIdentifier)) {
         toRemove = identifier;
-        this.proxyServer.unregisterChannel(identifier);
+        this.plugin.getProxy().unregisterChannel(identifier);
       }
     }
 

@@ -1,11 +1,14 @@
 package net.labymod.serverapi.common.serverinteraction.subtitle;
 
 import com.google.gson.JsonArray;
+import com.google.inject.Inject;
+import com.google.inject.Singleton;
 import java.util.UUID;
 import net.labymod.serverapi.api.payload.PayloadCommunicator;
 import net.labymod.serverapi.api.serverinteraction.subtile.SubTitle;
 import net.labymod.serverapi.api.serverinteraction.subtile.SubTitleTransmitter;
 
+@Singleton
 public class DefaultSubTitleTransmitter implements SubTitleTransmitter {
 
   private static final String ACCOUNT_SUBTITLE_CHANNEL = "account_subtitle";
@@ -13,7 +16,8 @@ public class DefaultSubTitleTransmitter implements SubTitleTransmitter {
   private final PayloadCommunicator payloadCommunicator;
   private final JsonArray subTitles;
 
-  public DefaultSubTitleTransmitter(PayloadCommunicator payloadCommunicator) {
+  @Inject
+  private DefaultSubTitleTransmitter(PayloadCommunicator payloadCommunicator) {
     this.payloadCommunicator = payloadCommunicator;
     this.subTitles = new JsonArray();
   }

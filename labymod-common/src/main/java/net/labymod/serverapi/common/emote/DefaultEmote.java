@@ -1,6 +1,8 @@
 package net.labymod.serverapi.common.emote;
 
 import com.google.gson.JsonObject;
+import com.google.inject.assistedinject.Assisted;
+import com.google.inject.assistedinject.AssistedInject;
 import java.util.UUID;
 import net.labymod.serverapi.api.emote.Emote;
 
@@ -10,7 +12,8 @@ public class DefaultEmote implements Emote {
   private final int emoteId;
   private final JsonObject emoteObject;
 
-  public DefaultEmote(UUID npcUniqueId, int emoteId) {
+  @AssistedInject
+  private DefaultEmote(@Assisted UUID npcUniqueId, @Assisted int emoteId) {
     this.npcUniqueId = npcUniqueId;
     this.emoteId = emoteId;
     this.emoteObject = new JsonObject();

@@ -1,6 +1,8 @@
 package net.labymod.serverapi.common.serverinteraction.subtitle;
 
 import com.google.gson.JsonObject;
+import com.google.inject.assistedinject.Assisted;
+import com.google.inject.assistedinject.AssistedInject;
 import java.util.UUID;
 import net.labymod.serverapi.api.serverinteraction.subtile.SubTitle;
 
@@ -12,7 +14,13 @@ public class DefaultSubTitle implements SubTitle {
 
   private final JsonObject subTitleObject;
 
-  public DefaultSubTitle(UUID uniqueId, String value, double size) {
+  @AssistedInject
+  private DefaultSubTitle(@Assisted UUID uniqueId, @Assisted String value) {
+    this(uniqueId, value, 0.8D);
+  }
+
+  @AssistedInject
+  private DefaultSubTitle(@Assisted UUID uniqueId, @Assisted String value, @Assisted double size) {
     if (size < 0.8D) {
       size = 0.8D;
     } else if (size > 1.6D) {

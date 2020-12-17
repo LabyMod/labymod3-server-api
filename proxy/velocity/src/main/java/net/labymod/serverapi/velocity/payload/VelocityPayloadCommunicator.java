@@ -1,5 +1,6 @@
 package net.labymod.serverapi.velocity.payload;
 
+import com.google.inject.Inject;
 import com.velocitypowered.api.event.Subscribe;
 import com.velocitypowered.api.event.connection.PluginMessageEvent;
 import com.velocitypowered.api.event.connection.PluginMessageEvent.ForwardResult;
@@ -7,21 +8,26 @@ import com.velocitypowered.api.proxy.Player;
 import com.velocitypowered.api.proxy.ProxyServer;
 import com.velocitypowered.api.proxy.messages.ChannelIdentifier;
 import java.util.UUID;
+import net.labymod.serverapi.api.payload.PayloadBuffer;
 import net.labymod.serverapi.api.payload.PayloadChannelRegistrar;
 import net.labymod.serverapi.api.payload.PayloadChannelType;
+import net.labymod.serverapi.api.player.LabyModPlayerService;
 import net.labymod.serverapi.common.payload.DefaultPayloadCommunicator;
-import net.labymod.serverapi.velocity.event.VelocitySendPayloadEvent;
 import net.labymod.serverapi.velocity.event.VelocityReceivePayloadEvent;
-import net.labymod.serverapi.velocity.player.VelocityLabyModPlayerService;
+import net.labymod.serverapi.velocity.event.VelocitySendPayloadEvent;
 
 public class VelocityPayloadCommunicator extends DefaultPayloadCommunicator {
 
   private final ProxyServer proxyServer;
   private final PayloadChannelRegistrar<ChannelIdentifier> payloadChannelRegistrar;
 
-  public VelocityPayloadCommunicator(
-      ProxyServer proxyServer, PayloadChannelRegistrar<ChannelIdentifier> payloadChannelRegistrar) {
-    super(VelocityLabyModPlayerService.getInstance());
+  @Inject
+  private VelocityPayloadCommunicator(
+      LabyModPlayerService<Player> labyModPlayerService,
+      ProxyServer proxyServer,
+      PayloadChannelRegistrar<ChannelIdentifier> payloadChannelRegistrar,
+      PayloadBuffer.Factory payloadBufferFactory) {
+    super(labyModPlayerService, payloadBufferFactory);
     this.proxyServer = proxyServer;
     this.payloadChannelRegistrar = payloadChannelRegistrar;
   }

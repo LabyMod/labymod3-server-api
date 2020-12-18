@@ -4,23 +4,18 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.Arrays;
-import net.labymod.serverapi.bukkit.payload.transmitter.exception.InvalidMinecraftServerVersionException;
-import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
 public final class BukkitPayloadTransmitter {
 
-  private static final BukkitPayloadTransmitter INSTANCE = new BukkitPayloadTransmitter();
-
-  private String version;
+  private static final BukkitPayloadTransmitter instance = new BukkitPayloadTransmitter();
 
   /** Retrieves the `getHandle()` method. */
-  private Method getHandleMethod;
+  private final Method getHandleMethod;
   /** Retrieves the player connection field. */
-  private Field playerConnectionField;
+  private final Field playerConnectionField;
   /** Retrieves the send packet method */
-  private Method sendPacketMethod;
+  private final Method sendPacketMethod;
 
   private Method wrappedBufferMethod;
 
@@ -35,68 +30,56 @@ public final class BukkitPayloadTransmitter {
   private Constructor<?> minecraftKeyConstructor;
 
   private BukkitPayloadTransmitter() {
-    this.initialize();
-  }
+    ReflectionHelper reflectionHelper = ReflectionHelper.getInstance();
 
-  public static void transmitPayload(Player player, String channelIdentifier, byte[] payload) {
-    INSTANCE.sendPayload(player, channelIdentifier, payload);
-  }
+    Class<?> craftPlayerClass = reflectionHelper.getOBCClass("entity.CraftPlayer");
+    Class<?> entityPlayerClass = reflectionHelper.getNMSClass("EntityPlayer");
+    Class<?> playerConnectionClass = reflectionHelper.getNMSClass("PlayerConnection");
+    Class<?> packetPlayOutCustomPayloadClass =
+        reflectionHelper.getNMSClass("PacketPlayOutCustomPayload");
 
-  private void initialize() {
-    String packageName = Bukkit.getServer().getClass().getPackage().getName();
-    String[] packages = packageName.split("\\.");
+    this.packetPlayOutCustomPayloadConstructor =
+        reflectionHelper.getConstructor(
+            packetPlayOutCustomPayloadClass, String.class, byte[].class);
 
-    if (packages.length > 0) {
-      String serverVersion = packages[packages.length - 1];
-      if (!serverVersion.startsWith("v")) {
-        throw new InvalidMinecraftServerVersionException(
-            "The version for the running Minecraft server not found, suffix got: " + serverVersion);
-      }
+    if (this.packetPlayOutCustomPayloadConstructor == null) {
 
-      this.version = serverVersion;
+      this.packetDataSerializerClass = reflectionHelper.getNMSClass("PacketDataSerializer");
+      Class<?> byteBufClass = reflectionHelper.getClass("io.netty.buffer.ByteBuf");
 
-      Class<?> craftPlayerClass = this.getOBCClass("entity.CraftPlayer");
-      Class<?> entityPlayerClass = this.getNMSClass("EntityPlayer");
-      Class<?> playerConnectionClass = this.getNMSClass("PlayerConnection");
-      Class<?> packetPlayOutCustomPayloadClass = this.getNMSClass("PacketPlayOutCustomPayload");
+      this.packetDataSerializerConstructor =
+          reflectionHelper.getConstructor(this.packetDataSerializerClass, true, byteBufClass);
+
+      Class<?> unpooledClass = reflectionHelper.getClass("io.netty.buffer.Unpooled");
+
+      this.wrappedBufferMethod =
+          reflectionHelper.getMethod(unpooledClass, "wrappedBuffer", byte[].class);
 
       this.packetPlayOutCustomPayloadConstructor =
-          this.getConstructor(packetPlayOutCustomPayloadClass, String.class, byte[].class);
+          reflectionHelper.getConstructor(
+              packetPlayOutCustomPayloadClass, String.class, this.packetDataSerializerClass);
 
       if (this.packetPlayOutCustomPayloadConstructor == null) {
 
-        this.packetDataSerializerClass = this.getNMSClass("PacketDataSerializer");
-        Class<?> byteBufClass = this.getClass("io.netty.buffer.ByteBuf");
-
-        this.packetDataSerializerConstructor =
-            this.getConstructor(this.packetDataSerializerClass, true, byteBufClass);
-
-        Class<?> unpooledClass = this.getClass("io.netty.buffer.Unpooled");
-
-        this.wrappedBufferMethod = this.getMethod(unpooledClass, "wrappedBuffer", byte[].class);
+        this.minecraftKeyClass = reflectionHelper.getNMSClass("MinecraftKey");
+        this.minecraftKeyConstructor =
+            reflectionHelper.getConstructor(minecraftKeyClass, String.class, String.class);
 
         this.packetPlayOutCustomPayloadConstructor =
-            this.getConstructor(
-                packetPlayOutCustomPayloadClass, String.class, this.packetDataSerializerClass);
-
-        if (this.packetPlayOutCustomPayloadConstructor == null) {
-
-          this.minecraftKeyClass = this.getNMSClass("MinecraftKey");
-          this.minecraftKeyConstructor =
-              this.getConstructor(minecraftKeyClass, String.class, String.class);
-
-          this.packetPlayOutCustomPayloadConstructor =
-              this.getConstructor(
-                  packetPlayOutCustomPayloadClass,
-                  this.minecraftKeyClass,
-                  this.packetDataSerializerClass);
-        }
+            reflectionHelper.getConstructor(
+                packetPlayOutCustomPayloadClass,
+                this.minecraftKeyClass,
+                this.packetDataSerializerClass);
       }
-
-      this.getHandleMethod = this.getMethod(craftPlayerClass, "getHandle");
-      this.playerConnectionField = this.getField(entityPlayerClass, "playerConnection");
-      this.sendPacketMethod = this.getMethod(playerConnectionClass, "sendPacket");
     }
+
+    this.getHandleMethod = reflectionHelper.getMethod(craftPlayerClass, "getHandle");
+    this.playerConnectionField = reflectionHelper.getField(entityPlayerClass, "playerConnection");
+    this.sendPacketMethod = reflectionHelper.getMethod(playerConnectionClass, "sendPacket");
+  }
+
+  public static void transmitPayload(Player player, String channelIdentifier, byte[] payload) {
+    instance.sendPayload(player, channelIdentifier, payload);
   }
 
   public void sendPayload(Player player, String channelIdentifier, byte[] payload) {
@@ -160,94 +143,5 @@ public final class BukkitPayloadTransmitter {
     Object playerConnection = this.playerConnectionField.get(entityPlayer);
 
     this.sendPacketMethod.invoke(playerConnection, packet);
-  }
-
-  private Class<?> getNMSClass(String className) {
-    return this.getClass("net.minecraft.server." + this.version + "." + className);
-  }
-
-  private Class<?> getOBCClass(String className) {
-    return this.getClass("org.bukkit.craftbukkit." + this.version + "." + className);
-  }
-
-  private Class<?> getClass(String name) {
-    try {
-      return Class.forName(name);
-    } catch (ClassNotFoundException exception) {
-      throw new RuntimeException(String.format("Failed to find the %s class", name));
-    }
-  }
-
-  private Constructor<?> getConstructor(Class<?> owner, Class<?>... parameters) {
-    return this.getConstructor(owner, false, parameters);
-  }
-
-  private Constructor<?> getConstructor(Class<?> owner, boolean canThrown, Class<?>... parameters) {
-    for (Constructor<?> constructor : owner.getDeclaredConstructors()) {
-      if (Arrays.equals(constructor.getParameterTypes(), parameters)) {
-        constructor.setAccessible(true);
-        return constructor;
-      }
-    }
-
-    if (canThrown) {
-      throw new RuntimeException(
-          String.format(
-              "Failed to find the %s constructors with the given parameters: %s",
-              owner.getName(), this.getParametersAsString(parameters)));
-    }
-
-    return null;
-  }
-
-  private Method getMethod(Class<?> owner, String methodName, Class<?>... parameters) {
-    for (Method method : owner.getDeclaredMethods()) {
-      if (method.getName().equals(methodName)) {
-        if (parameters.length > 0) {
-          if (Arrays.equals(method.getParameterTypes(), parameters)) {
-            method.setAccessible(true);
-            return method;
-          }
-        } else {
-          method.setAccessible(true);
-          return method;
-        }
-      }
-    }
-
-    throw new RuntimeException(
-        String.format(
-            "Failed to find %s#%s(%s)",
-            owner.getName(), methodName, this.getParametersAsString(parameters)));
-  }
-
-  private Field getField(Class<?> owner, String fieldName) {
-    for (Field field : owner.getDeclaredFields()) {
-      if (field.getName().equals(fieldName)) {
-        field.setAccessible(true);
-        return field;
-      }
-    }
-
-    throw new RuntimeException(
-        String.format(
-            "Failed to find the %s field of the owner class %s", fieldName, owner.getName()));
-  }
-
-  private String getParametersAsString(Class<?>... parameters) {
-    StringBuilder builder = new StringBuilder();
-
-    for (int i = 0; i < parameters.length; i++) {
-      Class<?> parameter = parameters[i];
-
-      if (i == parameters.length - 1) {
-        builder.append(parameter.getName());
-        break;
-      }
-
-      builder.append(parameter.getName()).append(", ");
-    }
-
-    return builder.toString();
   }
 }

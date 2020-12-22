@@ -1,10 +1,8 @@
 package net.labymod.serverapi.bukkit.connection;
 
-import com.comphenix.protocol.ProtocolLibrary;
 import com.comphenix.protocol.events.PacketContainer;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
-import com.google.inject.TypeLiteral;
 import io.netty.channel.Channel;
 import java.util.List;
 import java.util.UUID;
@@ -24,10 +22,11 @@ import net.labymod.serverapi.bukkit.event.BukkitLabyModPlayerLoginEvent;
 import net.labymod.serverapi.bukkit.protocol.chunkcaching.BukkitLabyModPlayerChunkCaching;
 import net.labymod.serverapi.bukkit.protocol.chunkcaching.ChunkCacheNewerHandle;
 import net.labymod.serverapi.bukkit.util.NetworkHelper;
-import net.labymod.serverapi.common.guice.LabyModInjector;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.player.PlayerQuitEvent;
+import us.myles.ViaVersion.ViaVersionPlugin;
 
 @Singleton
 public class BukkitConnectionService implements ConnectionService<Player>, Listener {
@@ -63,6 +62,11 @@ public class BukkitConnectionService implements ConnectionService<Player>, Liste
         event.getModificationExtensions());
   }
 
+  @EventHandler
+  public void disconnect(PlayerQuitEvent event) {
+    this.disconnect(event.getPlayer().getUniqueId());
+  }
+
   /** {@inheritDoc} */
   @Override
   public void login(
@@ -87,15 +91,16 @@ public class BukkitConnectionService implements ConnectionService<Player>, Liste
             modifications);
 
     if (chunkCachingProtocol.isEnabled() && chunkCachingProtocol.getVersion() >= 2) {
-      LabyModPlayerChunkCaching<Player, PacketContainer> labyModPlayerChunkCaching = new BukkitLabyModPlayerChunkCaching();
+      LabyModPlayerChunkCaching<Player, PacketContainer> labyModPlayerChunkCaching =
+          new BukkitLabyModPlayerChunkCaching();
       if (this.chunkCaching.getCache().putIfAbsent(uniqueId, labyModPlayerChunkCaching) != null) {
         return;
       }
 
       int protocolVersion =
-          ProtocolLibrary.getProtocolManager().getProtocolVersion(player.getPlayer());
+          ViaVersionPlugin.getInstance().getApi().getPlayerVersion(player.getPlayer());
 
-      if (335 >= protocolVersion) {
+      if (335 <= protocolVersion) {
         Channel channel = NetworkHelper.getInstance().getChannel(player.getPlayer());
         channel
             .pipeline()
@@ -103,7 +108,6 @@ public class BukkitConnectionService implements ConnectionService<Player>, Liste
                 "compress",
                 "laby_chunks",
                 new ChunkCacheNewerHandle(player.getPlayer(), labyModPlayerChunkCaching));
-        System.out.println("Enabling chunk caching for >= 1.12.x");
       }
     }
 

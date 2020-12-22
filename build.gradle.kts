@@ -58,6 +58,7 @@ val compileJava8Jar = task("compileJava8Jar", type = Jar::class) {
         exclude(group = "org.spigotmc")
         exclude(group = "org.spongepowered")
         exclude(group = "com.comphenix.protocol")
+        exclude(group = "us.myles")
     }
 
     from(configurations.runtimeClasspath.get().map { if (it.isDirectory) it else zipTree(it) })

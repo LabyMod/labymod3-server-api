@@ -2,6 +2,7 @@ package net.labymod.serverapi.bukkit.payload;
 
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
+import java.util.Arrays;
 import java.util.UUID;
 import net.labymod.serverapi.api.payload.PayloadBuffer.Factory;
 import net.labymod.serverapi.api.payload.PayloadChannelRegistrar;
@@ -55,7 +56,6 @@ public class BukkitPayloadCommunicator extends DefaultPayloadCommunicator
               if (bukkitSendPayloadEvent.isCancelled()) {
                 return;
               }
-
               BukkitPayloadTransmitter.transmitPayload(
                   player,
                   bukkitSendPayloadEvent.getChannelIdentifier(),

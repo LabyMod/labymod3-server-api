@@ -41,6 +41,13 @@ public interface ChunkCache {
    */
   ChunkPosition getChunkPosition();
 
+  /**
+   * Sends a packet to the given {@code player}.
+   *
+   * @param player The player who is to receive the packet.
+   * @param chunkCaches A collection with all cached chunks.
+   * @param <T> The type of the player.
+   */
   <T> void send(LabyModPlayer<T> player, Collection<ChunkCache> chunkCaches);
 
   /** Factory for {@link ChunkCache}. */

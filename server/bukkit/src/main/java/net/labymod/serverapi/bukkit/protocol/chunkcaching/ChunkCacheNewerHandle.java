@@ -15,6 +15,9 @@ import net.labymod.serverapi.api.protocol.chunkcaching.LabyModPlayerChunkCaching
 import net.labymod.serverapi.bukkit.protocol.chunkcaching.modern.BukkitChunkCacheModern;
 import net.labymod.serverapi.common.guice.LabyModInjector;
 import org.bukkit.entity.Player;
+import us.myles.ViaVersion.ViaVersionPlugin;
+import us.myles.ViaVersion.api.ViaAPI;
+import us.myles.ViaVersion.api.protocol.ProtocolVersion;
 
 public class ChunkCacheNewerHandle extends ChannelOutboundHandlerAdapter {
 
@@ -23,6 +26,7 @@ public class ChunkCacheNewerHandle extends ChannelOutboundHandlerAdapter {
   private final PayloadCommunicator payloadCommunicator;
   private final Player player;
   private final LabyModPlayerChunkCaching<Player, PacketContainer> playerState;
+  private final ViaAPI<Player> viaAPI;
 
   public ChunkCacheNewerHandle(
       Player player, LabyModPlayerChunkCaching<Player, PacketContainer> playerState) {
@@ -31,6 +35,7 @@ public class ChunkCacheNewerHandle extends ChannelOutboundHandlerAdapter {
     this.player = player;
 
     this.playerState = playerState;
+    this.viaAPI = ViaVersionPlugin.getInstance().getApi();
   }
 
   private int readVarInt(ByteBuf buf) {
@@ -65,7 +70,11 @@ public class ChunkCacheNewerHandle extends ChannelOutboundHandlerAdapter {
         int index = buf.readerIndex();
 
         int packetId = readVarInt(buf);
-        if (packetId != 32) {
+
+        if ((this.viaAPI.getPlayerVersion(player) == ProtocolVersion.v1_12_2.getVersion()
+                && packetId != 32)
+            || (this.viaAPI.getPlayerVersion(player) == ProtocolVersion.v1_15_2.getVersion()
+                && packetId != 34)) {
           buf.readerIndex(index);
           channelHandlerContext.write(buf);
           return;

@@ -14,6 +14,10 @@ public abstract class DefaultPayloadCommunicator implements PayloadCommunicator 
   private static final String MODERN_LEGACY_LMC_CHANNEL = "legacy:lmc";
   private static final String CCP_CHANNEL = "CCP";
   private static final String MODERN_LEGACY_CCP_CHANNEL = "legacy:ccp";
+  private static final String SHADOW_CHANNEL = "shadow";
+  private static final String MODERN_SHADOW_CHANNEL = "legacy:shadow";
+  private static final String LAVA_UPDATE_CHANNEL = "lava_update";
+  private static final String MODERN_LAVA_UPDATE_CHANNEL = "legacy:lava_update";
 
   private final LabyModPlayerService<?> labyModPlayerService;
   private final PayloadBuffer.Factory payloadBufferFactory;
@@ -24,6 +28,7 @@ public abstract class DefaultPayloadCommunicator implements PayloadCommunicator 
     this.payloadBufferFactory = payloadBufferFactory;
   }
 
+  /** {@inheritDoc} */
   @Override
   public void sendChunkCachingProtocolMessage(UUID uniqueId, byte[] payload) {
     this.labyModPlayerService
@@ -32,6 +37,7 @@ public abstract class DefaultPayloadCommunicator implements PayloadCommunicator 
             player -> sendCustomPayload(player, CCP_CHANNEL, MODERN_LEGACY_CCP_CHANNEL, payload));
   }
 
+  /** {@inheritDoc} */
   @Override
   public void sendLabyModMessage(UUID uniqueId, String messageKey, JsonElement messageContent) {
     this.labyModPlayerService
@@ -46,6 +52,26 @@ public abstract class DefaultPayloadCommunicator implements PayloadCommunicator 
               sendCustomPayload(
                   player, LMC_CHANNEL, MODERN_LEGACY_LMC_CHANNEL, payloadBuffer.getBytes());
             });
+  }
+
+  /** {@inheritDoc} */
+  @Override
+  public void sendLavaUpdateProtocolMessage(UUID uniqueId, byte[] payload) {
+    this.labyModPlayerService
+        .getPlayer(uniqueId)
+        .ifPresent(
+            player ->
+                sendCustomPayload(
+                    player, LAVA_UPDATE_CHANNEL, MODERN_LAVA_UPDATE_CHANNEL, payload));
+  }
+
+  /** {@inheritDoc} */
+  @Override
+  public void sendShadowProtocolMessage(UUID uniqueId, byte[] payload) {
+    this.labyModPlayerService
+        .getPlayer(uniqueId)
+        .ifPresent(
+            player -> sendCustomPayload(player, SHADOW_CHANNEL, MODERN_SHADOW_CHANNEL, payload));
   }
 
   private void sendCustomPayload(

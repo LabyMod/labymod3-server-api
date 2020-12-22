@@ -1,4 +1,4 @@
-package net.labymod.serverapi.bukkit.payload.transmitter;
+package net.labymod.serverapi.bukkit.util;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;

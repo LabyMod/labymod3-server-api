@@ -13,6 +13,7 @@ import net.labymod.serverapi.api.permission.Permissible;
 import net.labymod.serverapi.api.permission.PermissionService;
 import net.labymod.serverapi.api.protocol.ChunkCachingProtocol;
 import net.labymod.serverapi.api.protocol.ShadowProtocol;
+import net.labymod.serverapi.api.protocol.chunkcaching.ChunkPosition;
 import net.labymod.serverapi.api.serverinteraction.CineScopes;
 import net.labymod.serverapi.api.serverinteraction.ServerSwitcher;
 import net.labymod.serverapi.api.serverinteraction.Watermark;
@@ -35,6 +36,7 @@ import net.labymod.serverapi.common.permission.DefaultPermission;
 import net.labymod.serverapi.common.permission.DefaultPermissionService;
 import net.labymod.serverapi.common.protocol.DefaultChunkCachingProtocol;
 import net.labymod.serverapi.common.protocol.DefaultShadowProtocol;
+import net.labymod.serverapi.common.protocol.chunkcaching.DefaultChunkPosition;
 import net.labymod.serverapi.common.serverinteraction.DefaultCineScopes;
 import net.labymod.serverapi.common.serverinteraction.DefaultServerSwitcher;
 import net.labymod.serverapi.common.serverinteraction.DefaultWatermark;
@@ -111,5 +113,8 @@ public class LabyModCommonModule extends LabyModAbstractModule {
 
     this.bind(SubTitleTransmitter.class, DefaultSubTitleTransmitter.class);
     this.installFactory(SubTitle.class, DefaultSubTitle.class, SubTitle.Factory.class);
+
+    this.installFactory(
+        ChunkPosition.class, DefaultChunkPosition.class, ChunkPosition.Factory.class);
   }
 }

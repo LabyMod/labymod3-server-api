@@ -1,19 +1,14 @@
 rootProject.name = "labymod-server-api"
 
-fun defineModule(path: String) {
-    include(path)
-    findProject(":$path")?.name = path.replace(":", "-")
-}
-
 // Server API
-defineModule("labymod-api")
-defineModule("labymod-common")
+include("labymod-api")
+include("labymod-common")
 
 // Proxies
-defineModule("proxy:velocity")
-defineModule("proxy:bungeecord")
+include("proxy:velocity")
+include("proxy:bungeecord")
 
 // Servers
-defineModule("server:bukkit")
-defineModule("server:minestom")
-defineModule("server:sponge")
+include("server:bukkit")
+include("server:minestom")
+include("server:sponge")

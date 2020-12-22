@@ -3,9 +3,11 @@ package net.labymod.serverapi.bukkit;
 import com.google.inject.AbstractModule;
 import com.google.inject.Singleton;
 import com.google.inject.TypeLiteral;
-import net.labymod.serverapi.api.payload.PayloadChannelRegistrar;
-import net.labymod.serverapi.bukkit.guice.LabyModBukkitModule;
+import net.jpountz.xxhash.XXHashFactory;
 import net.labymod.serverapi.api.connection.ConnectionService;
+import net.labymod.serverapi.api.payload.PayloadChannelRegistrar;
+import net.labymod.serverapi.api.protocol.chunkcaching.ChunkCaching;
+import net.labymod.serverapi.bukkit.guice.LabyModBukkitModule;
 import net.labymod.serverapi.common.guice.LabyModInjector;
 import net.labymod.serverapi.common.payload.DefaultLegacyLabyModPayloadChannel;
 import org.bukkit.entity.Player;
@@ -25,6 +27,7 @@ public class BukkitLabyModPlugin extends JavaPlugin {
           protected void configure() {
             this.bind(JavaPlugin.class).toInstance(BukkitLabyModPlugin.this);
             this.bind(BukkitLabyModPlugin.class).toInstance(BukkitLabyModPlugin.this);
+            this.bind(XXHashFactory.class).toInstance(XXHashFactory.fastestInstance());
           }
         });
 
@@ -39,6 +42,8 @@ public class BukkitLabyModPlugin extends JavaPlugin {
     payloadChannelRegistrar.registerModernLegacyChannelIdentifier("LMC");
     payloadChannelRegistrar.registerModernChannelIdentifier("labymod", "main");
 
+    LabyModInjector.getInstance().getInjectedInstance(new TypeLiteral<ChunkCaching<Player>>() {});
+    
     this.getServer()
         .getPluginManager()
         .registerEvents(

@@ -12,7 +12,7 @@ java {
 }
 
 dependencies {
-    api("io.netty", "netty-buffer", "4.1.54.Final")
+    api("io.netty", "netty-all", "4.1.54.Final")
     api("com.google.code.gson", "gson", "2.8.6")
     api("com.google.guava:guava:21.0")
     // This is one of the reasons why I don't want to support a 6 year old version anymore.

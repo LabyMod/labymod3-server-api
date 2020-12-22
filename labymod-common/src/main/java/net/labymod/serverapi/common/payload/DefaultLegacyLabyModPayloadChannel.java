@@ -39,8 +39,18 @@ public abstract class DefaultLegacyLabyModPayloadChannel {
    * @param identifier The identifier to be checked.
    * @return {@code true} if the specified identifier is the LMC channel, otherwise {@code false}.
    */
-  public boolean isLegacyChannel(String identifier) {
+  public boolean isLegacyLMCChannel(String identifier) {
     return identifier.equals("LMC") || identifier.equals("legacy:lmc");
+  }
+
+  /**
+   * Whether the specified identifier is the CCP channel.
+   *
+   * @param identifier The identifier to be checked.
+   * @return {@code true} if the specified identifier is the CCP channel, otherwise {@code false}.
+   */
+  public boolean isLegacyCCPChannel(String identifier) {
+    return identifier.equals("CCP") || identifier.equals("legacy:ccp");
   }
 
   /**
@@ -129,9 +139,8 @@ public abstract class DefaultLegacyLabyModPayloadChannel {
     int version = 0;
     boolean enabled = false;
 
-    if(protocolObject.has(protocolName) && protocolObject.get(protocolName).isJsonObject()) {
+    if (protocolObject.has(protocolName) && protocolObject.get(protocolName).isJsonObject()) {
       JsonObject protocol = protocolObject.get(protocolName).getAsJsonObject();
-
 
       if (protocol.has("version")) {
         version = protocol.get("version").getAsInt();
@@ -140,7 +149,6 @@ public abstract class DefaultLegacyLabyModPayloadChannel {
       if (protocol.has("enabled")) {
         enabled = protocol.get("enabled").getAsBoolean();
       }
-
     }
 
     switch (protocolName) {

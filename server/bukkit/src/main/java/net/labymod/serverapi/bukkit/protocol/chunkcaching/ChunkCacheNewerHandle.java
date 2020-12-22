@@ -1,0 +1,108 @@
+package net.labymod.serverapi.bukkit.protocol.chunkcaching;
+
+import com.comphenix.protocol.PacketType;
+import io.netty.buffer.ByteBuf;
+import io.netty.channel.ChannelHandlerContext;
+import io.netty.channel.ChannelOutboundHandlerAdapter;
+import io.netty.channel.ChannelPromise;
+import java.nio.ByteBuffer;
+import java.util.List;
+import net.jpountz.xxhash.XXHashFactory;
+import net.labymod.serverapi.api.payload.PayloadCommunicator;
+import net.labymod.serverapi.api.protocol.chunkcaching.ChunkCache;
+import net.labymod.serverapi.api.protocol.chunkcaching.ChunkPosition;
+import net.labymod.serverapi.api.protocol.chunkcaching.LabyModPlayerChunkCaching;
+import net.labymod.serverapi.common.guice.LabyModInjector;
+import org.bukkit.entity.Player;
+
+public class ChunkCacheNewerHandle extends ChannelOutboundHandlerAdapter {
+
+  private static final int MAGIC_NUMBER = -42421337;
+
+  private final PayloadCommunicator payloadCommunicator;
+  private final Player player;
+  private final LabyModPlayerChunkCaching<Player> playerState;
+
+  public ChunkCacheNewerHandle(Player player, LabyModPlayerChunkCaching<Player> playerState) {
+    this.payloadCommunicator =
+        LabyModInjector.getInstance().getInjectedInstance(PayloadCommunicator.class);
+    this.player = player;
+
+    this.playerState = playerState;
+  }
+
+  private static int readVarInt(ByteBuf buf) {
+    int readingNumber = 0;
+    int result = 0;
+
+    byte readableBytes;
+
+    do {
+      readableBytes = buf.readByte();
+      readingNumber |= (readableBytes & 127) << result++ * 7;
+    } while ((readableBytes & 128) == 128);
+
+    return readingNumber;
+  }
+
+  @Override
+  public void write(
+      ChannelHandlerContext channelHandlerContext, Object message, ChannelPromise channelPromise) {
+    try {
+      if (!(message instanceof ByteBuf)) {
+        channelHandlerContext.write(message);
+      } else {
+        ByteBuf buf = (ByteBuf) message;
+
+        if (buf.readableBytes() < 4) {
+          channelHandlerContext.write(message);
+          return;
+        }
+
+        int index = buf.readerIndex();
+
+        int packetId = readVarInt(buf);
+        System.out.println("Packet Id: " + packetId);
+        if (packetId != 34) {
+          buf.readerIndex(index);
+          channelHandlerContext.write(buf);
+          return;
+        }
+        int x = buf.readInt();
+        int z = buf.readInt();
+        int hash =
+            LabyModInjector.getInstance()
+                .getInjectedInstance(XXHashFactory.class)
+                .hash32()
+                .hash(buf.nioBuffer(), MAGIC_NUMBER);
+        buf.readerIndex(index);
+
+        ChunkCache[] caches =
+            new ChunkCache[] {
+              new BukkitChunkCacheModern(
+                  hash,
+                  x,
+                  z,
+                  buf,
+                  LabyModInjector.getInstance().getInjectedInstance(ChunkPosition.Factory.class))
+            };
+        List<Integer> maps = playerState.getSendingCaches(caches);
+
+        if (maps == null || maps.isEmpty()) {
+          ByteBuffer payloadMessage = ByteBuffer.allocate(16); // ByteByteShortIntIntInt
+          payloadMessage.putInt(1); // The first 4 bytes are only necessary for 1.8
+          payloadMessage.putInt(hash);
+          payloadMessage.putInt(x);
+          payloadMessage.putInt(z);
+          this.payloadCommunicator.send(
+              this.player.getUniqueId(), "legacy:ccp", payloadMessage.array());
+          // In this case, do not call ctx.write -> message discarded for now
+        } else {
+          channelHandlerContext.write(buf);
+        }
+      }
+    } catch (Exception ex) {
+      ex.printStackTrace();
+    }
+  }
+}

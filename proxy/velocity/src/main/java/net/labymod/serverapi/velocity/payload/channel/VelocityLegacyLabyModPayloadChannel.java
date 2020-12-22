@@ -45,7 +45,7 @@ public class VelocityLegacyLabyModPayloadChannel extends DefaultLegacyLabyModPay
 
   @Subscribe
   public void legacyLabyMod(VelocityReceivePayloadEvent event) {
-    if (!this.isLegacyChannel(event.getIdentifier())) {
+    if (!this.isLegacyLMCChannel(event.getIdentifier())) {
       return;
     }
 

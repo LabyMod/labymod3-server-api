@@ -49,7 +49,7 @@ public class BungeeLegacyLabyModPayloadChannel extends DefaultLegacyLabyModPaylo
 
   @EventHandler
   public void legacyLabyMod(BungeeReceivePayloadEvent event) {
-    if (!this.isLegacyChannel(event.getIdentifier())) {
+    if (!this.isLegacyLMCChannel(event.getIdentifier())) {
       return;
     }
 

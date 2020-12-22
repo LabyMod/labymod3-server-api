@@ -2,3 +2,5 @@ name: LabyMod Server API
 author: LabyMedia GmbH
 version: 2.0.0
 main: net.labymod.serverapi.bukkit.BukkitLabyModPlugin
+depend:
+  - ProtocolLib

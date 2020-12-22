@@ -31,16 +31,21 @@ repositories {
         name = "spigot-repository"
         url = uri("https://hub.spigotmc.org/nexus/content/repositories/snapshots/")
     }
+
+    maven {
+        name = "dmulloy2"
+        url = uri("https://repo.dmulloy2.net/nexus/repository/public/")
+    }
 }
 
 dependencies {
 
     api(project(":labymod-api"))
     api(project(":labymod-common"))
-    api(project(":proxy:proxy-bungeecord"))
-    api(project(":proxy:proxy-velocity"))
-    api(project(":server:server-bukkit"))
-    api(project(":server:server-sponge"))
+    api(project(":proxy:bungeecord"))
+    api(project(":proxy:velocity"))
+    api(project(":server:bukkit"))
+    api(project(":server:sponge"))
 }
 
 val compileJava8Jar = task("compileJava8Jar", type = Jar::class) {
@@ -52,6 +57,7 @@ val compileJava8Jar = task("compileJava8Jar", type = Jar::class) {
         exclude(group = "com.velocitypowered")
         exclude(group = "org.spigotmc")
         exclude(group = "org.spongepowered")
+        exclude(group = "com.comphenix.protocol")
     }
 
     from(configurations.runtimeClasspath.get().map { if (it.isDirectory) it else zipTree(it) })

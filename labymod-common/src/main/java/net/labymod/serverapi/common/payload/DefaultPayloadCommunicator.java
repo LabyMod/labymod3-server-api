@@ -1,17 +1,19 @@
 package net.labymod.serverapi.common.payload;
 
 import com.google.gson.JsonElement;
-import com.google.inject.Inject;
 import java.util.UUID;
 import net.labymod.serverapi.api.payload.PayloadBuffer;
 import net.labymod.serverapi.api.payload.PayloadBuffer.Factory;
 import net.labymod.serverapi.api.payload.PayloadCommunicator;
+import net.labymod.serverapi.api.player.LabyModPlayer;
 import net.labymod.serverapi.api.player.LabyModPlayerService;
 
 public abstract class DefaultPayloadCommunicator implements PayloadCommunicator {
 
-  private static final String LEGACY_CHANNEL = "LMC";
-  private static final String MODERN_LEGACY_CHANNEL = "legacy:lmc";
+  private static final String LMC_CHANNEL = "LMC";
+  private static final String MODERN_LEGACY_LMC_CHANNEL = "legacy:lmc";
+  private static final String CCP_CHANNEL = "CCP";
+  private static final String MODERN_LEGACY_CCP_CHANNEL = "legacy:ccp";
 
   private final LabyModPlayerService<?> labyModPlayerService;
   private final PayloadBuffer.Factory payloadBufferFactory;
@@ -20,6 +22,14 @@ public abstract class DefaultPayloadCommunicator implements PayloadCommunicator 
       LabyModPlayerService<?> labyModPlayerService, Factory payloadBufferFactory) {
     this.labyModPlayerService = labyModPlayerService;
     this.payloadBufferFactory = payloadBufferFactory;
+  }
+
+  @Override
+  public void sendChunkCachingProtocolMessage(UUID uniqueId, byte[] payload) {
+    this.labyModPlayerService
+        .getPlayer(uniqueId)
+        .ifPresent(
+            player -> sendCustomPayload(player, CCP_CHANNEL, MODERN_LEGACY_CCP_CHANNEL, payload));
   }
 
   @Override
@@ -33,15 +43,22 @@ public abstract class DefaultPayloadCommunicator implements PayloadCommunicator 
               payloadBuffer.writeString(messageKey);
               payloadBuffer.writeString(messageContent.toString());
 
-              String version = player.getVersion();
-
-              if (this.isLabyModV3(version) && !this.shouldSupportModernChannel(version)) {
-                this.send(uniqueId, LEGACY_CHANNEL, payloadBuffer.getBytes());
-                return;
-              }
-
-              this.send(uniqueId, MODERN_LEGACY_CHANNEL, payloadBuffer.getBytes());
+              sendCustomPayload(
+                  player, LMC_CHANNEL, MODERN_LEGACY_LMC_CHANNEL, payloadBuffer.getBytes());
             });
+  }
+
+  private void sendCustomPayload(
+      LabyModPlayer<?> player, String oldChannel, String legacyChannel, byte[] payload) {
+
+    String version = player.getVersion();
+
+    if (this.isLabyModV3(version) && !this.shouldSupportModernChannel(version)) {
+      this.send(player.getUniqueId(), oldChannel, payload);
+      return;
+    }
+
+    this.send(player.getUniqueId(), legacyChannel, payload);
   }
 
   private boolean isLabyModV3(String version) {

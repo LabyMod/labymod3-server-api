@@ -1,6 +1,7 @@
 package net.labymod.serverapi.bukkit.payload.transmitter;
 
 import com.comphenix.protocol.PacketType.Play.Client;
+import com.comphenix.protocol.PacketType.Play.Server;
 import com.comphenix.protocol.ProtocolLibrary;
 import com.comphenix.protocol.ProtocolManager;
 import com.comphenix.protocol.events.PacketContainer;
@@ -60,7 +61,7 @@ public final class BukkitPayloadTransmitter {
   }
 
   private void sendModernPayload(Player player, String namespace, String path, byte[] payload) {
-    PacketContainer packet = new PacketContainer(Client.CUSTOM_PAYLOAD);
+    PacketContainer packet = new PacketContainer(Server.CUSTOM_PAYLOAD);
     packet.getMinecraftKeys().write(0, new MinecraftKey(namespace, path));
     setPayload(packet, Unpooled.wrappedBuffer(payload));
 
@@ -69,7 +70,7 @@ public final class BukkitPayloadTransmitter {
 
   private void sendLegacyPayload(Player player, String channelIdentifier, byte[] payload) {
 
-    PacketContainer packet = new PacketContainer(Client.CUSTOM_PAYLOAD);
+    PacketContainer packet = new PacketContainer(Server.CUSTOM_PAYLOAD);
 
     packet.getStrings().write(0, channelIdentifier);
     setPayload(packet, Unpooled.wrappedBuffer(payload));

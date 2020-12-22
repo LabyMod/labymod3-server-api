@@ -1,8 +1,9 @@
-package net.labymod.serverapi.common.protocol.chunkcaching;
+package net.labymod.serverapi.common.protocol.chunkcaching.modern;
 
 import io.netty.buffer.ByteBuf;
-import net.labymod.serverapi.api.protocol.chunkcaching.ChunkCacheModern;
 import net.labymod.serverapi.api.protocol.chunkcaching.ChunkPosition;
+import net.labymod.serverapi.api.protocol.chunkcaching.modern.ChunkCacheModern;
+import net.labymod.serverapi.common.protocol.chunkcaching.DefaultChunkCache;
 
 public abstract class DefaultChunkCacheModern extends DefaultChunkCache
     implements ChunkCacheModern {
@@ -15,6 +16,7 @@ public abstract class DefaultChunkCacheModern extends DefaultChunkCache
     this.buffer = buffer;
   }
 
+  /** {@inheritDoc} */
   @Override
   public ByteBuf getBuffer() {
     return this.buffer;

@@ -1,6 +1,7 @@
 package net.labymod.serverapi.bukkit.connection;
 
 import com.comphenix.protocol.ProtocolLibrary;
+import com.comphenix.protocol.events.PacketContainer;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import com.google.inject.TypeLiteral;
@@ -20,6 +21,7 @@ import net.labymod.serverapi.api.protocol.ShadowProtocol;
 import net.labymod.serverapi.api.protocol.chunkcaching.ChunkCaching;
 import net.labymod.serverapi.api.protocol.chunkcaching.LabyModPlayerChunkCaching;
 import net.labymod.serverapi.bukkit.event.BukkitLabyModPlayerLoginEvent;
+import net.labymod.serverapi.bukkit.protocol.chunkcaching.BukkitLabyModPlayerChunkCaching;
 import net.labymod.serverapi.bukkit.protocol.chunkcaching.ChunkCacheNewerHandle;
 import net.labymod.serverapi.bukkit.util.NetworkHelper;
 import net.labymod.serverapi.common.guice.LabyModInjector;
@@ -30,14 +32,14 @@ import org.bukkit.event.Listener;
 @Singleton
 public class BukkitConnectionService implements ConnectionService<Player>, Listener {
 
-  private final ChunkCaching<Player> chunkCaching;
+  private final ChunkCaching<Player, PacketContainer> chunkCaching;
   private final PermissionService permissionService;
   private final LabyModPlayer.Factory<Player> labyModPlayerFactory;
   private final LabyModPlayerService<Player> labyModPlayerService;
 
   @Inject
   private BukkitConnectionService(
-      ChunkCaching<Player> chunkCaching,
+      ChunkCaching<Player, PacketContainer> chunkCaching,
       PermissionService permissionService,
       Factory<Player> labyModPlayerFactory,
       LabyModPlayerService<Player> labyModPlayerService) {
@@ -85,9 +87,7 @@ public class BukkitConnectionService implements ConnectionService<Player>, Liste
             modifications);
 
     if (chunkCachingProtocol.isEnabled() && chunkCachingProtocol.getVersion() >= 2) {
-      LabyModPlayerChunkCaching<Player> labyModPlayerChunkCaching =
-          LabyModInjector.getInstance()
-              .getInjectedInstance(new TypeLiteral<LabyModPlayerChunkCaching<Player>>() {});
+      LabyModPlayerChunkCaching<Player, PacketContainer> labyModPlayerChunkCaching = new BukkitLabyModPlayerChunkCaching();
       if (this.chunkCaching.getCache().putIfAbsent(uniqueId, labyModPlayerChunkCaching) != null) {
         return;
       }
@@ -115,5 +115,6 @@ public class BukkitConnectionService implements ConnectionService<Player>, Liste
   @Override
   public void disconnect(UUID uniqueId) {
     this.labyModPlayerService.unregisterPlayerIf(player -> player.getUniqueId().equals(uniqueId));
+    this.chunkCaching.getCache().remove(uniqueId);
   }
 }

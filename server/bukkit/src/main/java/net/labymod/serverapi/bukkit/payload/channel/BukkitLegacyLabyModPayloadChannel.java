@@ -1,5 +1,6 @@
 package net.labymod.serverapi.bukkit.payload.channel;
 
+import com.comphenix.protocol.events.PacketContainer;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
 import com.google.inject.Inject;
@@ -34,7 +35,7 @@ public class BukkitLegacyLabyModPayloadChannel extends DefaultLegacyLabyModPaylo
   private static final JsonParser JSON_PARSER = new JsonParser();
 
   private final BukkitLabyModPlugin plugin;
-  private final ChunkCaching<Player> chunkCaching;
+  private final ChunkCaching<Player, PacketContainer> chunkCaching;
   private final LabyModPlayerService<Player> labyModPlayerService;
   private final PayloadBuffer.Factory payloadBufferFactory;
 
@@ -45,7 +46,7 @@ public class BukkitLegacyLabyModPayloadChannel extends DefaultLegacyLabyModPaylo
       Factory chunkCachingProtocolFactory,
       ShadowProtocol.Factory shadowProtocolFactory,
       BukkitLabyModPlugin plugin,
-      ChunkCaching<Player> chunkCaching,
+      ChunkCaching<Player, PacketContainer> chunkCaching,
       LabyModPlayerService<Player> labyModPlayerService,
       PayloadBuffer.Factory payloadBufferFactory) {
     super(
@@ -88,7 +89,7 @@ public class BukkitLegacyLabyModPayloadChannel extends DefaultLegacyLabyModPaylo
 
     if (opcode == 0x21) {
 
-      LabyModPlayerChunkCaching<Player> chunkCaching = this.chunkCaching.getChunkCache(uniqueId);
+      LabyModPlayerChunkCaching<Player, PacketContainer> chunkCaching = this.chunkCaching.getChunkCache(uniqueId);
       if (chunkCaching == null) {
         return;
       }

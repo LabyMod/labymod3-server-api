@@ -27,6 +27,10 @@ public final class ReflectionHelper {
     }
   }
 
+  public String getVersion() {
+    return version;
+  }
+
   public static ReflectionHelper getInstance() {
     return instance;
   }

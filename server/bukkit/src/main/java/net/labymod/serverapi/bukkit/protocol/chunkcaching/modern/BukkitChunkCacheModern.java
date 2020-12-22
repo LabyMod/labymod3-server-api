@@ -1,4 +1,4 @@
-package net.labymod.serverapi.bukkit.protocol.chunkcaching;
+package net.labymod.serverapi.bukkit.protocol.chunkcaching.modern;
 
 import com.google.inject.assistedinject.Assisted;
 import com.google.inject.assistedinject.AssistedInject;
@@ -10,7 +10,7 @@ import net.labymod.serverapi.api.player.LabyModPlayer;
 import net.labymod.serverapi.api.protocol.chunkcaching.ChunkCache;
 import net.labymod.serverapi.api.protocol.chunkcaching.ChunkPosition;
 import net.labymod.serverapi.bukkit.util.NetworkHelper;
-import net.labymod.serverapi.common.protocol.chunkcaching.DefaultChunkCacheModern;
+import net.labymod.serverapi.common.protocol.chunkcaching.modern.DefaultChunkCacheModern;
 import org.bukkit.entity.Player;
 
 public class BukkitChunkCacheModern extends DefaultChunkCacheModern {
@@ -25,6 +25,7 @@ public class BukkitChunkCacheModern extends DefaultChunkCacheModern {
     super(hash, x, z, byteBuf, chunkPositionFactory);
   }
 
+  /** {@inheritDoc} */
   @Override
   public <T> void send(LabyModPlayer<T> player, Collection<ChunkCache> chunkCaches) {
     Channel channel = NetworkHelper.getInstance().getChannel((Player) player.getPlayer());

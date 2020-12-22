@@ -14,6 +14,8 @@ public interface PayloadCommunicator {
    */
   void send(UUID uniqueId, String identifier, byte[] payload);
 
+  void sendChunkCachingProtocolMessage(UUID uniqueId, byte[] payload);
+
   void sendLabyModMessage(UUID uniqueId, String messageKey, JsonElement messageContent);
 
   /**

@@ -1,6 +1,6 @@
 package net.labymod.serverapi.bukkit.protocol.chunkcaching;
 
-import com.comphenix.protocol.PacketType;
+import com.comphenix.protocol.events.PacketContainer;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelOutboundHandlerAdapter;
@@ -12,6 +12,7 @@ import net.labymod.serverapi.api.payload.PayloadCommunicator;
 import net.labymod.serverapi.api.protocol.chunkcaching.ChunkCache;
 import net.labymod.serverapi.api.protocol.chunkcaching.ChunkPosition;
 import net.labymod.serverapi.api.protocol.chunkcaching.LabyModPlayerChunkCaching;
+import net.labymod.serverapi.bukkit.protocol.chunkcaching.modern.BukkitChunkCacheModern;
 import net.labymod.serverapi.common.guice.LabyModInjector;
 import org.bukkit.entity.Player;
 
@@ -21,9 +22,10 @@ public class ChunkCacheNewerHandle extends ChannelOutboundHandlerAdapter {
 
   private final PayloadCommunicator payloadCommunicator;
   private final Player player;
-  private final LabyModPlayerChunkCaching<Player> playerState;
+  private final LabyModPlayerChunkCaching<Player, PacketContainer> playerState;
 
-  public ChunkCacheNewerHandle(Player player, LabyModPlayerChunkCaching<Player> playerState) {
+  public ChunkCacheNewerHandle(
+      Player player, LabyModPlayerChunkCaching<Player, PacketContainer> playerState) {
     this.payloadCommunicator =
         LabyModInjector.getInstance().getInjectedInstance(PayloadCommunicator.class);
     this.player = player;
@@ -31,7 +33,7 @@ public class ChunkCacheNewerHandle extends ChannelOutboundHandlerAdapter {
     this.playerState = playerState;
   }
 
-  private static int readVarInt(ByteBuf buf) {
+  private int readVarInt(ByteBuf buf) {
     int readingNumber = 0;
     int result = 0;
 
@@ -45,6 +47,7 @@ public class ChunkCacheNewerHandle extends ChannelOutboundHandlerAdapter {
     return readingNumber;
   }
 
+  /** {@inheritDoc} */
   @Override
   public void write(
       ChannelHandlerContext channelHandlerContext, Object message, ChannelPromise channelPromise) {
@@ -62,8 +65,7 @@ public class ChunkCacheNewerHandle extends ChannelOutboundHandlerAdapter {
         int index = buf.readerIndex();
 
         int packetId = readVarInt(buf);
-        System.out.println("Packet Id: " + packetId);
-        if (packetId != 34) {
+        if (packetId != 32) {
           buf.readerIndex(index);
           channelHandlerContext.write(buf);
           return;
@@ -94,8 +96,8 @@ public class ChunkCacheNewerHandle extends ChannelOutboundHandlerAdapter {
           payloadMessage.putInt(hash);
           payloadMessage.putInt(x);
           payloadMessage.putInt(z);
-          this.payloadCommunicator.send(
-              this.player.getUniqueId(), "legacy:ccp", payloadMessage.array());
+          this.payloadCommunicator.sendChunkCachingProtocolMessage(
+              this.player.getUniqueId(), payloadMessage.array());
           // In this case, do not call ctx.write -> message discarded for now
         } else {
           channelHandlerContext.write(buf);

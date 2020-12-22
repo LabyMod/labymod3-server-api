@@ -6,14 +6,39 @@ import net.labymod.serverapi.api.player.LabyModPlayer;
 
 public interface ChunkCache {
 
+  /**
+   * Retrieves the timestamp when the cache was stored.
+   *
+   * @return The timestamp when the cache was stored.
+   */
   long getStoredTimestamp();
 
+  /**
+   * Retrieves the hash of the chunk cache.
+   *
+   * @return The chunk cache hash.
+   */
   int getHash();
 
+  /**
+   * Retrieves the x position of the chunk.
+   *
+   * @return The x position of the chunk.
+   */
   int getX();
 
+  /**
+   * Retrieves the y position of the chunk.
+   *
+   * @return The z position of the chunk.
+   */
   int getZ();
 
+  /**
+   * Retrieves the position of the chunk.
+   *
+   * @return The chunk position.
+   */
   ChunkPosition getChunkPosition();
 
   <T> void send(LabyModPlayer<T> player, Collection<ChunkCache> chunkCaches);

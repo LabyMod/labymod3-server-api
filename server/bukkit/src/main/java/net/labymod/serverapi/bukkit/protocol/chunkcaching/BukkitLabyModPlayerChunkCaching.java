@@ -1,11 +1,14 @@
 package net.labymod.serverapi.bukkit.protocol.chunkcaching;
 
+import com.comphenix.protocol.ProtocolLibrary;
+import com.comphenix.protocol.events.PacketContainer;
+import com.comphenix.protocol.wrappers.BlockPosition;
 import com.google.common.collect.LinkedListMultimap;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Multimap;
 import com.google.common.collect.Sets;
-import com.google.inject.Inject;
 import com.google.inject.Singleton;
+import java.lang.reflect.InvocationTargetException;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -18,22 +21,25 @@ import net.labymod.serverapi.api.protocol.chunkcaching.ChunkCache;
 import net.labymod.serverapi.api.protocol.chunkcaching.ChunkPosition;
 import net.labymod.serverapi.api.protocol.chunkcaching.ChunkPosition.Factory;
 import net.labymod.serverapi.api.protocol.chunkcaching.LabyModPlayerChunkCaching;
+import net.labymod.serverapi.api.protocol.chunkcaching.legacy.ChunkCacheLegacy;
+import net.labymod.serverapi.common.guice.LabyModInjector;
 import org.bukkit.entity.Player;
 
 @Singleton
-public class BukkitLabyModPlayerChunkCaching implements LabyModPlayerChunkCaching<Player> {
+public class BukkitLabyModPlayerChunkCaching
+    implements LabyModPlayerChunkCaching<Player, PacketContainer> {
 
   private final Set<ChunkPosition> chunkPositions;
   private final Map<ChunkPosition, ChunkCache> coordinates;
   private final ChunkPosition.Factory chunkPositionFactory;
 
-  @Inject
-  private BukkitLabyModPlayerChunkCaching(Factory chunkPositionFactory) {
-    this.chunkPositionFactory = chunkPositionFactory;
+  public BukkitLabyModPlayerChunkCaching() {
+    this.chunkPositionFactory = LabyModInjector.getInstance().getInjectedInstance(Factory.class);
     this.chunkPositions = Sets.newHashSet();
     this.coordinates = Maps.newConcurrentMap();
   }
 
+  /** {@inheritDoc} */
   @Override
   public List<Integer> getSendingCaches(ChunkCache[] caches) {
     List<Integer> send = new LinkedList<>();
@@ -51,19 +57,25 @@ public class BukkitLabyModPlayerChunkCaching implements LabyModPlayerChunkCachin
     return send;
   }
 
+  /** {@inheritDoc} */
+  @SuppressWarnings("unchecked")
   @Override
-  public boolean shouldHandleSignSending(int chunkX, int chunkZ) {
-    chunkX = chunkX >> 4;
-    chunkZ = chunkZ >> 4;
+  public boolean shouldHandleSignSending(PacketContainer packet) {
+    BlockPosition blockPosition = packet.getBlockPositionModifier().read(0);
+    int chunkX = blockPosition.getX() >> 4;
+    int chunkZ = blockPosition.getZ() >> 4;
 
     ChunkPosition chunkPosition = this.chunkPositionFactory.create(chunkX, chunkZ);
     ChunkCache chunkCache = this.coordinates.get(chunkPosition);
 
-    // TODO: 21.12.2020 1.8 Check
+    if (chunkCache instanceof ChunkCacheLegacy) {
+      ((ChunkCacheLegacy<PacketContainer>) chunkCache).getSignUpdates().add(packet);
+    }
 
     return chunkCache != null;
   }
 
+  /** {@inheritDoc} */
   @Override
   public void request(LabyModPlayer<Player> player, boolean[] mask, int[][] coordinates) {
     int need = 0;
@@ -74,10 +86,10 @@ public class BukkitLabyModPlayerChunkCaching implements LabyModPlayerChunkCachin
       if (cache == null) {
         continue;
       }
-      // Flush all chunks with given hash and send them!
+
       if (mask[i]) {
-        // flushSigns( proto, player, cache );
-        continue; // We do not need to send this chunk to the player, yay! Just saved some traffic
+        this.flushSigns(player, cache);
+        continue;
       }
       need++;
       chunkPositions.add(cache.getChunkPosition());
@@ -89,31 +101,32 @@ public class BukkitLabyModPlayerChunkCaching implements LabyModPlayerChunkCachin
       return;
     }
 
-    // This groups by class -> creates one BulkChunkPacket instead of several others
     for (Map.Entry<Class<? extends ChunkCache>, Collection<ChunkCache>> entry :
         targets.asMap().entrySet()) {
-      Collection<ChunkCache> v = entry.getValue();
-      if (v.isEmpty()) {
+      Collection<ChunkCache> value = entry.getValue();
+
+      if (value.isEmpty()) {
         continue;
       }
-      v.stream()
+
+      value.stream()
           .findAny()
           .ifPresent(
               (cache) -> {
-                cache.send(player, v);
+                cache.send(player, value);
               });
-      for (ChunkCache cache : v) {
-        // flushSigns( proto, player, cache );
-      }
+      value.forEach(cache -> flushSigns(player, cache));
     }
   }
 
+  /** {@inheritDoc} */
   @Override
   public void clear() {
     this.coordinates.clear();
     this.chunkPositions.clear();
   }
 
+  /** {@inheritDoc} */
   @Override
   public void clearOlder(long timestamp) {
 
@@ -124,6 +137,22 @@ public class BukkitLabyModPlayerChunkCaching implements LabyModPlayerChunkCachin
       if (chunkCache.getStoredTimestamp() < timestamp) {
         iterator.remove();
         this.coordinates.remove(chunkCache.getChunkPosition());
+      }
+    }
+  }
+
+  @SuppressWarnings("unchecked")
+  private void flushSigns(LabyModPlayer<Player> player, ChunkCache chunkCache) {
+    if (chunkCache instanceof ChunkCacheLegacy) {
+      ChunkCacheLegacy<PacketContainer> chunkCacheLegacy =
+          (ChunkCacheLegacy<PacketContainer>) chunkCache;
+
+      for (PacketContainer singUpdate : chunkCacheLegacy.getSignUpdates()) {
+        try {
+          ProtocolLibrary.getProtocolManager().sendServerPacket(player.getPlayer(), singUpdate);
+        } catch (InvocationTargetException exception) {
+          exception.printStackTrace();
+        }
       }
     }
   }

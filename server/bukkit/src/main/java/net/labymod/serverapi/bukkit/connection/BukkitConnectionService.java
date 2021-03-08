@@ -26,7 +26,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerQuitEvent;
-import us.myles.ViaVersion.ViaVersionPlugin;
 
 @Singleton
 public class BukkitConnectionService implements ConnectionService<Player>, Listener {
@@ -97,8 +96,8 @@ public class BukkitConnectionService implements ConnectionService<Player>, Liste
         return;
       }
 
-      int protocolVersion =
-          ViaVersionPlugin.getInstance().getApi().getPlayerVersion(player.getPlayer());
+      // TODO: Retrieves the protocol of the player
+      int protocolVersion = -1;
 
       if (335 <= protocolVersion) {
         Channel channel = NetworkHelper.getInstance().getChannel(player.getPlayer());

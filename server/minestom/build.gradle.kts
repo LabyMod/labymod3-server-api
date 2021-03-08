@@ -14,7 +14,7 @@ repositories {
 
     maven {
         name = "sponge-repository"
-        url = uri("http://repo.spongepowered.org/maven")
+        url = uri("https://repo.spongepowered.org/maven")
     }
 
 

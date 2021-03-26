@@ -11,13 +11,13 @@ import net.labymod.serverapi.api.player.LabyModPlayerService;
 public abstract class DefaultPayloadCommunicator implements PayloadCommunicator {
 
   private static final String LMC_CHANNEL = "LMC";
-  private static final String MODERN_LEGACY_LMC_CHANNEL = "legacy:lmc";
+  private static final String MODERN_LEGACY_LMC_CHANNEL = "labymod3:lmc";
   private static final String CCP_CHANNEL = "CCP";
-  private static final String MODERN_LEGACY_CCP_CHANNEL = "legacy:ccp";
-  private static final String SHADOW_CHANNEL = "shadow";
-  private static final String MODERN_SHADOW_CHANNEL = "legacy:shadow";
-  private static final String LAVA_UPDATE_CHANNEL = "lava_update";
-  private static final String MODERN_LAVA_UPDATE_CHANNEL = "legacy:lava_update";
+  private static final String MODERN_LEGACY_CCP_CHANNEL = "labymod3:ccp";
+  private static final String SHADOW_CHANNEL = "SHADOW";
+  private static final String MODERN_SHADOW_CHANNEL = "labymod3:shadow";
+  private static final String LAVA_UPDATE_CHANNEL = "LAVA_UPDATE";
+  private static final String MODERN_LAVA_UPDATE_CHANNEL = "labymod3:lava_update";
 
   private final LabyModPlayerService<?> labyModPlayerService;
   private final PayloadBuffer.Factory payloadBufferFactory;

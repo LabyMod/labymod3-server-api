@@ -7,8 +7,7 @@ import java.util.function.Predicate;
 
 public interface LabyModPlayerService<T> {
 
-  // TODO: 07.12.2020 Still to be clarified with LabyStudio.
-  int[] NON_LEGACY_SUPPORT_VERSION = new int[] {3, 7, 7};
+  int[] NON_LEGACY_SUPPORT_VERSION = new int[] {3, 8, 0};
 
   /**
    * Registers a LabyMod player.

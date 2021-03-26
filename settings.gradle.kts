@@ -10,5 +10,5 @@ include("proxy:bungeecord")
 
 // Servers
 include("server:bukkit")
-//include("server:minestom")
+include("server:minestom")
 include("server:sponge")

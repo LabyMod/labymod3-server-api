@@ -40,7 +40,7 @@ public abstract class DefaultLegacyLabyModPayloadChannel {
    * @return {@code true} if the specified identifier is the LMC channel, otherwise {@code false}.
    */
   public boolean isLegacyLMCChannel(String identifier) {
-    return identifier.equals("LMC") || identifier.equals("legacy:lmc");
+    return identifier.equals("LMC") || identifier.equals("labymod3:lmc");
   }
 
   /**
@@ -50,7 +50,7 @@ public abstract class DefaultLegacyLabyModPayloadChannel {
    * @return {@code true} if the specified identifier is the CCP channel, otherwise {@code false}.
    */
   public boolean isLegacyCCPChannel(String identifier) {
-    return identifier.equals("CCP") || identifier.equals("legacy:ccp");
+    return identifier.equals("CCP") || identifier.equals("labymod3:ccp");
   }
 
   /**

@@ -28,6 +28,8 @@ public interface SubTitle {
    */
   double getSize();
 
+  JsonObject getRawTextAsJson();
+
   /**
    * Retrieves the subtitle as a {@link JsonObject}.
    *
@@ -52,6 +54,8 @@ public interface SubTitle {
      */
     SubTitle create(@Assisted UUID uniqueId, @Assisted String value);
 
+    SubTitle create(@Assisted UUID uniqueId, @Assisted JsonObject rawText);
+
     /**
      * Creates a new {@link SubTitle} with the given {@code uniqueId}, {@code value} and the {@code
      * size}.
@@ -68,5 +72,7 @@ public interface SubTitle {
      * @return A created subtitle.
      */
     SubTitle create(@Assisted UUID uniqueId, @Assisted String value, @Assisted double size);
+
+    SubTitle create(@Assisted UUID uniqueId, @Assisted JsonObject rawText, @Assisted double size);
   }
 }

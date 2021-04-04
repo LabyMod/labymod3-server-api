@@ -8,11 +8,12 @@ import net.labymod.serverapi.api.serverinteraction.subtile.SubTitle;
 
 public class DefaultSubTitle implements SubTitle {
 
-  private final UUID uniqueId;
-  private final String value;
-  private final double size;
+  private UUID uniqueId;
+  private String value;
+  private JsonObject rawText;
+  private double size;
 
-  private final JsonObject subTitleObject;
+  private JsonObject subTitleObject;
 
   @AssistedInject
   private DefaultSubTitle(@Assisted UUID uniqueId, @Assisted String value) {
@@ -20,12 +21,13 @@ public class DefaultSubTitle implements SubTitle {
   }
 
   @AssistedInject
+  private DefaultSubTitle(@Assisted UUID uniqueId, @Assisted JsonObject rawText) {
+    this(uniqueId, rawText, 0.8D);
+  }
+
+  @AssistedInject
   private DefaultSubTitle(@Assisted UUID uniqueId, @Assisted String value, @Assisted double size) {
-    if (size < 0.8D) {
-      size = 0.8D;
-    } else if (size > 1.6D) {
-      size = 1.6D;
-    }
+    size = this.checkSize(size);
 
     this.uniqueId = uniqueId;
     this.value = value;
@@ -39,6 +41,29 @@ public class DefaultSubTitle implements SubTitle {
     if (this.value != null) {
       this.subTitleObject.addProperty("value", value);
     }
+  }
+
+  @AssistedInject
+  private DefaultSubTitle(
+      @Assisted UUID uniqueId, @Assisted JsonObject rawText, @Assisted double size) {
+    size = this.checkSize(size);
+
+    this.uniqueId = uniqueId;
+    this.rawText = rawText;
+    this.size = size;
+
+    this.subTitleObject = new JsonObject();
+
+    this.subTitleObject.addProperty("uuid", uniqueId.toString());
+    this.subTitleObject.addProperty("size", size);
+
+    if (this.rawText != null) {
+      this.subTitleObject.addProperty("raw_json_text", this.rawText.toString());
+    }
+  }
+
+  private double checkSize(double size) {
+    return size < 0.8D ? 0.8D : Math.min(size, 1.6D);
   }
 
   /** {@inheritDoc} */
@@ -57,6 +82,12 @@ public class DefaultSubTitle implements SubTitle {
   @Override
   public double getSize() {
     return this.size;
+  }
+
+  /** {@inheritDoc} */
+  @Override
+  public JsonObject getRawTextAsJson() {
+    return this.rawText;
   }
 
   /** {@inheritDoc} */

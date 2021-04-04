@@ -11,7 +11,7 @@ import net.labymod.serverapi.api.player.LabyModPlayerService;
 public abstract class DefaultPayloadCommunicator implements PayloadCommunicator {
 
   private static final String LMC_CHANNEL = "LMC";
-  private static final String MODERN_LEGACY_LMC_CHANNEL = "labymod3:lmc";
+  private static final String MODERN_LEGACY_LMC_CHANNEL = "labymod3:main";
   private static final String CCP_CHANNEL = "CCP";
   private static final String MODERN_LEGACY_CCP_CHANNEL = "labymod3:ccp";
   private static final String SHADOW_CHANNEL = "SHADOW";

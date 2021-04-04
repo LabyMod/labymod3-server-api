@@ -1,0 +1,58 @@
+plugins {
+    id("java-library")
+}
+
+group = "net.labymod"
+version = properties["VERSION"] as String
+
+java {
+    sourceCompatibility = JavaVersion.VERSION_1_8
+    targetCompatibility = JavaVersion.VERSION_1_8
+}
+
+repositories {
+    mavenCentral()
+    jcenter()
+
+    maven {
+        name = "velocity-repository"
+        url = uri("https://repo.velocitypowered.com/snapshots/")
+    }
+
+    maven {
+        name = "bungeecord-repository"
+        url = uri("https://oss.sonatype.org/content/repositories/snapshots")
+    }
+    maven {
+        name = "sponge-repository"
+        url = uri("https://repo.spongepowered.org/maven")
+    }
+
+    maven {
+        name = "bungeecord-repository"
+        url = uri("https://oss.sonatype.org/content/repositories/snapshots")
+    }
+    maven {
+        name = "spigot-repository"
+        url = uri("https://hub.spigotmc.org/nexus/content/repositories/snapshots/")
+    }
+
+    maven {
+        name = "dmulloy2"
+        url = uri("https://repo.dmulloy2.net/nexus/repository/public/")
+    }
+}
+
+configurations {
+    shade
+    compile.extendsFrom shade
+}
+
+dependencies {
+    shade(project(":labymod-api"))
+    shade(project(":labymod-common"))
+    shade(project(":proxy:bungeecord"))
+    shade(project(":proxy:velocity"))
+    shade(project(":server:bukkit"))
+    shade(project(":server:sponge"))
+}

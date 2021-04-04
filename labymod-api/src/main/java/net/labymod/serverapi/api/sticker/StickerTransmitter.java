@@ -45,5 +45,8 @@ public interface StickerTransmitter {
    *
    * @param receiverUniqueId The unique identifier of the receiver.
    */
-  void transmitSticker(UUID receiverUniqueId);
+  void transmit(UUID receiverUniqueId);
+
+  /** Transmits a list of all forced stickers to all laby users. */
+  void broadcastTransmit();
 }

@@ -2,8 +2,6 @@ package net.labymod.serverapi.common.extension;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-import com.google.inject.Inject;
-import com.google.inject.Singleton;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -14,16 +12,13 @@ import net.labymod.serverapi.api.extension.ModificationExtension;
  * Default implementation of the {@link ExtensionCollector} to collect {@link
  * ModificationExtension}'s.
  */
-@Singleton
 public class DefaultModificationExtensionCollector
     implements ExtensionCollector<ModificationExtension> {
 
   private final ModificationExtension.Factory modificationExtensionFactory;
 
-  @Inject
-  private DefaultModificationExtensionCollector(
-      ModificationExtension.Factory modificationExtensionFactory) {
-    this.modificationExtensionFactory = modificationExtensionFactory;
+  public DefaultModificationExtensionCollector() {
+    this.modificationExtensionFactory = new DefaultModificationExtensionFactory();
   }
 
   /** {@inheritDoc} */

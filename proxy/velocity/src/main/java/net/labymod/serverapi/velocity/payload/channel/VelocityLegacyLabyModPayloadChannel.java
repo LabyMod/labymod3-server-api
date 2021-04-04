@@ -3,23 +3,20 @@ package net.labymod.serverapi.velocity.payload.channel;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-import com.google.inject.Inject;
 import com.velocitypowered.api.event.Subscribe;
 import com.velocitypowered.api.proxy.Player;
 import com.velocitypowered.api.proxy.ProxyServer;
 import io.netty.buffer.Unpooled;
 import java.util.List;
 import java.util.Optional;
+import net.labymod.serverapi.api.LabyService;
 import net.labymod.serverapi.api.extension.AddonExtension;
-import net.labymod.serverapi.api.extension.ExtensionCollector;
 import net.labymod.serverapi.api.extension.ModificationExtension;
 import net.labymod.serverapi.api.payload.PayloadBuffer;
-import net.labymod.serverapi.api.payload.PayloadCommunicator;
 import net.labymod.serverapi.api.protocol.ChunkCachingProtocol;
-import net.labymod.serverapi.api.protocol.ChunkCachingProtocol.Factory;
 import net.labymod.serverapi.api.protocol.ShadowProtocol;
-import net.labymod.serverapi.common.guice.LabyModInjector;
 import net.labymod.serverapi.common.payload.DefaultLegacyLabyModPayloadChannel;
+import net.labymod.serverapi.common.payload.DefaultPayloadBufferFactory;
 import net.labymod.serverapi.velocity.VelocityLabyModPlugin;
 import net.labymod.serverapi.velocity.event.VelocityLabyModPlayerLoginEvent;
 import net.labymod.serverapi.velocity.event.VelocityMessageReceiveEvent;
@@ -27,29 +24,21 @@ import net.labymod.serverapi.velocity.event.VelocityReceivePayloadEvent;
 
 public class VelocityLegacyLabyModPayloadChannel extends DefaultLegacyLabyModPayloadChannel {
 
+  private final VelocityLabyModPlugin plugin;
   private final ProxyServer proxyServer;
   private final PayloadBuffer.Factory payloadBufferFactory;
 
-  @Inject
-  private VelocityLegacyLabyModPayloadChannel(
-      ExtensionCollector<AddonExtension> addonExtensionCollector,
-      ExtensionCollector<ModificationExtension> modificationExtensionCollector,
-      Factory chunkCachingProtocolFactory,
-      ShadowProtocol.Factory shadowProtocolFactory,
-      ProxyServer proxyServer,
-      PayloadBuffer.Factory payloadBufferFactory) {
-    super(
-        addonExtensionCollector,
-        modificationExtensionCollector,
-        chunkCachingProtocolFactory,
-        shadowProtocolFactory);
+  public VelocityLegacyLabyModPayloadChannel(
+      VelocityLabyModPlugin plugin, ProxyServer proxyServer, LabyService service) {
+    super(service);
+    this.plugin = plugin;
     this.proxyServer = proxyServer;
-    this.payloadBufferFactory = payloadBufferFactory;
+    this.payloadBufferFactory = new DefaultPayloadBufferFactory();
   }
 
   @Subscribe
   public void legacyLabyMod(VelocityReceivePayloadEvent event) {
-    if (!this.isLegacyLMCChannel(event.getIdentifier())) {
+    if (!this.isLabyMod3MainChannel(event.getIdentifier())) {
       return;
     }
 
@@ -91,12 +80,10 @@ public class VelocityLegacyLabyModPayloadChannel extends DefaultLegacyLabyModPay
 
     Player velocityPlayer = (Player) player;
 
-    LabyModInjector injector = LabyModInjector.getInstance();
     JsonObject object = new JsonObject();
-    object.addProperty(
-        "version", injector.getInjectedInstance(VelocityLabyModPlugin.class).getPluginVersion());
-    injector
-        .getInjectedInstance(PayloadCommunicator.class)
+    object.addProperty("version", this.plugin.getPluginVersion());
+    this.service
+        .getPayloadCommunicator()
         .sendLabyModMessage(velocityPlayer.getUniqueId(), "server_api", object);
 
     this.proxyServer

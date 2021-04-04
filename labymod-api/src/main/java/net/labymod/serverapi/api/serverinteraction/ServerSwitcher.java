@@ -26,4 +26,14 @@ public interface ServerSwitcher {
    *     otherwise {@code false}.
    */
   void sendPlayerToServer(UUID uniqueId, String title, String address, boolean preview);
+
+  /**
+   * Sends all online laby user to another network or server.
+   *
+   * @param title The title of the warning.
+   * @param address The address of the network / server where the players should be sent to.
+   * @param preview {@code true} if information about the network / server should be displayed,
+   *     otherwise {@code false}.
+   */
+  void broadcastSendPlayerToServer(String title, String address, boolean preview);
 }

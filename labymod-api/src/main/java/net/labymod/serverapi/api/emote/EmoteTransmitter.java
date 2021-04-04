@@ -44,5 +44,8 @@ public interface EmoteTransmitter {
    *
    * @param receiverUniqueId The unique identifier of the receiver.
    */
-  void transmitEmote(UUID receiverUniqueId);
+  void transmit(UUID receiverUniqueId);
+
+  /** Transmits a list of all forced emotes to all online laby users. */
+  void broadcastTransmit();
 }

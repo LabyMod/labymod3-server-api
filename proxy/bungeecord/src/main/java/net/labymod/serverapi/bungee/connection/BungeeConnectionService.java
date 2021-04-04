@@ -1,9 +1,9 @@
 package net.labymod.serverapi.bungee.connection;
 
-import com.google.inject.Inject;
-import com.google.inject.Singleton;
 import java.util.List;
 import java.util.UUID;
+import net.labymod.serverapi.api.LabyService;
+import net.labymod.serverapi.api.connection.ConnectionService;
 import net.labymod.serverapi.api.extension.AddonExtension;
 import net.labymod.serverapi.api.extension.ModificationExtension;
 import net.labymod.serverapi.api.extension.PackageExtension;
@@ -14,27 +14,22 @@ import net.labymod.serverapi.api.player.LabyModPlayerService;
 import net.labymod.serverapi.api.protocol.ChunkCachingProtocol;
 import net.labymod.serverapi.api.protocol.ShadowProtocol;
 import net.labymod.serverapi.bungee.event.BungeeLabyModPlayerLoginEvent;
-import net.labymod.serverapi.api.connection.ConnectionService;
+import net.labymod.serverapi.bungee.player.BungeeLabyModPlayerFactory;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 import net.md_5.bungee.api.event.PlayerDisconnectEvent;
 import net.md_5.bungee.api.plugin.Listener;
 import net.md_5.bungee.event.EventHandler;
 
-@Singleton
 public class BungeeConnectionService implements Listener, ConnectionService<ProxiedPlayer> {
 
   private final PermissionService permissionService;
   private final LabyModPlayer.Factory<ProxiedPlayer> labyModPlayerFactory;
   private final LabyModPlayerService<ProxiedPlayer> labyModPlayerService;
 
-  @Inject
-  private BungeeConnectionService(
-      PermissionService permissionService,
-      Factory<ProxiedPlayer> labyModPlayerFactory,
-      LabyModPlayerService<ProxiedPlayer> labyModPlayerService) {
-    this.permissionService = permissionService;
-    this.labyModPlayerFactory = labyModPlayerFactory;
-    this.labyModPlayerService = labyModPlayerService;
+  public BungeeConnectionService(LabyService service) {
+    this.permissionService = service.getPermissionService();
+    this.labyModPlayerFactory = new BungeeLabyModPlayerFactory();
+    this.labyModPlayerService = service.getLabyPlayerService();
   }
 
   @EventHandler

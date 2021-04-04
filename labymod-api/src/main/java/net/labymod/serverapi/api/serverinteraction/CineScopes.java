@@ -22,4 +22,6 @@ public interface CineScopes {
    * @param duration The duration
    */
   void sendCineScope(UUID uniqueId, boolean showCineScopes, int coveragePercent, long duration);
+
+  void broadcastSendCineScope(boolean showCineScopes, int coveragePercent, long duration);
 }

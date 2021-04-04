@@ -2,8 +2,7 @@ package net.labymod.serverapi.bukkit.payload;
 
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
-import com.google.inject.Inject;
-import com.google.inject.Singleton;
+import net.labymod.serverapi.api.LabyService;
 import net.labymod.serverapi.api.payload.PayloadChannelRegistrar;
 import net.labymod.serverapi.api.payload.PayloadChannelType;
 import net.labymod.serverapi.api.payload.PayloadCommunicator;
@@ -11,7 +10,6 @@ import net.labymod.serverapi.bukkit.BukkitLabyModPlugin;
 import org.bukkit.plugin.messaging.Messenger;
 import org.bukkit.plugin.messaging.PluginMessageListener;
 
-@Singleton
 public class BukkitPayloadChannelRegistrar implements PayloadChannelRegistrar<String> {
 
   private final BukkitLabyModPlugin plugin;
@@ -20,12 +18,10 @@ public class BukkitPayloadChannelRegistrar implements PayloadChannelRegistrar<St
 
   private final PayloadCommunicator payloadCommunicator;
 
-  @Inject
-  private BukkitPayloadChannelRegistrar(
-      BukkitLabyModPlugin plugin, PayloadCommunicator payloadCommunicator) {
+  public BukkitPayloadChannelRegistrar(BukkitLabyModPlugin plugin, LabyService service) {
     this.plugin = plugin;
     this.messenger = this.plugin.getServer().getMessenger();
-    this.payloadCommunicator = payloadCommunicator;
+    this.payloadCommunicator = service.getPayloadCommunicator();
     this.channelIdentifiers = HashMultimap.create();
   }
 

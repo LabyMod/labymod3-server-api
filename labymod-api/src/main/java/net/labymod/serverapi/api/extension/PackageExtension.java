@@ -1,6 +1,6 @@
 package net.labymod.serverapi.api.extension;
 
-import com.google.inject.assistedinject.Assisted;
+
 
 public interface PackageExtension extends Extension<String, String> {
 
@@ -14,6 +14,6 @@ public interface PackageExtension extends Extension<String, String> {
      * @param version The version of the package.
      * @return A created package extension.
      */
-    PackageExtension create(@Assisted("name") String name, @Assisted("version") String version);
+    PackageExtension create(String name, String version);
   }
 }

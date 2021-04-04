@@ -30,9 +30,15 @@ public interface Menu {
   Menu addEntries(MenuEntry... entries);
 
   /**
-   * Sends an action menu to the client.
+   * Transmits an action menu to the client.
    *
    * @param uniqueId The unique identifier of the receiver.
    */
-  void send(UUID uniqueId);
+  void transmit(UUID uniqueId);
+
+  /**
+   * Transmits an action menu to all online laby users.
+   */
+  void broadcastTransmit();
+
 }

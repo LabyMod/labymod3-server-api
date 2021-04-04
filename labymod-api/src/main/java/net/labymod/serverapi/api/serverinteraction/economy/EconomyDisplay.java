@@ -26,4 +26,14 @@ public interface EconomyDisplay {
       EconomyBalanceType economyBalanceType,
       boolean showBalanceDisplay,
       int balance);
+
+  /**
+   * Sends the balance display to all online laby users.
+   *
+   * @param economyBalanceType The type of the economy balance.
+   * @param showBalanceDisplay {@code true} shows the balance display, otherwise {@code false}.
+   * @param balance The balance of the receiver.
+   */
+  void broadcastSendBalanceDisplay(
+      EconomyBalanceType economyBalanceType, boolean showBalanceDisplay, int balance);
 }

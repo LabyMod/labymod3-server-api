@@ -1,7 +1,7 @@
 package net.labymod.serverapi.api.sticker;
 
 import com.google.gson.JsonObject;
-import com.google.inject.assistedinject.Assisted;
+
 import java.util.UUID;
 
 /** Represents a sticker. */
@@ -38,6 +38,6 @@ public interface Sticker {
      * @param stickerId The identifier of a sticker.
      * @return A created sticker.
      */
-    Sticker create(@Assisted UUID npcUniqueId, @Assisted short stickerId);
+    Sticker create(UUID npcUniqueId, short stickerId);
   }
 }

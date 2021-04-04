@@ -2,21 +2,16 @@ package net.labymod.serverapi.bungee.payload;
 
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
-import com.google.inject.Inject;
-import com.google.inject.Singleton;
 import net.labymod.serverapi.api.payload.PayloadChannelRegistrar;
 import net.labymod.serverapi.api.payload.PayloadChannelType;
 import net.labymod.serverapi.bungee.BungeeLabyModPlugin;
-import net.md_5.bungee.api.ProxyServer;
 
-@Singleton
 public class BungeePayloadChannelRegistrar implements PayloadChannelRegistrar<String> {
 
   private final Multimap<PayloadChannelType, String> channelIdentifiers;
   private final BungeeLabyModPlugin plugin;
 
-  @Inject
-  private BungeePayloadChannelRegistrar(BungeeLabyModPlugin plugin) {
+  public BungeePayloadChannelRegistrar(BungeeLabyModPlugin plugin) {
     this.plugin = plugin;
     this.channelIdentifiers = HashMultimap.create();
   }

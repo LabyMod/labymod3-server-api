@@ -1,22 +1,23 @@
 package net.labymod.serverapi.common.serverinteraction;
 
 import com.google.gson.JsonObject;
-import com.google.inject.Inject;
-import com.google.inject.Singleton;
 import java.util.UUID;
+import net.labymod.serverapi.api.LabyService;
 import net.labymod.serverapi.api.payload.PayloadCommunicator;
+import net.labymod.serverapi.api.player.LabyModPlayer;
+import net.labymod.serverapi.api.player.LabyModPlayerService;
 import net.labymod.serverapi.api.serverinteraction.CineScopes;
 
-@Singleton
 public class DefaultCineScopes implements CineScopes {
 
   private static final String CINESCOPES_CHANNEL = "cinescopes";
 
+  private final LabyModPlayerService<?> playerService;
   private final PayloadCommunicator payloadCommunicator;
 
-  @Inject
-  private DefaultCineScopes(PayloadCommunicator payloadCommunicator) {
-    this.payloadCommunicator = payloadCommunicator;
+  public DefaultCineScopes(LabyService service) {
+    this.payloadCommunicator = service.getPayloadCommunicator();
+    this.playerService = service.getLabyPlayerService();
   }
 
   /** {@inheritDoc} */
@@ -36,5 +37,12 @@ public class DefaultCineScopes implements CineScopes {
     cineScopeObject.addProperty("duration", duration);
 
     this.payloadCommunicator.sendLabyModMessage(uniqueId, CINESCOPES_CHANNEL, cineScopeObject);
+  }
+
+  @Override
+  public void broadcastSendCineScope(boolean showCineScopes, int coveragePercent, long duration) {
+    for (LabyModPlayer<?> player : this.playerService.getPlayers()) {
+      this.sendCineScope(player.getUniqueId(), showCineScopes, coveragePercent, duration);
+    }
   }
 }

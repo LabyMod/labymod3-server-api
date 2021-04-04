@@ -1,7 +1,5 @@
 package net.labymod.serverapi.common.extension;
 
-import com.google.inject.assistedinject.Assisted;
-import com.google.inject.assistedinject.AssistedInject;
 import java.util.UUID;
 import net.labymod.serverapi.api.extension.AddonExtension;
 
@@ -18,8 +16,7 @@ public class DefaultAddonExtension implements AddonExtension {
    * @param name the name of the addon.
    * @param uniqueId The unique identifier of the addon.
    */
-  @AssistedInject
-  private DefaultAddonExtension(@Assisted String name, @Assisted UUID uniqueId) {
+  public DefaultAddonExtension(String name, UUID uniqueId) {
     this.name = name;
     this.uniqueId = uniqueId;
   }

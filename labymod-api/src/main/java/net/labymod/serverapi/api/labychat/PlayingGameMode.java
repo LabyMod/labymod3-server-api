@@ -26,4 +26,10 @@ public interface PlayingGameMode {
   default void sendCurrentPlayingGameMode(UUID uniqueId, String gameModeName) {
     this.sendCurrentPlayingGameMode(uniqueId, true, gameModeName);
   }
+
+  void broadcastCurrentlyPlayingGameMode(boolean visible, String gameModeName);
+
+  default void broadcastCurrentlyPlayingGameMode(String gameModeName) {
+    this.broadcastCurrentlyPlayingGameMode(true, gameModeName);
+  }
 }

@@ -1,0 +1,18 @@
+plugins {
+    id("java-library")
+}
+
+repositories {
+    mavenCentral()
+}
+
+java {
+    sourceCompatibility = JavaVersion.VERSION_1_8
+    targetCompatibility = JavaVersion.VERSION_1_8
+}
+
+dependencies {
+    compile("io.netty:netty-all:4.1.54.Final")
+    compile("com.google.code.gson:gson:2.8.6")
+    compile("com.google.guava:guava:21.0")
+}

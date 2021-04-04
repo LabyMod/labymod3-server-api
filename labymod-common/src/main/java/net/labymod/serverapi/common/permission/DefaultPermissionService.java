@@ -1,27 +1,17 @@
 package net.labymod.serverapi.common.permission;
 
-import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-import com.google.gson.JsonParseException;
-import com.google.gson.JsonParser;
-import com.google.inject.Inject;
-import com.google.inject.Singleton;
-import java.io.File;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map.Entry;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
+import net.labymod.serverapi.api.LabyService;
 import net.labymod.serverapi.api.payload.PayloadCommunicator;
 import net.labymod.serverapi.api.permission.Permissible;
 import net.labymod.serverapi.api.permission.PermissionService;
 
 /** A default implementation of the {@link PermissionService}. */
-@Singleton
 public class DefaultPermissionService implements PermissionService {
 
   private static final String PERMISSIONS_KEY = "PERMISSIONS";
@@ -33,15 +23,10 @@ public class DefaultPermissionService implements PermissionService {
 
   /**
    * Initializes a new {@link DefaultPermissionService} with the given {@link Permissible.Factory}.
-   *
-   * @param payloadCommunicator The payload communicator.
-   * @param permissionFactory The permission factory for creating permissions.
    */
-  @Inject
-  private DefaultPermissionService(
-      PayloadCommunicator payloadCommunicator, Permissible.Factory permissionFactory) {
-    this.payloadCommunicator = payloadCommunicator;
-    this.permissionFactory = permissionFactory;
+  public DefaultPermissionService(LabyService service) {
+    this.payloadCommunicator = service.getPayloadCommunicator();
+    this.permissionFactory = new DefaultPermissionFactory();
     this.permissions = new ArrayList<>();
     this.loadDefaultPermissions();
   }

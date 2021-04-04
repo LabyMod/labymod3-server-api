@@ -1,7 +1,5 @@
 package net.labymod.serverapi.api.extension;
 
-import com.google.inject.assistedinject.Assisted;
-
 /** Represents a modification of the forge mod loader. */
 public interface ModificationExtension extends Extension<String, String> {
 
@@ -15,7 +13,6 @@ public interface ModificationExtension extends Extension<String, String> {
      * @param identifier The identifier of the modification.
      * @return A created modification extension.
      */
-    ModificationExtension create(
-        @Assisted("name") String name, @Assisted("identifier") String identifier);
+    ModificationExtension create(String name, String identifier);
   }
 }

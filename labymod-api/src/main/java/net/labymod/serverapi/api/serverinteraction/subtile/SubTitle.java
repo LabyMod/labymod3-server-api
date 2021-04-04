@@ -1,7 +1,7 @@
 package net.labymod.serverapi.api.serverinteraction.subtile;
 
 import com.google.gson.JsonObject;
-import com.google.inject.assistedinject.Assisted;
+
 import java.util.UUID;
 
 /** Represents a sub title. */
@@ -52,9 +52,9 @@ public interface SubTitle {
      * @param value The value of the subtitle.
      * @return A created subtitle.
      */
-    SubTitle create(@Assisted UUID uniqueId, @Assisted String value);
+    SubTitle create(UUID uniqueId, String value);
 
-    SubTitle create(@Assisted UUID uniqueId, @Assisted JsonObject rawText);
+    SubTitle create(UUID uniqueId, JsonObject rawText);
 
     /**
      * Creates a new {@link SubTitle} with the given {@code uniqueId}, {@code value} and the {@code
@@ -71,8 +71,8 @@ public interface SubTitle {
      * @param size The size of the subtitle.
      * @return A created subtitle.
      */
-    SubTitle create(@Assisted UUID uniqueId, @Assisted String value, @Assisted double size);
+    SubTitle create(UUID uniqueId, String value, double size);
 
-    SubTitle create(@Assisted UUID uniqueId, @Assisted JsonObject rawText, @Assisted double size);
+    SubTitle create(UUID uniqueId, JsonObject rawText, double size);
   }
 }

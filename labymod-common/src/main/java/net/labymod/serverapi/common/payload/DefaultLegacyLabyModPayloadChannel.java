@@ -5,34 +5,30 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 import java.util.List;
 import java.util.logging.Logger;
+import net.labymod.serverapi.api.LabyService;
 import net.labymod.serverapi.api.extension.AddonExtension;
 import net.labymod.serverapi.api.extension.ExtensionCollector;
 import net.labymod.serverapi.api.extension.ModificationExtension;
 import net.labymod.serverapi.api.payload.PayloadBuffer;
-import net.labymod.serverapi.api.payload.PayloadCommunicator;
 import net.labymod.serverapi.api.protocol.ChunkCachingProtocol;
 import net.labymod.serverapi.api.protocol.Protocol;
 import net.labymod.serverapi.api.protocol.ShadowProtocol;
-import net.labymod.serverapi.common.guice.LabyModInjector;
 
 public abstract class DefaultLegacyLabyModPayloadChannel {
 
   private static final Logger LOGGER = Logger.getLogger("LMC Channel");
-
+  protected final LabyService service;
   private final ExtensionCollector<AddonExtension> addonExtensionCollector;
   private final ExtensionCollector<ModificationExtension> modificationExtensionCollector;
   private final ChunkCachingProtocol.Factory chunkCachingProtocolFactory;
   private final ShadowProtocol.Factory shadowProtocolFactory;
 
-  public DefaultLegacyLabyModPayloadChannel(
-      ExtensionCollector<AddonExtension> addonExtensionCollector,
-      ExtensionCollector<ModificationExtension> modificationExtensionCollector,
-      ChunkCachingProtocol.Factory chunkCachingProtocolFactory,
-      ShadowProtocol.Factory shadowProtocolFactory) {
-    this.addonExtensionCollector = addonExtensionCollector;
-    this.modificationExtensionCollector = modificationExtensionCollector;
-    this.chunkCachingProtocolFactory = chunkCachingProtocolFactory;
-    this.shadowProtocolFactory = shadowProtocolFactory;
+  public DefaultLegacyLabyModPayloadChannel(LabyService service) {
+    this.service = service;
+    this.addonExtensionCollector = service.getAddonExtensionCollector();
+    this.modificationExtensionCollector = service.getModificationExtensionCollector();
+    this.chunkCachingProtocolFactory = service.getChunkCachingProtocolFactory();
+    this.shadowProtocolFactory = service.getShadowProtocolFactory();
   }
 
   /**
@@ -41,8 +37,8 @@ public abstract class DefaultLegacyLabyModPayloadChannel {
    * @param identifier The identifier to be checked.
    * @return {@code true} if the specified identifier is the LMC channel, otherwise {@code false}.
    */
-  public boolean isLegacyLMCChannel(String identifier) {
-    return identifier.equals("LMC") || identifier.equals("labymod3:main");
+  public boolean isLabyMod3MainChannel(String identifier) {
+    return identifier.equals("labymod3:main");
   }
 
   /**
@@ -51,8 +47,8 @@ public abstract class DefaultLegacyLabyModPayloadChannel {
    * @param identifier The identifier to be checked.
    * @return {@code true} if the specified identifier is the CCP channel, otherwise {@code false}.
    */
-  public boolean isLegacyCCPChannel(String identifier) {
-    return identifier.equals("CCP") || identifier.equals("labymod3:ccp");
+  public boolean isLabyMod3CCPChannel(String identifier) {
+    return identifier.equals("labymod3:ccp");
   }
 
   /**

@@ -3,29 +3,24 @@ package net.labymod.serverapi.bungee.payload.channel;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-import com.google.inject.Inject;
-import com.google.inject.Singleton;
 import io.netty.buffer.Unpooled;
 import java.util.List;
+import net.labymod.serverapi.api.LabyService;
 import net.labymod.serverapi.api.extension.AddonExtension;
-import net.labymod.serverapi.api.extension.ExtensionCollector;
 import net.labymod.serverapi.api.extension.ModificationExtension;
 import net.labymod.serverapi.api.payload.PayloadBuffer;
-import net.labymod.serverapi.api.payload.PayloadCommunicator;
 import net.labymod.serverapi.api.protocol.ChunkCachingProtocol;
-import net.labymod.serverapi.api.protocol.ChunkCachingProtocol.Factory;
 import net.labymod.serverapi.api.protocol.ShadowProtocol;
 import net.labymod.serverapi.bungee.BungeeLabyModPlugin;
 import net.labymod.serverapi.bungee.event.BungeeLabyModPlayerLoginEvent;
 import net.labymod.serverapi.bungee.event.BungeeMessageReceiveEvent;
 import net.labymod.serverapi.bungee.event.BungeeReceivePayloadEvent;
-import net.labymod.serverapi.common.guice.LabyModInjector;
 import net.labymod.serverapi.common.payload.DefaultLegacyLabyModPayloadChannel;
+import net.labymod.serverapi.common.payload.DefaultPayloadBufferFactory;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 import net.md_5.bungee.api.plugin.Listener;
 import net.md_5.bungee.event.EventHandler;
 
-@Singleton
 public class BungeeLegacyLabyModPayloadChannel extends DefaultLegacyLabyModPayloadChannel
     implements Listener {
 
@@ -33,26 +28,15 @@ public class BungeeLegacyLabyModPayloadChannel extends DefaultLegacyLabyModPaylo
   private final BungeeLabyModPlugin plugin;
   private final PayloadBuffer.Factory payloadBufferFactory;
 
-  @Inject
-  private BungeeLegacyLabyModPayloadChannel(
-      ExtensionCollector<AddonExtension> addonExtensionCollector,
-      ExtensionCollector<ModificationExtension> modificationExtensionCollector,
-      Factory chunkCachingProtocolFactory,
-      ShadowProtocol.Factory shadowProtocolFactory,
-      BungeeLabyModPlugin plugin,
-      PayloadBuffer.Factory payloadBufferFactory) {
-    super(
-        addonExtensionCollector,
-        modificationExtensionCollector,
-        chunkCachingProtocolFactory,
-        shadowProtocolFactory);
+  public BungeeLegacyLabyModPayloadChannel(LabyService service, BungeeLabyModPlugin plugin) {
+    super(service);
     this.plugin = plugin;
-    this.payloadBufferFactory = payloadBufferFactory;
+    this.payloadBufferFactory = new DefaultPayloadBufferFactory();
   }
 
   @EventHandler
-  public void legacyLabyMod(BungeeReceivePayloadEvent event) {
-    if (!this.isLegacyLMCChannel(event.getIdentifier())) {
+  public void receiveLabyMod3Payload(BungeeReceivePayloadEvent event) {
+    if (!this.isLabyMod3MainChannel(event.getIdentifier())) {
       return;
     }
 
@@ -93,12 +77,10 @@ public class BungeeLegacyLabyModPayloadChannel extends DefaultLegacyLabyModPaylo
 
     ProxiedPlayer bungeePlayer = (ProxiedPlayer) player;
 
-    LabyModInjector injector = LabyModInjector.getInstance();
     JsonObject object = new JsonObject();
-    object.addProperty(
-        "version", injector.getInjectedInstance(BungeeLabyModPlugin.class).getPluginVersion());
-    injector
-        .getInjectedInstance(PayloadCommunicator.class)
+    object.addProperty("version", this.plugin.getPluginVersion());
+    this.service
+        .getPayloadCommunicator()
         .sendLabyModMessage(bungeePlayer.getUniqueId(), "server_api", object);
 
     this.plugin

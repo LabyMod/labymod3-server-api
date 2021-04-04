@@ -21,4 +21,12 @@ public interface Watermark {
    *     false}.
    */
   void displayWatermark(UUID uniqueId, boolean showWatermark);
+
+  /**
+   * Sends the watermark packet to all online laby users.
+   *
+   * @param showWatermark {@code true} if the watermark should be displayed, otherwise {@code
+   *     false}.
+   */
+  void broadcastDisplayWatermark(boolean showWatermark);
 }

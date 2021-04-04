@@ -1,6 +1,6 @@
 package net.labymod.serverapi.bukkit.player;
 
-import com.google.inject.Singleton;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -14,7 +14,7 @@ import net.labymod.serverapi.api.protocol.ShadowProtocol;
 import net.labymod.serverapi.common.player.DefaultLabyModPlayerFactory;
 import org.bukkit.entity.Player;
 
-@Singleton
+
 public class BukkitLabyModPlayerFactory extends DefaultLabyModPlayerFactory<Player> {
 
   /** {@inheritDoc} */

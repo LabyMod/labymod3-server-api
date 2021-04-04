@@ -1,12 +1,12 @@
 package net.labymod.serverapi.api.serverinteraction.gui;
 
 import com.google.gson.JsonObject;
-import net.labymod.serverapi.api.player.LabyModPlayer;
+import java.util.UUID;
 
 public interface InputPromptTransmitter {
 
   void transmit(
-      LabyModPlayer<?> player,
+      UUID uniqueId,
       int promptSessionId,
       JsonObject rawText,
       String value,
@@ -14,7 +14,21 @@ public interface InputPromptTransmitter {
       int maximalLength);
 
   void transmit(
-      LabyModPlayer<?> player,
+      UUID uniqueId,
+      int promptSessionId,
+      String message,
+      String value,
+      String placeholder,
+      int maximalLength);
+
+  void broadcastTransmit(
+      int promptSessionId,
+      JsonObject rawText,
+      String value,
+      String placeholder,
+      int maximalLength);
+
+  void broadcastTransmit(
       int promptSessionId,
       String message,
       String value,

@@ -1,28 +1,29 @@
 package net.labymod.serverapi.common.emote;
 
 import com.google.gson.JsonArray;
-import com.google.inject.Inject;
-import com.google.inject.Singleton;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
+import net.labymod.serverapi.api.LabyService;
 import net.labymod.serverapi.api.emote.Emote;
 import net.labymod.serverapi.api.emote.EmoteTransmitter;
 import net.labymod.serverapi.api.payload.PayloadCommunicator;
+import net.labymod.serverapi.api.player.LabyModPlayer;
+import net.labymod.serverapi.api.player.LabyModPlayerService;
 
 /** Default implementation of the {@link EmoteTransmitter}. */
-@Singleton
 public class DefaultEmoteTransmitter implements EmoteTransmitter {
 
   private static final String EMOTE_API_CHANNEL = "emote_api";
 
+  private final LabyModPlayerService<?> playerService;
   private final PayloadCommunicator payloadCommunicator;
   private final List<Emote> emotes;
 
-  @Inject
-  private DefaultEmoteTransmitter(PayloadCommunicator payloadCommunicator) {
-    this.payloadCommunicator = payloadCommunicator;
+  public DefaultEmoteTransmitter(LabyService service) {
+    this.playerService = service.getLabyPlayerService();
+    this.payloadCommunicator = service.getPayloadCommunicator();
     this.emotes = new ArrayList<>();
   }
 
@@ -42,7 +43,7 @@ public class DefaultEmoteTransmitter implements EmoteTransmitter {
 
   /** {@inheritDoc} */
   @Override
-  public void transmitEmote(UUID receiverUniqueId) {
+  public void transmit(UUID receiverUniqueId) {
     JsonArray emotes = new JsonArray();
 
     for (Emote emote : this.emotes) {
@@ -50,5 +51,12 @@ public class DefaultEmoteTransmitter implements EmoteTransmitter {
     }
     this.emotes.clear();
     this.payloadCommunicator.sendLabyModMessage(receiverUniqueId, EMOTE_API_CHANNEL, emotes);
+  }
+
+  @Override
+  public void broadcastTransmit() {
+    for (LabyModPlayer<?> player : this.playerService.getPlayers()) {
+      this.transmit(player.getUniqueId());
+    }
   }
 }

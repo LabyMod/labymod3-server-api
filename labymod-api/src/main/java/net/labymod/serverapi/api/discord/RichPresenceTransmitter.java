@@ -6,29 +6,29 @@ import net.labymod.serverapi.api.player.LabyModPlayer;
 
 public interface RichPresenceTransmitter {
 
-  void updateRichPresenceTimer(LabyModPlayer<?> player, String gameMode, long startTime);
+  void updateRichPresenceTimer(UUID receiverUniqueId, String gameMode, long startTime);
 
-  void updateRichPresenceCountdown(LabyModPlayer<?> player, String gameMode, long endTime);
+  void updateRichPresenceCountdown(UUID receiverUniqueId, String gameMode, long endTime);
 
   default void updateRichPresence(
-      LabyModPlayer<?> player, String gameMode, long startTime, long endTime) {
-    this.updateRichPresence(player, true, gameMode, startTime, endTime);
+      UUID receiverUniqueId, String gameMode, long startTime, long endTime) {
+    this.updateRichPresence(receiverUniqueId, true, gameMode, startTime, endTime);
   }
 
   void updateRichPresence(
-      LabyModPlayer<?> player, boolean hasGame, String gameMode, long startTime, long endTime);
+      UUID uniqueId, boolean hasGame, String gameMode, long startTime, long endTime);
 
   default void updateParty(
-      LabyModPlayer<?> player,
+      UUID receiverUniqueId,
       UUID partyLeaderUniqueId,
       int partySize,
       int maximalPartyMembers,
       String domain) {
-    this.updateParty(player, true, partyLeaderUniqueId, partySize, maximalPartyMembers, domain);
+    this.updateParty(receiverUniqueId, true, partyLeaderUniqueId, partySize, maximalPartyMembers, domain);
   }
 
   void updateParty(
-      LabyModPlayer<?> player,
+      UUID receiverUniqueId,
       boolean hasParty,
       UUID partyLeaderUniqueId,
       int partySize,

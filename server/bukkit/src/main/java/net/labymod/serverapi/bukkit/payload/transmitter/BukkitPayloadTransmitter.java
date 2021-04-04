@@ -14,8 +14,6 @@ import org.bukkit.entity.Player;
 public final class BukkitPayloadTransmitter {
 
   private static final BukkitPayloadTransmitter instance = new BukkitPayloadTransmitter();
-  private static final int AQUATIC_UPDATE = 393;
-
   private final boolean legacy;
 
   private BukkitPayloadTransmitter() {

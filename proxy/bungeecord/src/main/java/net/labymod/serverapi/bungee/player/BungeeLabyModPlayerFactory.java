@@ -1,6 +1,6 @@
 package net.labymod.serverapi.bungee.player;
 
-import com.google.inject.Singleton;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -13,7 +13,7 @@ import net.labymod.serverapi.api.protocol.ShadowProtocol;
 import net.labymod.serverapi.common.player.DefaultLabyModPlayerFactory;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 
-@Singleton
+
 public class BungeeLabyModPlayerFactory extends DefaultLabyModPlayerFactory<ProxiedPlayer> {
 
   /** {@inheritDoc} */

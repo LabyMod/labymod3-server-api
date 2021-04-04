@@ -35,4 +35,7 @@ public interface SubTitleTransmitter {
    * @param uniqueId The unique identifier of the receiver.
    */
   void transmit(UUID uniqueId);
+
+  /** Transmits a list of all subtitles to all online laby users. */
+  void broadcastTransit();
 }

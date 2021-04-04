@@ -1,6 +1,6 @@
 package net.labymod.serverapi.api.payload;
 
-import com.google.inject.assistedinject.Assisted;
+
 import io.netty.buffer.ByteBuf;
 
 public interface PayloadBuffer {
@@ -19,7 +19,7 @@ public interface PayloadBuffer {
 
     PayloadBuffer create();
 
-    PayloadBuffer create(@Assisted ByteBuf byteBuf);
+    PayloadBuffer create(ByteBuf byteBuf);
 
   }
 

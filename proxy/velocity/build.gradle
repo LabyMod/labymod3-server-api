@@ -1,0 +1,17 @@
+plugins {
+    id("java-library")
+}
+
+repositories {
+    mavenCentral()
+    maven {
+        name = "velocity-repository"
+        url = uri("https://repo.velocitypowered.com/snapshots/")
+    }
+}
+
+dependencies {
+    annotationProcessor("com.velocitypowered:velocity-api:1.1.0-SNAPSHOT")
+    compileOnly(project(":labymod-common"))
+    compileOnly("com.velocitypowered:velocity-api:1.1.0-SNAPSHOT")
+}

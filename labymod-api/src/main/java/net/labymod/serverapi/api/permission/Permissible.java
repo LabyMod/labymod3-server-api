@@ -1,7 +1,5 @@
 package net.labymod.serverapi.api.permission;
 
-import com.google.inject.assistedinject.Assisted;
-
 /** Represents a Labymod permission. */
 public interface Permissible {
 
@@ -47,8 +45,7 @@ public interface Permissible {
      * @param name The name of the permission to be created.
      * @return A created permission.
      */
-    Permissible create(
-        @Assisted("internalName") String internalName, @Assisted("name") String name);
+    Permissible create(String internalName, String name);
 
     /**
      * Creates a new {@link Permissible} with the given name and the enable state.
@@ -58,9 +55,6 @@ public interface Permissible {
      * @param enabled {@code true} if the permission should be enabled, otherwise {@code false}.
      * @return A created permission.
      */
-    Permissible create(
-        @Assisted("internalName") String internalName,
-        @Assisted("name") String name,
-        @Assisted("enabled") boolean enabled);
+    Permissible create(String internalName, String name, boolean enabled);
   }
 }

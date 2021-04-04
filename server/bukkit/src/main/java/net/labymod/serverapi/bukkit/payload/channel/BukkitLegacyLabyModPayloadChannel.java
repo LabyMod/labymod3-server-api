@@ -2,6 +2,7 @@ package net.labymod.serverapi.bukkit.payload.channel;
 
 import com.comphenix.protocol.events.PacketContainer;
 import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
@@ -13,6 +14,7 @@ import net.labymod.serverapi.api.extension.AddonExtension;
 import net.labymod.serverapi.api.extension.ExtensionCollector;
 import net.labymod.serverapi.api.extension.ModificationExtension;
 import net.labymod.serverapi.api.payload.PayloadBuffer;
+import net.labymod.serverapi.api.payload.PayloadCommunicator;
 import net.labymod.serverapi.api.player.LabyModPlayerService;
 import net.labymod.serverapi.api.protocol.ChunkCachingProtocol;
 import net.labymod.serverapi.api.protocol.ChunkCachingProtocol.Factory;
@@ -23,6 +25,7 @@ import net.labymod.serverapi.bukkit.BukkitLabyModPlugin;
 import net.labymod.serverapi.bukkit.event.BukkitLabyModPlayerLoginEvent;
 import net.labymod.serverapi.bukkit.event.BukkitMessageReceiveEvent;
 import net.labymod.serverapi.bukkit.event.BukkitReceivePayloadEvent;
+import net.labymod.serverapi.common.guice.LabyModInjector;
 import net.labymod.serverapi.common.payload.DefaultLegacyLabyModPayloadChannel;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -89,7 +92,8 @@ public class BukkitLegacyLabyModPayloadChannel extends DefaultLegacyLabyModPaylo
 
     if (opcode == 0x21) {
 
-      LabyModPlayerChunkCaching<Player, PacketContainer> chunkCaching = this.chunkCaching.getChunkCache(uniqueId);
+      LabyModPlayerChunkCaching<Player, PacketContainer> chunkCaching =
+          this.chunkCaching.getChunkCache(uniqueId);
       if (chunkCaching == null) {
         return;
       }
@@ -134,12 +138,21 @@ public class BukkitLegacyLabyModPayloadChannel extends DefaultLegacyLabyModPaylo
       String version,
       ChunkCachingProtocol chunkCachingProtocol,
       ShadowProtocol shadowProtocol) {
+    Player bukkitPlayer = (Player) player;
+
+    LabyModInjector injector = LabyModInjector.getInstance();
+    JsonObject object = new JsonObject();
+    object.addProperty(
+        "version", injector.getInjectedInstance(BukkitLabyModPlugin.class).getPluginVersion());
+    injector
+        .getInjectedInstance(PayloadCommunicator.class)
+        .sendLabyModMessage(bukkitPlayer.getUniqueId(), "server_api", object);
     this.plugin
         .getServer()
         .getPluginManager()
         .callEvent(
             new BukkitLabyModPlayerLoginEvent(
-                (Player) player,
+                bukkitPlayer,
                 addons,
                 modifications,
                 version,

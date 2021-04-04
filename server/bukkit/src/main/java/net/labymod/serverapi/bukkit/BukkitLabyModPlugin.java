@@ -5,9 +5,11 @@ import com.comphenix.protocol.events.PacketContainer;
 import com.google.inject.AbstractModule;
 import com.google.inject.Singleton;
 import com.google.inject.TypeLiteral;
+import java.io.IOException;
 import net.jpountz.xxhash.XXHashFactory;
 import net.labymod.serverapi.api.connection.ConnectionService;
 import net.labymod.serverapi.api.payload.PayloadChannelRegistrar;
+import net.labymod.serverapi.api.permission.PermissionService;
 import net.labymod.serverapi.api.protocol.chunkcaching.ChunkCaching;
 import net.labymod.serverapi.api.protocol.chunkcaching.ChunkHandle;
 import net.labymod.serverapi.bukkit.guice.LabyModBukkitModule;
@@ -23,6 +25,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 public class BukkitLabyModPlugin extends JavaPlugin {
 
   private final LabyModInjector labyModInjector;
+  private String pluginVersion;
 
   public BukkitLabyModPlugin() {
     this.labyModInjector = LabyModInjector.getInstance();
@@ -50,7 +53,9 @@ public class BukkitLabyModPlugin extends JavaPlugin {
         this.labyModInjector.getInjectedInstance(
             new TypeLiteral<PayloadChannelRegistrar<String>>() {});
     payloadChannelRegistrar.registerModernLegacyChannelIdentifier("LMC");
-    payloadChannelRegistrar.registerModernChannelIdentifier("labymod", "main");
+    payloadChannelRegistrar.registerModernChannelIdentifier("labymod3", "main");
+
+    this.pluginVersion = getDescription().getVersion();
 
     LabyModInjector.getInstance().getInjectedInstance(new TypeLiteral<ChunkCaching<Player, PacketContainer>>() {});
 
@@ -71,4 +76,8 @@ public class BukkitLabyModPlugin extends JavaPlugin {
 
   @Override
   public void onDisable() {}
+
+  public String getPluginVersion() {
+    return pluginVersion;
+  }
 }

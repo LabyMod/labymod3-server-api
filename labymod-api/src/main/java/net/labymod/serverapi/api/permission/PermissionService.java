@@ -1,6 +1,8 @@
 package net.labymod.serverapi.api.permission;
 
 import com.google.gson.JsonObject;
+import java.io.File;
+import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -63,6 +65,10 @@ public interface PermissionService {
    * @return This object for chaining.
    */
   PermissionService disablePermission(String internalName);
+
+  PermissionService togglePermission(String internalName);
+
+  PermissionService updatePermission(String internalName, boolean enabled);
 
   /**
    * Sends all registered permissions to the unique identifier.

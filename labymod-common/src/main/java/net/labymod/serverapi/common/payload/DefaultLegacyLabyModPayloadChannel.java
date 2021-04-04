@@ -9,9 +9,11 @@ import net.labymod.serverapi.api.extension.AddonExtension;
 import net.labymod.serverapi.api.extension.ExtensionCollector;
 import net.labymod.serverapi.api.extension.ModificationExtension;
 import net.labymod.serverapi.api.payload.PayloadBuffer;
+import net.labymod.serverapi.api.payload.PayloadCommunicator;
 import net.labymod.serverapi.api.protocol.ChunkCachingProtocol;
 import net.labymod.serverapi.api.protocol.Protocol;
 import net.labymod.serverapi.api.protocol.ShadowProtocol;
+import net.labymod.serverapi.common.guice.LabyModInjector;
 
 public abstract class DefaultLegacyLabyModPayloadChannel {
 

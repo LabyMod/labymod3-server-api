@@ -1,4 +1,4 @@
-rootProject.name = "labymod-server-api"
+rootProject.name = "LabyApi"
 
 // Server API
 include("labymod-api")

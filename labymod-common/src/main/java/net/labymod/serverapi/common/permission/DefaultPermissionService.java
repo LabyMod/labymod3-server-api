@@ -1,10 +1,18 @@
 package net.labymod.serverapi.common.permission;
 
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import com.google.gson.JsonParseException;
+import com.google.gson.JsonParser;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map.Entry;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -17,6 +25,7 @@ import net.labymod.serverapi.api.permission.PermissionService;
 public class DefaultPermissionService implements PermissionService {
 
   private static final String PERMISSIONS_KEY = "PERMISSIONS";
+  private static final String CONFIGURATION_FILE_NAME = "permissions.json";
 
   private final List<Permissible> permissions;
   private final PayloadCommunicator payloadCommunicator;
@@ -50,6 +59,8 @@ public class DefaultPermissionService implements PermissionService {
     this.registerPermission("CHAT", true);
     this.registerPermission("ANIMATIONS", true);
     this.registerPermission("SATURATION_BAR", true);
+    this.registerPermission("RANGE", false);
+    this.registerPermission("SLOWDOWN", false);
   }
 
   /** {@inheritDoc} */
@@ -96,22 +107,25 @@ public class DefaultPermissionService implements PermissionService {
   /** {@inheritDoc} */
   @Override
   public PermissionService enablePermission(String internalName) {
-    this.getPermission(internalName)
-        .ifPresent(
-            permissible -> {
-              permissible.setEnabled(true);
-            });
-    return this;
+    return this.updatePermission(internalName, true);
   }
 
   /** {@inheritDoc} */
   @Override
   public PermissionService disablePermission(String internalName) {
+    return this.updatePermission(internalName, false);
+  }
+
+  @Override
+  public PermissionService togglePermission(String internalName) {
     this.getPermission(internalName)
-        .ifPresent(
-            permissible -> {
-              permissible.setEnabled(false);
-            });
+        .ifPresent(permissible -> permissible.setEnabled(!permissible.isEnabled()));
+    return null;
+  }
+
+  @Override
+  public PermissionService updatePermission(String internalName, boolean enabled) {
+    this.getPermission(internalName).ifPresent(permissible -> permissible.setEnabled(enabled));
     return this;
   }
 

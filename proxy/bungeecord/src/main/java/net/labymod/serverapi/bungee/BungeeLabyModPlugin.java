@@ -18,6 +18,7 @@ import net.md_5.bungee.api.plugin.PluginManager;
 public class BungeeLabyModPlugin extends Plugin {
 
   private final LabyModInjector labyModInjector;
+  private String pluginVersion;
 
   public BungeeLabyModPlugin() {
     this.labyModInjector = LabyModInjector.getInstance();
@@ -38,9 +39,10 @@ public class BungeeLabyModPlugin extends Plugin {
         this.labyModInjector.getInjectedInstance(
             new TypeLiteral<PayloadChannelRegistrar<String>>() {});
     payloadChannelRegistrar.registerModernLegacyChannelIdentifier("LMC");
-    payloadChannelRegistrar.registerModernChannelIdentifier("labymod", "main");
+    payloadChannelRegistrar.registerModernChannelIdentifier("labymod3", "main");
 
     PluginManager pluginManager = this.getProxy().getPluginManager();
+    this.pluginVersion = this.getDescription().getVersion();
 
     pluginManager.registerListener(
         this,
@@ -57,4 +59,8 @@ public class BungeeLabyModPlugin extends Plugin {
 
   @Override
   public void onDisable() {}
+
+  public String getPluginVersion() {
+    return pluginVersion;
+  }
 }

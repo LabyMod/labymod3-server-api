@@ -9,16 +9,17 @@ import com.velocitypowered.api.event.proxy.ProxyShutdownEvent;
 import com.velocitypowered.api.plugin.Plugin;
 import com.velocitypowered.api.proxy.ProxyServer;
 import com.velocitypowered.api.proxy.messages.ChannelIdentifier;
+import java.util.Optional;
+import net.labymod.serverapi.api.connection.ConnectionService;
 import net.labymod.serverapi.api.payload.PayloadChannelRegistrar;
 import net.labymod.serverapi.api.payload.PayloadCommunicator;
-import net.labymod.serverapi.api.connection.ConnectionService;
 import net.labymod.serverapi.common.guice.LabyModInjector;
 import net.labymod.serverapi.common.payload.DefaultLegacyLabyModPayloadChannel;
 import net.labymod.serverapi.velocity.guice.LabyModVelocityModule;
 
 @Plugin(
-    id = "labymod_server_api",
-    name = "LabyMod Server API",
+    id = "laby_api",
+    name = "LabyApi",
     version = "2.0.0",
     authors = {"LabyMedia GmbH"})
 public class VelocityLabyModPlugin {
@@ -27,6 +28,7 @@ public class VelocityLabyModPlugin {
 
   private final LabyModInjector labyModInjector;
   private PayloadChannelRegistrar<ChannelIdentifier> payloadChannelRegistrar;
+  private String pluginVersion;
 
   @Inject
   public VelocityLabyModPlugin(Injector injector, ProxyServer proxyServer) {
@@ -44,8 +46,20 @@ public class VelocityLabyModPlugin {
             new TypeLiteral<PayloadChannelRegistrar<ChannelIdentifier>>() {});
     // LabyMod 3.0 Support
     this.payloadChannelRegistrar.registerModernLegacyChannelIdentifier("LMC");
-    // LabyMod 4.0 Support
-    this.payloadChannelRegistrar.registerModernChannelIdentifier("labymod", "main");
+    // LabyMod 3.0 Support
+    this.payloadChannelRegistrar.registerModernChannelIdentifier("labymod3", "main");
+
+    this.proxyServer
+        .getPluginManager()
+        .getPlugin("laby_api")
+        .ifPresent(
+            plugin -> {
+              Optional<String> versionOptional = plugin.getDescription().getVersion();
+              boolean present = versionOptional.isPresent();
+              if (present) {
+                this.pluginVersion = versionOptional.get();
+              }
+            });
 
     this.proxyServer
         .getEventManager()
@@ -63,6 +77,10 @@ public class VelocityLabyModPlugin {
   @Subscribe
   public void shutdown(ProxyShutdownEvent event) {
     this.payloadChannelRegistrar.unregisterModernLegacyChannelIdentifier("LMC");
-    this.payloadChannelRegistrar.unregisterModernChannelIdentifier("labymod", "main");
+    this.payloadChannelRegistrar.unregisterModernChannelIdentifier("labymod3", "main");
+  }
+
+  public String getPluginVersion() {
+    return pluginVersion;
   }
 }

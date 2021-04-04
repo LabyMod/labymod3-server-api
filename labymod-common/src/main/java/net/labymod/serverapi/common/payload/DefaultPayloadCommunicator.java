@@ -93,11 +93,14 @@ public abstract class DefaultPayloadCommunicator implements PayloadCommunicator 
   }
 
   private boolean shouldSupportModernChannel(String version) {
+    /*
     int[] splitVersion = this.splitVersion(version);
     int[] nonLegacySupportVersion = LabyModPlayerService.NON_LEGACY_SUPPORT_VERSION;
     return splitVersion[0] == 3
         && nonLegacySupportVersion[1] < splitVersion[1]
         && nonLegacySupportVersion[2] < splitVersion[2];
+    */
+    return true;
   }
 
   @SuppressWarnings("ConstantConditions")

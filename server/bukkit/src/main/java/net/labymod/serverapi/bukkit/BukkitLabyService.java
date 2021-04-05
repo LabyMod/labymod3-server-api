@@ -19,10 +19,13 @@ public class BukkitLabyService extends AbstractLabyService {
   private final PayloadChannelRegistrar<String> payloadChannelRegistrar;
 
   public BukkitLabyService(BukkitLabyModPlugin plugin) {
-    this.connectionService = new BukkitConnectionService(this);
     this.playerService = new DefaultLabyModPlayerService<>();
     this.payloadCommunicator = new BukkitPayloadCommunicator(plugin, this);
     this.payloadChannelRegistrar = new BukkitPayloadChannelRegistrar(plugin, this);
+    ((BukkitPayloadCommunicator) this.payloadCommunicator)
+        .setPayloadChannelRegistrar(this.payloadChannelRegistrar);
+    this.initialize();
+    this.connectionService = new BukkitConnectionService(this);
   }
 
   @SuppressWarnings("unchecked")

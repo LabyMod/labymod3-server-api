@@ -47,7 +47,7 @@ public class DefaultSubTitleTransmitter implements SubTitleTransmitter {
 
   /** {@inheritDoc} */
   @Override
-  public void broadcastTransit() {
+  public void broadcastTransmit() {
     for (LabyModPlayer<?> player : this.playerService.getPlayers()) {
       this.transmit(player.getUniqueId());
     }

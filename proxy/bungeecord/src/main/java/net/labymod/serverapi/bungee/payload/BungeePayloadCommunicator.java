@@ -16,15 +16,19 @@ import net.md_5.bungee.event.EventHandler;
 
 public class BungeePayloadCommunicator extends DefaultPayloadCommunicator implements Listener {
 
-  private final PayloadChannelRegistrar<String> payloadChannelRegistrar;
   private final BungeeLabyModPlugin plugin;
   private final PluginManager pluginManager;
+  private PayloadChannelRegistrar<String> payloadChannelRegistrar;
 
   public BungeePayloadCommunicator(LabyService service, BungeeLabyModPlugin plugin) {
     super(service);
-    this.payloadChannelRegistrar = service.getPayloadChannelRegistrar();
     this.plugin = plugin;
     this.pluginManager = this.plugin.getProxy().getPluginManager();
+  }
+
+  public void setPayloadChannelRegistrar(
+      final PayloadChannelRegistrar<String> payloadChannelRegistrar) {
+    this.payloadChannelRegistrar = payloadChannelRegistrar;
   }
 
   /** {@inheritDoc} */

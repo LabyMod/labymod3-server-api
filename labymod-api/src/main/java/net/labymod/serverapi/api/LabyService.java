@@ -2,6 +2,7 @@ package net.labymod.serverapi.api;
 
 import net.labymod.serverapi.api.connection.ConnectionService;
 import net.labymod.serverapi.api.discord.RichPresenceTransmitter;
+import net.labymod.serverapi.api.emote.Emote;
 import net.labymod.serverapi.api.emote.EmoteTransmitter;
 import net.labymod.serverapi.api.extension.AddonExtension;
 import net.labymod.serverapi.api.extension.ExtensionCollector;
@@ -32,6 +33,8 @@ public interface LabyService {
   <P> ConnectionService<P> getConnectionService();
 
   EconomyDisplay getEconomyDisplay();
+
+  Emote.Factory getEmoteFactory();
 
   EmoteTransmitter getEmoteTransmitter();
 

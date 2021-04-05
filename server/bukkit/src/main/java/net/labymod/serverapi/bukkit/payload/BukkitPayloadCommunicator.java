@@ -16,12 +16,15 @@ public class BukkitPayloadCommunicator extends DefaultPayloadCommunicator
     implements PluginMessageListener {
 
   private final BukkitLabyModPlugin plugin;
-  private final PayloadChannelRegistrar<String> payloadChannelRegistrar;
+  private PayloadChannelRegistrar<String> payloadChannelRegistrar;
 
   public BukkitPayloadCommunicator(BukkitLabyModPlugin plugin, LabyService service) {
     super(service);
     this.plugin = plugin;
-    this.payloadChannelRegistrar = service.getPayloadChannelRegistrar();
+  }
+
+  public void setPayloadChannelRegistrar(final PayloadChannelRegistrar<String> payloadChannelRegistrar) {
+    this.payloadChannelRegistrar = payloadChannelRegistrar;
   }
 
   @Override

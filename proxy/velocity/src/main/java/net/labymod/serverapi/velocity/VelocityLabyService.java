@@ -21,10 +21,14 @@ public class VelocityLabyService extends AbstractLabyService {
   private final PayloadChannelRegistrar<ChannelIdentifier> payloadChannelRegistrar;
 
   public VelocityLabyService(ProxyServer proxyServer) {
-    this.connectionService = new VelocityConnectionService(this);
     this.playerService = new DefaultLabyModPlayerService<>();
     this.payloadCommunicator = new VelocityPayloadCommunicator(proxyServer, this);
     this.payloadChannelRegistrar = new VelocityPayloadChannelRegistrar(proxyServer);
+
+    ((VelocityPayloadCommunicator) this.payloadCommunicator)
+        .setPayloadChannelRegistrar(this.payloadChannelRegistrar);
+    this.initialize();
+    this.connectionService = new VelocityConnectionService(this);
   }
 
   @SuppressWarnings("unchecked")

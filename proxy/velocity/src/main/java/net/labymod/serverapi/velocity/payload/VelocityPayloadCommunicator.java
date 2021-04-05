@@ -8,10 +8,8 @@ import com.velocitypowered.api.proxy.ProxyServer;
 import com.velocitypowered.api.proxy.messages.ChannelIdentifier;
 import java.util.UUID;
 import net.labymod.serverapi.api.LabyService;
-import net.labymod.serverapi.api.payload.PayloadBuffer;
 import net.labymod.serverapi.api.payload.PayloadChannelRegistrar;
 import net.labymod.serverapi.api.payload.PayloadChannelType;
-import net.labymod.serverapi.api.player.LabyModPlayerService;
 import net.labymod.serverapi.common.payload.DefaultPayloadCommunicator;
 import net.labymod.serverapi.velocity.event.VelocityReceivePayloadEvent;
 import net.labymod.serverapi.velocity.event.VelocitySendPayloadEvent;
@@ -19,12 +17,16 @@ import net.labymod.serverapi.velocity.event.VelocitySendPayloadEvent;
 public class VelocityPayloadCommunicator extends DefaultPayloadCommunicator {
 
   private final ProxyServer proxyServer;
-  private final PayloadChannelRegistrar<ChannelIdentifier> payloadChannelRegistrar;
+  private PayloadChannelRegistrar<ChannelIdentifier> payloadChannelRegistrar;
 
   public VelocityPayloadCommunicator(ProxyServer proxyServer, LabyService service) {
     super(service);
     this.proxyServer = proxyServer;
-    this.payloadChannelRegistrar = service.getPayloadChannelRegistrar();
+  }
+
+  public void setPayloadChannelRegistrar(
+      final PayloadChannelRegistrar<ChannelIdentifier> payloadChannelRegistrar) {
+    this.payloadChannelRegistrar = payloadChannelRegistrar;
   }
 
   /** {@inheritDoc} */

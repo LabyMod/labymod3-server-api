@@ -2,6 +2,7 @@ package net.labymod.serverapi.common;
 
 import net.labymod.serverapi.api.LabyService;
 import net.labymod.serverapi.api.discord.RichPresenceTransmitter;
+import net.labymod.serverapi.api.emote.Emote;
 import net.labymod.serverapi.api.emote.EmoteTransmitter;
 import net.labymod.serverapi.api.extension.AddonExtension;
 import net.labymod.serverapi.api.extension.ExtensionCollector;
@@ -23,6 +24,7 @@ import net.labymod.serverapi.api.sticker.Sticker;
 import net.labymod.serverapi.api.sticker.Sticker.Factory;
 import net.labymod.serverapi.api.sticker.StickerTransmitter;
 import net.labymod.serverapi.common.discord.DefaultRichPresenceTransmitter;
+import net.labymod.serverapi.common.emote.DefaultEmoteFactory;
 import net.labymod.serverapi.common.emote.DefaultEmoteTransmitter;
 import net.labymod.serverapi.common.extension.DefaultAddonExtensionCollector;
 import net.labymod.serverapi.common.extension.DefaultModificationExtensionCollector;
@@ -44,34 +46,35 @@ import net.labymod.serverapi.common.sticker.DefaultStickerTransmitter;
 
 public abstract class AbstractLabyService implements LabyService {
 
-  private final CineScopes cineScopes;
-  private final Menu menu;
-  private final InputPromptTransmitter inputPromptTransmitter;
-  private final EconomyDisplay economyDisplay;
-  private final ServerSwitcher serverSwitcher;
-  private final TabListCache tabListCache;
-  private final Watermark watermark;
+  private CineScopes cineScopes;
+  private Menu menu;
+  private InputPromptTransmitter inputPromptTransmitter;
+  private EconomyDisplay economyDisplay;
+  private ServerSwitcher serverSwitcher;
+  private TabListCache tabListCache;
+  private Watermark watermark;
 
-  private final EmoteTransmitter emoteTransmitter;
-  private final RichPresenceTransmitter richPresenceTransmitter;
-  private final PermissionService permissionService;
+  private Emote.Factory emoteFactory;
+  private EmoteTransmitter emoteTransmitter;
+  private RichPresenceTransmitter richPresenceTransmitter;
+  private PermissionService permissionService;
 
-  private final ExtensionCollector<AddonExtension> addonExtensionCollector;
-  private final ExtensionCollector<ModificationExtension> modificationExtensionCollector;
-  private final ExtensionCollector<PackageExtension> packageExtensionCollector;
+  private ExtensionCollector<AddonExtension> addonExtensionCollector;
+  private ExtensionCollector<ModificationExtension> modificationExtensionCollector;
+  private ExtensionCollector<PackageExtension> packageExtensionCollector;
 
-  private final ChunkCachingProtocol.Factory chunkCachingProtocolFactory;
-  private final ShadowProtocol.Factory shadowProtocolFactory;
+  private ChunkCachingProtocol.Factory chunkCachingProtocolFactory;
+  private ShadowProtocol.Factory shadowProtocolFactory;
 
   // Sub titles
-  private final SubTitle.Factory subTitleFactory;
-  private final SubTitleTransmitter subTitleTransmitter;
+  private SubTitle.Factory subTitleFactory;
+  private SubTitleTransmitter subTitleTransmitter;
 
   // Stickers
-  private final Sticker.Factory stickerFactory;
-  private final StickerTransmitter stickerTransmitter;
+  private Sticker.Factory stickerFactory;
+  private StickerTransmitter stickerTransmitter;
 
-  protected AbstractLabyService() {
+  protected void initialize() {
     this.cineScopes = new DefaultCineScopes(this);
     this.serverSwitcher = new DefaultServerSwitcher(this);
     this.tabListCache = new DefaultTabListCache(this);
@@ -81,6 +84,7 @@ public abstract class AbstractLabyService implements LabyService {
     this.economyDisplay = new DefaultEconomyDisplay(this);
     this.inputPromptTransmitter = new DefaultInputPromptTransmitter(this);
 
+    this.emoteFactory = new DefaultEmoteFactory();
     this.emoteTransmitter = new DefaultEmoteTransmitter(this);
     this.richPresenceTransmitter = new DefaultRichPresenceTransmitter(this);
     this.permissionService = new DefaultPermissionService(this);
@@ -107,6 +111,11 @@ public abstract class AbstractLabyService implements LabyService {
   @Override
   public RichPresenceTransmitter getRichPresenceTransmitter() {
     return this.richPresenceTransmitter;
+  }
+
+  @Override
+  public Emote.Factory getEmoteFactory() {
+    return this.emoteFactory;
   }
 
   @Override

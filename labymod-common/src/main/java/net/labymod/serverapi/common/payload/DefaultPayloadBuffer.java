@@ -2,6 +2,8 @@ package net.labymod.serverapi.common.payload;
 
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
+import io.netty.handler.codec.DecoderException;
+import io.netty.handler.codec.EncoderException;
 import java.nio.charset.StandardCharsets;
 import net.labymod.serverapi.api.payload.PayloadBuffer;
 
@@ -21,11 +23,35 @@ public class DefaultPayloadBuffer implements PayloadBuffer {
   @Override
   public String readString() {
     int varIntFromBuffer = this.readVarIntFromBuffer();
-    byte[] buffer = new byte[varIntFromBuffer];
+    int maxLength = Short.MAX_VALUE;
 
-    this.byteBuf.readBytes(buffer, 0, varIntFromBuffer);
+    if (varIntFromBuffer > maxLength * 4) {
+      throw new DecoderException(
+          "The received encoded string buffer is longer than maximum allowed ("
+              + varIntFromBuffer
+              + " > "
+              + maxLength * 4
+              + ")");
+    } else if (varIntFromBuffer < 0) {
+      throw new DecoderException(
+          "The received encoded string buffer length is less than zero! Weird string!");
+    } else {
+      byte[] buffer = new byte[varIntFromBuffer];
+      this.byteBuf.readBytes(buffer);
 
-    return new String(buffer, StandardCharsets.UTF_8);
+      String content = new String(buffer, StandardCharsets.UTF_8);
+
+      if (content.length() > maxLength) {
+        throw new DecoderException(
+            "The received string length is longer than maximum allowed ("
+                + varIntFromBuffer
+                + " > "
+                + maxLength
+                + ")");
+      } else {
+        return content;
+      }
+    }
   }
 
   /** {@inheritDoc} */
@@ -33,8 +59,18 @@ public class DefaultPayloadBuffer implements PayloadBuffer {
   public PayloadBuffer writeString(String content) {
     byte[] data = content.getBytes(StandardCharsets.UTF_8);
 
-    this.writeVarIntInfoBuffer(data.length);
-    this.byteBuf.writeBytes(data);
+    if (data.length > Short.MAX_VALUE) {
+      throw new EncoderException(
+          "String too big (was "
+              + content.length()
+              + " bytes encoded, max "
+              + Short.MAX_VALUE
+              + ")");
+    } else {
+      this.writeVarIntInfoBuffer(data.length);
+      this.byteBuf.writeBytes(data);
+    }
+
     return this;
   }
 
@@ -57,7 +93,7 @@ public class DefaultPayloadBuffer implements PayloadBuffer {
   /** {@inheritDoc} */
   @Override
   public PayloadBuffer writeVarIntInfoBuffer(int input) {
-    while ((input & 128) != 0) {
+    while ((input & -128) != 0) {
       this.byteBuf.writeByte(input & 127 | 128);
       input >>>= 7;
     }

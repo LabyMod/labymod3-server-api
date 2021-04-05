@@ -19,10 +19,14 @@ public class BungeeLabyService extends AbstractLabyService {
   private final PayloadChannelRegistrar<String> payloadChannelRegistrar;
 
   public BungeeLabyService(BungeeLabyModPlugin plugin) {
-    this.connectionService = new BungeeConnectionService(this);
+    this.playerService = new DefaultLabyModPlayerService<>();
     this.payloadCommunicator = new BungeePayloadCommunicator(this, plugin);
     this.payloadChannelRegistrar = new BungeePayloadChannelRegistrar(plugin);
-    this.playerService = new DefaultLabyModPlayerService<>();
+
+    ((BungeePayloadCommunicator) this.payloadCommunicator)
+        .setPayloadChannelRegistrar(this.payloadChannelRegistrar);
+    this.initialize();
+    this.connectionService = new BungeeConnectionService(this);
   }
 
   @SuppressWarnings("unchecked")
@@ -42,8 +46,9 @@ public class BungeeLabyService extends AbstractLabyService {
     return (PayloadChannelRegistrar<P>) this.payloadChannelRegistrar;
   }
 
+  @SuppressWarnings("unchecked")
   @Override
   public <P> ConnectionService<P> getConnectionService() {
-    return null;
+    return (ConnectionService<P>) this.connectionService;
   }
 }

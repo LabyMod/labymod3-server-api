@@ -15,7 +15,6 @@ import net.labymod.serverapi.api.permission.PermissionService;
 public class DefaultPermissionService implements PermissionService {
 
   private static final String PERMISSIONS_KEY = "PERMISSIONS";
-  private static final String CONFIGURATION_FILE_NAME = "permissions.json";
 
   private final List<Permissible> permissions;
   private final PayloadCommunicator payloadCommunicator;
@@ -117,6 +116,8 @@ public class DefaultPermissionService implements PermissionService {
   /** {@inheritDoc} */
   @Override
   public void sendPermissions(UUID receiverUniqueId) {
+    System.out.println("Receiver: " + receiverUniqueId.toString());
+    System.out.println("Content: " + this.getPermissionsAsJson().toString());
     this.payloadCommunicator.sendLabyModMessage(
         receiverUniqueId, PERMISSIONS_KEY, this.getPermissionsAsJson());
   }

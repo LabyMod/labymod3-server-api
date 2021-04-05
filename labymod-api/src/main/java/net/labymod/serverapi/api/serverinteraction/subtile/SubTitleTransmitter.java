@@ -37,5 +37,5 @@ public interface SubTitleTransmitter {
   void transmit(UUID uniqueId);
 
   /** Transmits a list of all subtitles to all online laby users. */
-  void broadcastTransit();
+  void broadcastTransmit();
 }

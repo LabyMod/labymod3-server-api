@@ -1,5 +1,6 @@
 plugins {
     id("java-library")
+    id("com.github.johnrengelman.shadow") version("6.1.0")
 }
 
 group = "net.labymod"
@@ -49,10 +50,38 @@ configurations {
 }
 
 dependencies {
-    shade(project(":labymod-api"))
-    shade(project(":labymod-common"))
-    shade(project(":proxy:bungeecord"))
-    shade(project(":proxy:velocity"))
-    shade(project(":server:bukkit"))
-    shade(project(":server:sponge"))
+    compile(project(":labymod-api")) {
+        exclude group: "com.google.code.gson"
+        exclude group: "com.google.guava"
+        exclude group: "io.netty"
+    }
+    compile(project(":labymod-common")){
+        exclude group: "com.google.code.gson"
+        exclude group: "com.google.guava"
+        exclude group: "io.netty"
+    }
+    compile(project(":proxy:bungeecord")){
+        exclude group: "com.google.code.gson"
+        exclude group: "com.google.guava"
+        exclude group: "io.netty"
+    }
+    compile(project(":proxy:velocity")){
+        exclude group: "com.google.code.gson"
+        exclude group: "com.google.guava"
+        exclude group: "io.netty"
+    }
+    compile(project(":server:bukkit")){
+        exclude group: "com.google.code.gson"
+        exclude group: "com.google.guava"
+        exclude group: "io.netty"
+    }
+    compile(project(":server:sponge")){
+        exclude group: "com.google.code.gson"
+        exclude group: "com.google.guava"
+        exclude group: "io.netty"
+    }
+}
+
+shadowJar {
+    setClassifier("")
 }

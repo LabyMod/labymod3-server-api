@@ -2,8 +2,6 @@ package net.labymod.serverapi.velocity.payload;
 
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
-
-
 import com.velocitypowered.api.proxy.ProxyServer;
 import com.velocitypowered.api.proxy.messages.ChannelIdentifier;
 import com.velocitypowered.api.proxy.messages.ChannelRegistrar;

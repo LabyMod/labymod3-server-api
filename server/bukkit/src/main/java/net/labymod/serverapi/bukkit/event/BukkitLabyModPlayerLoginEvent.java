@@ -1,13 +1,14 @@
 package net.labymod.serverapi.bukkit.event;
 
-import java.util.ArrayList;
-import java.util.List;
 import net.labymod.serverapi.api.extension.AddonExtension;
 import net.labymod.serverapi.api.extension.ModificationExtension;
 import net.labymod.serverapi.api.extension.PackageExtension;
 import net.labymod.serverapi.api.protocol.ChunkCachingProtocol;
 import net.labymod.serverapi.api.protocol.ShadowProtocol;
 import org.bukkit.entity.Player;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /** This event is fired when a player joins the server with the LabyMod. */
 public class BukkitLabyModPlayerLoginEvent extends BukkitLabyModEvent {

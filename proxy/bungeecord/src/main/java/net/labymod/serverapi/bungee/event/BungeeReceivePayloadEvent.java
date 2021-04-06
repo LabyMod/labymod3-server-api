@@ -1,7 +1,8 @@
 package net.labymod.serverapi.bungee.event;
 
-import java.util.UUID;
 import net.md_5.bungee.api.plugin.Event;
+
+import java.util.UUID;
 
 /** Fired when a custom payload message is received from the client. */
 public class BungeeReceivePayloadEvent extends Event {

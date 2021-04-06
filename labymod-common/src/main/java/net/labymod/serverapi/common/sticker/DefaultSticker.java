@@ -1,8 +1,9 @@
 package net.labymod.serverapi.common.sticker;
 
 import com.google.gson.JsonObject;
-import java.util.UUID;
 import net.labymod.serverapi.api.sticker.Sticker;
+
+import java.util.UUID;
 
 public class DefaultSticker implements Sticker {
 

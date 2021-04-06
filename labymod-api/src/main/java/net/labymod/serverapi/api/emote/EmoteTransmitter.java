@@ -1,7 +1,8 @@
 package net.labymod.serverapi.api.emote;
 
-import java.util.UUID;
 import net.labymod.serverapi.api.serverinteraction.Watermark;
+
+import java.util.UUID;
 
 /**
  * Represents an emote transmitter that sends a payload message in channel <b>emote_api</b> to the

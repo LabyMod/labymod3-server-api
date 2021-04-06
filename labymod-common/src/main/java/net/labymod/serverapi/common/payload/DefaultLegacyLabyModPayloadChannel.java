@@ -3,8 +3,6 @@ package net.labymod.serverapi.common.payload;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
-import java.util.List;
-import java.util.logging.Logger;
 import net.labymod.serverapi.api.LabyService;
 import net.labymod.serverapi.api.extension.AddonExtension;
 import net.labymod.serverapi.api.extension.ExtensionCollector;
@@ -13,6 +11,9 @@ import net.labymod.serverapi.api.payload.PayloadBuffer;
 import net.labymod.serverapi.api.protocol.ChunkCachingProtocol;
 import net.labymod.serverapi.api.protocol.Protocol;
 import net.labymod.serverapi.api.protocol.ShadowProtocol;
+
+import java.util.List;
+import java.util.logging.Logger;
 
 public abstract class DefaultLegacyLabyModPayloadChannel {
 

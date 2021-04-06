@@ -4,8 +4,9 @@ import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import io.netty.handler.codec.DecoderException;
 import io.netty.handler.codec.EncoderException;
-import java.nio.charset.StandardCharsets;
 import net.labymod.serverapi.api.payload.PayloadBuffer;
+
+import java.nio.charset.StandardCharsets;
 
 public class DefaultPayloadBuffer implements PayloadBuffer {
 

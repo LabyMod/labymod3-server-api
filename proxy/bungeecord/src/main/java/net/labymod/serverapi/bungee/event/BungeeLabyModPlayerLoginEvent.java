@@ -1,7 +1,5 @@
 package net.labymod.serverapi.bungee.event;
 
-import java.util.ArrayList;
-import java.util.List;
 import net.labymod.serverapi.api.extension.AddonExtension;
 import net.labymod.serverapi.api.extension.ModificationExtension;
 import net.labymod.serverapi.api.extension.PackageExtension;
@@ -9,6 +7,9 @@ import net.labymod.serverapi.api.protocol.ChunkCachingProtocol;
 import net.labymod.serverapi.api.protocol.ShadowProtocol;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 import net.md_5.bungee.api.plugin.Event;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /** Will be fired if a LabyMod player has connected to the proxy. */
 public class BungeeLabyModPlayerLoginEvent extends Event {

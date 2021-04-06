@@ -1,16 +1,17 @@
 package net.labymod.serverapi.common.sticker;
 
 import com.google.gson.JsonArray;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.UUID;
 import net.labymod.serverapi.api.LabyService;
 import net.labymod.serverapi.api.payload.PayloadCommunicator;
 import net.labymod.serverapi.api.player.LabyModPlayer;
 import net.labymod.serverapi.api.player.LabyModPlayerService;
 import net.labymod.serverapi.api.sticker.Sticker;
 import net.labymod.serverapi.api.sticker.StickerTransmitter;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.UUID;
 
 public class DefaultStickerTransmitter implements StickerTransmitter {
 

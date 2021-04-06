@@ -1,7 +1,5 @@
 package net.labymod.serverapi.bukkit.connection;
 
-import java.util.List;
-import java.util.UUID;
 import net.labymod.serverapi.api.LabyService;
 import net.labymod.serverapi.api.connection.ConnectionService;
 import net.labymod.serverapi.api.extension.AddonExtension;
@@ -18,6 +16,9 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerQuitEvent;
+
+import java.util.List;
+import java.util.UUID;
 
 public class BukkitConnectionService implements ConnectionService<Player>, Listener {
 

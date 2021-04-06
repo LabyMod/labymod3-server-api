@@ -1,10 +1,9 @@
 package net.labymod.serverapi.common.serverinteraction.addon;
 
 import com.google.gson.JsonObject;
-
+import net.labymod.serverapi.api.serverinteraction.addon.RecommendedAddon;
 
 import java.util.UUID;
-import net.labymod.serverapi.api.serverinteraction.addon.RecommendedAddon;
 
 public class DefaultRecommendedAddon implements RecommendedAddon {
 

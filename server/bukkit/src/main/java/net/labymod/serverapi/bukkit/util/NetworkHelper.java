@@ -1,11 +1,12 @@
 package net.labymod.serverapi.bukkit.util;
 
 import io.netty.channel.Channel;
+import org.bukkit.World;
+import org.bukkit.entity.Player;
+
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import org.bukkit.World;
-import org.bukkit.entity.Player;
 
 public final class NetworkHelper {
 

@@ -1,7 +1,8 @@
 package net.labymod.serverapi.common.emote;
 
-import java.util.UUID;
 import net.labymod.serverapi.api.emote.Emote;
+
+import java.util.UUID;
 
 public class DefaultEmoteFactory implements Emote.Factory {
 

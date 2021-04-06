@@ -7,11 +7,12 @@ import com.velocitypowered.api.event.proxy.ProxyShutdownEvent;
 import com.velocitypowered.api.plugin.Plugin;
 import com.velocitypowered.api.proxy.ProxyServer;
 import com.velocitypowered.api.proxy.messages.ChannelIdentifier;
-import java.util.Optional;
 import net.labymod.serverapi.api.LabyAPI;
 import net.labymod.serverapi.api.LabyService;
 import net.labymod.serverapi.api.payload.PayloadChannelRegistrar;
 import net.labymod.serverapi.velocity.payload.channel.VelocityLegacyLabyModPayloadChannel;
+
+import java.util.Optional;
 
 @Plugin(
     id = "laby_api",

@@ -1,10 +1,11 @@
 package net.labymod.serverapi.common.discord;
 
 import com.google.gson.JsonObject;
-import java.util.UUID;
 import net.labymod.serverapi.api.LabyService;
 import net.labymod.serverapi.api.discord.RichPresenceTransmitter;
 import net.labymod.serverapi.api.payload.PayloadCommunicator;
+
+import java.util.UUID;
 
 /** Default implementation of {@link RichPresenceTransmitter}. */
 public class DefaultRichPresenceTransmitter implements RichPresenceTransmitter {

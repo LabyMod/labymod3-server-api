@@ -1,6 +1,7 @@
 package net.labymod.serverapi.api.serverinteraction.gui;
 
 import com.google.gson.JsonObject;
+
 import java.util.UUID;
 
 public interface InputPromptTransmitter {

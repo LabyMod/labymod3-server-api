@@ -4,7 +4,6 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import io.netty.buffer.Unpooled;
-import java.util.List;
 import net.labymod.serverapi.api.LabyService;
 import net.labymod.serverapi.api.extension.AddonExtension;
 import net.labymod.serverapi.api.extension.ModificationExtension;
@@ -21,6 +20,8 @@ import net.labymod.serverapi.common.payload.DefaultPayloadBufferFactory;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+
+import java.util.List;
 
 public class BukkitLegacyLabyModPayloadChannel extends DefaultLegacyLabyModPayloadChannel
     implements Listener {

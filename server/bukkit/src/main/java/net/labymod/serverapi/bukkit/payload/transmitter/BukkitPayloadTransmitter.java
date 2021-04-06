@@ -7,9 +7,11 @@ import com.comphenix.protocol.utility.MinecraftReflection;
 import com.comphenix.protocol.wrappers.MinecraftKey;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
-import java.lang.reflect.InvocationTargetException;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
+
+import java.lang.reflect.InvocationTargetException;
+import java.util.logging.Level;
 
 public final class BukkitPayloadTransmitter {
 
@@ -49,7 +51,7 @@ public final class BukkitPayloadTransmitter {
       }
 
     } catch (Exception exception) {
-      exception.printStackTrace();
+      Bukkit.getServer().getLogger().log(Level.SEVERE, "Failed to send payload to " + player.getName(), exception);
     }
   }
 
@@ -84,7 +86,8 @@ public final class BukkitPayloadTransmitter {
     try {
       ProtocolLibrary.getProtocolManager().sendServerPacket(player, packet);
     } catch (InvocationTargetException exception) {
-      exception.printStackTrace();
+      Bukkit.getServer().getLogger().log(Level.SEVERE, "Failed to send server packet with ProtocolLib to " +
+              player.getName(), exception);
     }
   }
 

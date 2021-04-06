@@ -1,17 +1,18 @@
 package net.labymod.serverapi.common.serverinteraction.subtitle;
 
 import com.google.gson.JsonObject;
-import java.util.UUID;
 import net.labymod.serverapi.api.serverinteraction.subtile.SubTitle;
+
+import java.util.UUID;
 
 public class DefaultSubTitle implements SubTitle {
 
-  private UUID uniqueId;
+  private final UUID uniqueId;
   private String value;
   private JsonObject rawText;
-  private double size;
+  private final double size;
 
-  private JsonObject subTitleObject;
+  private final JsonObject subTitleObject;
 
   protected DefaultSubTitle(UUID uniqueId, String value) {
     this(uniqueId, value, 0.8D);

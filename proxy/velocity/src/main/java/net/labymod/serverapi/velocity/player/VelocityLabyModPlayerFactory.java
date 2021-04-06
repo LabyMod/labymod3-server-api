@@ -2,17 +2,17 @@ package net.labymod.serverapi.velocity.player;
 
 
 import com.velocitypowered.api.proxy.Player;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
 import net.labymod.serverapi.api.extension.AddonExtension;
 import net.labymod.serverapi.api.extension.ModificationExtension;
 import net.labymod.serverapi.api.extension.PackageExtension;
 import net.labymod.serverapi.api.player.LabyModPlayer;
-import net.labymod.serverapi.api.player.LabyModPlayer.Factory;
 import net.labymod.serverapi.api.protocol.ChunkCachingProtocol;
 import net.labymod.serverapi.api.protocol.ShadowProtocol;
 import net.labymod.serverapi.common.player.DefaultLabyModPlayerFactory;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.UUID;
 
 
 public class VelocityLabyModPlayerFactory extends DefaultLabyModPlayerFactory<Player> {

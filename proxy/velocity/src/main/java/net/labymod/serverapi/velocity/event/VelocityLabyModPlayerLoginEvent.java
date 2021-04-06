@@ -1,13 +1,14 @@
 package net.labymod.serverapi.velocity.event;
 
 import com.velocitypowered.api.proxy.Player;
-import java.util.ArrayList;
-import java.util.List;
 import net.labymod.serverapi.api.extension.AddonExtension;
 import net.labymod.serverapi.api.extension.ModificationExtension;
 import net.labymod.serverapi.api.extension.PackageExtension;
 import net.labymod.serverapi.api.protocol.ChunkCachingProtocol;
 import net.labymod.serverapi.api.protocol.ShadowProtocol;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /** Will be fired if a LabyMod player has connected to the proxy. */
 public class VelocityLabyModPlayerLoginEvent {

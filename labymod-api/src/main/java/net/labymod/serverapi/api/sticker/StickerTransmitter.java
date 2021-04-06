@@ -1,7 +1,8 @@
 package net.labymod.serverapi.api.sticker;
 
-import java.util.UUID;
 import net.labymod.serverapi.api.emote.EmoteTransmitter;
+
+import java.util.UUID;
 
 /**
  * Represents a sticker transmitter that sends a payload message in channel <b>sticker_api</b> to

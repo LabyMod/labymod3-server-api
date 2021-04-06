@@ -28,7 +28,7 @@ public class BukkitLabyModPlugin extends JavaPlugin {
         .registerEvents((Listener) this.service.getConnectionService(), this);
     this.getServer()
         .getPluginManager()
-        .registerEvents((Listener) new BukkitLegacyLabyModPayloadChannel(this, this.service), this);
+        .registerEvents(new BukkitLegacyLabyModPayloadChannel(this, this.service), this);
   }
 
   @Override

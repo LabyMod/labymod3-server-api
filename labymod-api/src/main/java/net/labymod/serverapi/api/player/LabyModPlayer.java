@@ -1,12 +1,13 @@
 package net.labymod.serverapi.api.player;
 
-import java.util.List;
-import java.util.UUID;
 import net.labymod.serverapi.api.extension.AddonExtension;
 import net.labymod.serverapi.api.extension.ModificationExtension;
 import net.labymod.serverapi.api.extension.PackageExtension;
 import net.labymod.serverapi.api.protocol.ChunkCachingProtocol;
 import net.labymod.serverapi.api.protocol.ShadowProtocol;
+
+import java.util.List;
+import java.util.UUID;
 
 /**
  * Represents a player that uses LabyMod.

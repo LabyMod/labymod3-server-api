@@ -1,7 +1,8 @@
 package net.labymod.serverapi.common.extension;
 
-import java.util.UUID;
 import net.labymod.serverapi.api.extension.AddonExtension;
+
+import java.util.UUID;
 
 public class DefaultAddonExtensionFactory implements AddonExtension.Factory {
 

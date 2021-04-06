@@ -2,14 +2,13 @@ package net.labymod.serverapi.common.extension;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-
+import net.labymod.serverapi.api.extension.AddonExtension;
+import net.labymod.serverapi.api.extension.ExtensionCollector;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
-import net.labymod.serverapi.api.extension.AddonExtension;
-import net.labymod.serverapi.api.extension.ExtensionCollector;
 
 
 public class DefaultAddonExtensionCollector implements ExtensionCollector<AddonExtension> {

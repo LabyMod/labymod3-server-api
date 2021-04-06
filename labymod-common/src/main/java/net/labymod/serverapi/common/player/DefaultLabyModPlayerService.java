@@ -1,12 +1,13 @@
 package net.labymod.serverapi.common.player;
 
+import net.labymod.serverapi.api.player.LabyModPlayer;
+import net.labymod.serverapi.api.player.LabyModPlayerService;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.function.Predicate;
-import net.labymod.serverapi.api.player.LabyModPlayer;
-import net.labymod.serverapi.api.player.LabyModPlayerService;
 
 public class DefaultLabyModPlayerService<T> implements LabyModPlayerService<T> {
 

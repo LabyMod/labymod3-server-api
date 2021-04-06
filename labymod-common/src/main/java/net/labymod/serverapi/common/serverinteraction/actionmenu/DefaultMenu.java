@@ -1,13 +1,14 @@
 package net.labymod.serverapi.common.serverinteraction.actionmenu;
 
 import com.google.gson.JsonArray;
-import java.util.UUID;
 import net.labymod.serverapi.api.LabyService;
 import net.labymod.serverapi.api.payload.PayloadCommunicator;
 import net.labymod.serverapi.api.player.LabyModPlayer;
 import net.labymod.serverapi.api.player.LabyModPlayerService;
 import net.labymod.serverapi.api.serverinteraction.actionmenu.Menu;
 import net.labymod.serverapi.api.serverinteraction.actionmenu.MenuEntry;
+
+import java.util.UUID;
 
 public class DefaultMenu implements Menu {
 

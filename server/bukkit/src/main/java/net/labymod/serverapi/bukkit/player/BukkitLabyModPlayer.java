@@ -1,6 +1,5 @@
 package net.labymod.serverapi.bukkit.player;
 
-import java.util.List;
 import net.labymod.serverapi.api.extension.AddonExtension;
 import net.labymod.serverapi.api.extension.ModificationExtension;
 import net.labymod.serverapi.api.extension.PackageExtension;
@@ -8,6 +7,8 @@ import net.labymod.serverapi.api.protocol.ChunkCachingProtocol;
 import net.labymod.serverapi.api.protocol.ShadowProtocol;
 import net.labymod.serverapi.common.player.DefaultLabyModPlayer;
 import org.bukkit.entity.Player;
+
+import java.util.List;
 
 public class BukkitLabyModPlayer extends DefaultLabyModPlayer<Player> {
 

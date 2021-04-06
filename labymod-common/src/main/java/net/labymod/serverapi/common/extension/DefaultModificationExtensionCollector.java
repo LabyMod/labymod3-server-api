@@ -2,11 +2,12 @@ package net.labymod.serverapi.common.extension;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import net.labymod.serverapi.api.extension.ExtensionCollector;
+import net.labymod.serverapi.api.extension.ModificationExtension;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import net.labymod.serverapi.api.extension.ExtensionCollector;
-import net.labymod.serverapi.api.extension.ModificationExtension;
 
 /**
  * Default implementation of the {@link ExtensionCollector} to collect {@link

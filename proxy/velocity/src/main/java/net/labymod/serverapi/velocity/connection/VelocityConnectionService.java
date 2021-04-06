@@ -3,8 +3,6 @@ package net.labymod.serverapi.velocity.connection;
 import com.velocitypowered.api.event.Subscribe;
 import com.velocitypowered.api.event.connection.DisconnectEvent;
 import com.velocitypowered.api.proxy.Player;
-import java.util.List;
-import java.util.UUID;
 import net.labymod.serverapi.api.LabyService;
 import net.labymod.serverapi.api.connection.ConnectionService;
 import net.labymod.serverapi.api.extension.AddonExtension;
@@ -17,6 +15,9 @@ import net.labymod.serverapi.api.protocol.ChunkCachingProtocol;
 import net.labymod.serverapi.api.protocol.ShadowProtocol;
 import net.labymod.serverapi.common.player.DefaultLabyModPlayerFactory;
 import net.labymod.serverapi.velocity.event.VelocityLabyModPlayerLoginEvent;
+
+import java.util.List;
+import java.util.UUID;
 
 public class VelocityConnectionService implements ConnectionService<Player> {
 

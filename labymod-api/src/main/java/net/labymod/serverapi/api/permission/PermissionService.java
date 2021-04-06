@@ -1,8 +1,7 @@
 package net.labymod.serverapi.api.permission;
 
 import com.google.gson.JsonObject;
-import java.io.File;
-import java.io.IOException;
+
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;

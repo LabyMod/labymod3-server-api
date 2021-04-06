@@ -1,7 +1,5 @@
 package net.labymod.serverapi.bungee.connection;
 
-import java.util.List;
-import java.util.UUID;
 import net.labymod.serverapi.api.LabyService;
 import net.labymod.serverapi.api.connection.ConnectionService;
 import net.labymod.serverapi.api.extension.AddonExtension;
@@ -9,7 +7,6 @@ import net.labymod.serverapi.api.extension.ModificationExtension;
 import net.labymod.serverapi.api.extension.PackageExtension;
 import net.labymod.serverapi.api.permission.PermissionService;
 import net.labymod.serverapi.api.player.LabyModPlayer;
-import net.labymod.serverapi.api.player.LabyModPlayer.Factory;
 import net.labymod.serverapi.api.player.LabyModPlayerService;
 import net.labymod.serverapi.api.protocol.ChunkCachingProtocol;
 import net.labymod.serverapi.api.protocol.ShadowProtocol;
@@ -19,6 +16,9 @@ import net.md_5.bungee.api.connection.ProxiedPlayer;
 import net.md_5.bungee.api.event.PlayerDisconnectEvent;
 import net.md_5.bungee.api.plugin.Listener;
 import net.md_5.bungee.event.EventHandler;
+
+import java.util.List;
+import java.util.UUID;
 
 public class BungeeConnectionService implements Listener, ConnectionService<ProxiedPlayer> {
 

@@ -1,12 +1,13 @@
 package net.labymod.serverapi.common.serverinteraction.gui;
 
 import com.google.gson.JsonObject;
-import java.util.UUID;
 import net.labymod.serverapi.api.LabyService;
 import net.labymod.serverapi.api.payload.PayloadCommunicator;
 import net.labymod.serverapi.api.player.LabyModPlayer;
 import net.labymod.serverapi.api.player.LabyModPlayerService;
 import net.labymod.serverapi.api.serverinteraction.gui.InputPromptTransmitter;
+
+import java.util.UUID;
 
 public class DefaultInputPromptTransmitter implements InputPromptTransmitter {
   private static final String INPUT_PROMPT_CHANNEL = "input_prompt";

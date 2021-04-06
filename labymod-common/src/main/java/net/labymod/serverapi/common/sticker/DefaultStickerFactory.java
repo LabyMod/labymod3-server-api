@@ -1,7 +1,8 @@
 package net.labymod.serverapi.common.sticker;
 
-import java.util.UUID;
 import net.labymod.serverapi.api.sticker.Sticker;
+
+import java.util.UUID;
 
 public class DefaultStickerFactory implements Sticker.Factory {
 

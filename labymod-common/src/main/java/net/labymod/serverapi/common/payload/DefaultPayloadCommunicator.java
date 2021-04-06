@@ -1,12 +1,13 @@
 package net.labymod.serverapi.common.payload;
 
 import com.google.gson.JsonElement;
-import java.util.UUID;
 import net.labymod.serverapi.api.LabyService;
 import net.labymod.serverapi.api.payload.PayloadBuffer;
 import net.labymod.serverapi.api.payload.PayloadCommunicator;
 import net.labymod.serverapi.api.player.LabyModPlayer;
 import net.labymod.serverapi.api.player.LabyModPlayerService;
+
+import java.util.UUID;
 
 public abstract class DefaultPayloadCommunicator implements PayloadCommunicator {
 

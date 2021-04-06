@@ -1,11 +1,12 @@
 package net.labymod.serverapi.bukkit.util;
 
+import net.labymod.serverapi.bukkit.payload.transmitter.exception.InvalidMinecraftServerVersionException;
+import org.bukkit.Bukkit;
+
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.Arrays;
-import net.labymod.serverapi.bukkit.payload.transmitter.exception.InvalidMinecraftServerVersionException;
-import org.bukkit.Bukkit;
 
 public final class ReflectionHelper {
 

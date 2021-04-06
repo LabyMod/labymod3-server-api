@@ -1,10 +1,9 @@
 package net.labymod.serverapi.common.emote;
 
 import com.google.gson.JsonObject;
-
+import net.labymod.serverapi.api.emote.Emote;
 
 import java.util.UUID;
-import net.labymod.serverapi.api.emote.Emote;
 
 public class DefaultEmote implements Emote {
 

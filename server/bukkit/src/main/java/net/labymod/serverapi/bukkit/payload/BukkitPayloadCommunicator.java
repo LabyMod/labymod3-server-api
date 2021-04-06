@@ -1,6 +1,5 @@
 package net.labymod.serverapi.bukkit.payload;
 
-import java.util.UUID;
 import net.labymod.serverapi.api.LabyService;
 import net.labymod.serverapi.api.payload.PayloadChannelRegistrar;
 import net.labymod.serverapi.api.payload.PayloadChannelType;
@@ -11,6 +10,8 @@ import net.labymod.serverapi.bukkit.payload.transmitter.BukkitPayloadTransmitter
 import net.labymod.serverapi.common.payload.DefaultPayloadCommunicator;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.messaging.PluginMessageListener;
+
+import java.util.UUID;
 
 public class BukkitPayloadCommunicator extends DefaultPayloadCommunicator
     implements PluginMessageListener {

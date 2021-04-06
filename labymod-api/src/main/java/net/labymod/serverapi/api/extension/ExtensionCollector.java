@@ -1,6 +1,7 @@
 package net.labymod.serverapi.api.extension;
 
 import com.google.gson.JsonObject;
+
 import java.util.List;
 
 /**

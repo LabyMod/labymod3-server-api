@@ -1,16 +1,17 @@
 package net.labymod.serverapi.common.emote;
 
 import com.google.gson.JsonArray;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.UUID;
 import net.labymod.serverapi.api.LabyService;
 import net.labymod.serverapi.api.emote.Emote;
 import net.labymod.serverapi.api.emote.EmoteTransmitter;
 import net.labymod.serverapi.api.payload.PayloadCommunicator;
 import net.labymod.serverapi.api.player.LabyModPlayer;
 import net.labymod.serverapi.api.player.LabyModPlayerService;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.UUID;
 
 /** Default implementation of the {@link EmoteTransmitter}. */
 public class DefaultEmoteTransmitter implements EmoteTransmitter {

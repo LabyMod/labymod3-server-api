@@ -1,8 +1,6 @@
 package net.labymod.serverapi.api.discord;
 
-import com.google.gson.JsonObject;
 import java.util.UUID;
-import net.labymod.serverapi.api.player.LabyModPlayer;
 
 public interface RichPresenceTransmitter {
 

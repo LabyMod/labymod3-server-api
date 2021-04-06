@@ -1,8 +1,9 @@
 package net.labymod.serverapi.common.serverinteraction.subtitle;
 
 import com.google.gson.JsonObject;
-import java.util.UUID;
 import net.labymod.serverapi.api.serverinteraction.subtile.SubTitle;
+
+import java.util.UUID;
 
 public class DefaultSubTitleFactory implements SubTitle.Factory {
 

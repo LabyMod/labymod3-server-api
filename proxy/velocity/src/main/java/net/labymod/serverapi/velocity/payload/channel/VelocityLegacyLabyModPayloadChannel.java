@@ -7,8 +7,6 @@ import com.velocitypowered.api.event.Subscribe;
 import com.velocitypowered.api.proxy.Player;
 import com.velocitypowered.api.proxy.ProxyServer;
 import io.netty.buffer.Unpooled;
-import java.util.List;
-import java.util.Optional;
 import net.labymod.serverapi.api.LabyService;
 import net.labymod.serverapi.api.extension.AddonExtension;
 import net.labymod.serverapi.api.extension.ModificationExtension;
@@ -21,6 +19,9 @@ import net.labymod.serverapi.velocity.VelocityLabyModPlugin;
 import net.labymod.serverapi.velocity.event.VelocityLabyModPlayerLoginEvent;
 import net.labymod.serverapi.velocity.event.VelocityMessageReceiveEvent;
 import net.labymod.serverapi.velocity.event.VelocityReceivePayloadEvent;
+
+import java.util.List;
+import java.util.Optional;
 
 public class VelocityLegacyLabyModPayloadChannel extends DefaultLegacyLabyModPayloadChannel {
 

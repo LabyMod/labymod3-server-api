@@ -1,9 +1,6 @@
 package net.labymod.serverapi.bungee.player;
 
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
 import net.labymod.serverapi.api.extension.AddonExtension;
 import net.labymod.serverapi.api.extension.ModificationExtension;
 import net.labymod.serverapi.api.extension.PackageExtension;
@@ -12,6 +9,10 @@ import net.labymod.serverapi.api.protocol.ChunkCachingProtocol;
 import net.labymod.serverapi.api.protocol.ShadowProtocol;
 import net.labymod.serverapi.common.player.DefaultLabyModPlayerFactory;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.UUID;
 
 
 public class BungeeLabyModPlayerFactory extends DefaultLabyModPlayerFactory<ProxiedPlayer> {

@@ -6,13 +6,14 @@ import com.velocitypowered.api.event.connection.PluginMessageEvent.ForwardResult
 import com.velocitypowered.api.proxy.Player;
 import com.velocitypowered.api.proxy.ProxyServer;
 import com.velocitypowered.api.proxy.messages.ChannelIdentifier;
-import java.util.UUID;
 import net.labymod.serverapi.api.LabyService;
 import net.labymod.serverapi.api.payload.PayloadChannelRegistrar;
 import net.labymod.serverapi.api.payload.PayloadChannelType;
 import net.labymod.serverapi.common.payload.DefaultPayloadCommunicator;
 import net.labymod.serverapi.velocity.event.VelocityReceivePayloadEvent;
 import net.labymod.serverapi.velocity.event.VelocitySendPayloadEvent;
+
+import java.util.UUID;
 
 public class VelocityPayloadCommunicator extends DefaultPayloadCommunicator {
 

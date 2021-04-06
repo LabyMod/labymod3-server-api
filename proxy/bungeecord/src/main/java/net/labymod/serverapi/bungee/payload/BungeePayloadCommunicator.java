@@ -1,6 +1,5 @@
 package net.labymod.serverapi.bungee.payload;
 
-import java.util.UUID;
 import net.labymod.serverapi.api.LabyService;
 import net.labymod.serverapi.api.payload.PayloadChannelRegistrar;
 import net.labymod.serverapi.api.payload.PayloadChannelType;
@@ -13,6 +12,8 @@ import net.md_5.bungee.api.event.PluginMessageEvent;
 import net.md_5.bungee.api.plugin.Listener;
 import net.md_5.bungee.api.plugin.PluginManager;
 import net.md_5.bungee.event.EventHandler;
+
+import java.util.UUID;
 
 public class BungeePayloadCommunicator extends DefaultPayloadCommunicator implements Listener {
 

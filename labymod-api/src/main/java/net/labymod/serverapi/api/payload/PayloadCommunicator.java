@@ -1,7 +1,6 @@
 package net.labymod.serverapi.api.payload;
 
 import com.google.gson.JsonElement;
-
 import java.util.UUID;
 
 public interface PayloadCommunicator {

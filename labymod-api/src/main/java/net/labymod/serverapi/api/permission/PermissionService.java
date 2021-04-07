@@ -1,11 +1,11 @@
 package net.labymod.serverapi.api.permission;
 
 import com.google.gson.JsonObject;
-
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
+/** Represents the permission service for LabyMod. */
 public interface PermissionService {
 
   /**
@@ -65,8 +65,21 @@ public interface PermissionService {
    */
   PermissionService disablePermission(String internalName);
 
+  /**
+   * Toggles a permission with the given internal name.
+   *
+   * @param internalName The permission's internal name.
+   * @return This object for chaining.
+   */
   PermissionService togglePermission(String internalName);
 
+  /**
+   * Updates a pemrission with the given internal name.
+   *
+   * @param internalName The permission's internal name.
+   * @param enabled {@code true} if the permission should be enabled, otherwise {@code false}.
+   * @return This object for chaining.
+   */
   PermissionService updatePermission(String internalName, boolean enabled);
 
   /**

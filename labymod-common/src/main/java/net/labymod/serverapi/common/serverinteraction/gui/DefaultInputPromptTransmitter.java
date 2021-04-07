@@ -26,14 +26,14 @@ public class DefaultInputPromptTransmitter implements InputPromptTransmitter {
       JsonObject rawText,
       String value,
       String placeholder,
-      int maximalLength) {
+      int maximumAmount) {
 
     JsonObject object = new JsonObject();
     object.addProperty("id", promptSessionId);
     object.addProperty("raw_json_text", rawText.toString());
     object.addProperty("value", value);
     object.addProperty("placeholder", placeholder);
-    object.addProperty("max_length", maximalLength);
+    object.addProperty("max_length", maximumAmount);
 
     this.communicator.sendLabyModMessage(uniqueId, INPUT_PROMPT_CHANNEL, object);
   }
@@ -45,14 +45,14 @@ public class DefaultInputPromptTransmitter implements InputPromptTransmitter {
       String message,
       String value,
       String placeholder,
-      int maximalLength) {
+      int maximumAmount) {
 
     JsonObject object = new JsonObject();
     object.addProperty("id", promptSessionId);
     object.addProperty("message", message);
     object.addProperty("value", value);
     object.addProperty("placeholder", placeholder);
-    object.addProperty("max_length", maximalLength);
+    object.addProperty("max_length", maximumAmount);
 
     this.communicator.sendLabyModMessage(uniqueId, INPUT_PROMPT_CHANNEL, object);
   }
@@ -63,19 +63,19 @@ public class DefaultInputPromptTransmitter implements InputPromptTransmitter {
       JsonObject rawText,
       String value,
       String placeholder,
-      int maximalLength) {
+      int maximumAmount) {
     for (LabyModPlayer<?> player : this.playerService.getPlayers()) {
       this.transmit(
-          player.getUniqueId(), promptSessionId, rawText, value, placeholder, maximalLength);
+          player.getUniqueId(), promptSessionId, rawText, value, placeholder, maximumAmount);
     }
   }
 
   @Override
   public void broadcastTransmit(
-      int promptSessionId, String message, String value, String placeholder, int maximalLength) {
+      int promptSessionId, String message, String value, String placeholder, int maximumAmount) {
     for (LabyModPlayer<?> player : this.playerService.getPlayers()) {
       this.transmit(
-          player.getUniqueId(), promptSessionId, message, value, placeholder, maximalLength);
+          player.getUniqueId(), promptSessionId, message, value, placeholder, maximumAmount);
     }
   }
 }

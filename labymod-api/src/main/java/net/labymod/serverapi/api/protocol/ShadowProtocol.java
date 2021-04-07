@@ -1,7 +1,5 @@
 package net.labymod.serverapi.api.protocol;
 
-
-
 /** Represents the shadow protocol. */
 public interface ShadowProtocol extends Protocol {
 

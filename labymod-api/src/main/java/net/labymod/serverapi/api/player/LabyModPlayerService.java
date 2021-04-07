@@ -5,6 +5,11 @@ import java.util.Optional;
 import java.util.UUID;
 import java.util.function.Predicate;
 
+/**
+ * Represents a player service for the LabyMod.
+ *
+ * @param <T> The player type of the specified platform.
+ */
 public interface LabyModPlayerService<T> {
 
   int[] NON_LEGACY_SUPPORT_VERSION = new int[] {3, 8, 0};
@@ -23,6 +28,12 @@ public interface LabyModPlayerService<T> {
    */
   void unregisterPlayer(LabyModPlayer<T> player);
 
+  /**
+   * Unregisters a LabyMod player that satisfy the given {@code predicate.}
+   *
+   * @param predicate A predicate which returns {@code true} for player to be removed.
+   * @return {@code true} if any players were removed, otherwise {@code false}.
+   */
   boolean unregisterPlayerIf(Predicate<LabyModPlayer<T>> predicate);
 
   /**

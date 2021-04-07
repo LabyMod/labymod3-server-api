@@ -5,6 +5,7 @@ import net.labymod.serverapi.api.connection.ConnectionService;
 import net.labymod.serverapi.api.extension.AddonExtension;
 import net.labymod.serverapi.api.extension.ModificationExtension;
 import net.labymod.serverapi.api.extension.PackageExtension;
+import net.labymod.serverapi.api.payload.PayloadCommunicator;
 import net.labymod.serverapi.api.permission.PermissionService;
 import net.labymod.serverapi.api.player.LabyModPlayer;
 import net.labymod.serverapi.api.player.LabyModPlayerService;
@@ -22,11 +23,13 @@ import java.util.UUID;
 
 public class BukkitConnectionService implements ConnectionService<Player>, Listener {
 
+  private final PayloadCommunicator payloadCommunicator;
   private final PermissionService permissionService;
   private final LabyModPlayer.Factory<Player> labyModPlayerFactory;
   private final LabyModPlayerService<Player> labyModPlayerService;
 
   public BukkitConnectionService(LabyService service) {
+    this.payloadCommunicator = service.getPayloadCommunicator();
     this.permissionService = service.getPermissionService();
     this.labyModPlayerFactory = new DefaultLabyModPlayerFactory<>();
     this.labyModPlayerService = service.getLabyPlayerService();
@@ -75,6 +78,7 @@ public class BukkitConnectionService implements ConnectionService<Player>, Liste
             modifications);
 
     this.labyModPlayerService.registerPlayer(labyModPlayer);
+    this.payloadCommunicator.sendServerApiMessage(uniqueId);
     this.permissionService.sendPermissions(uniqueId);
   }
 

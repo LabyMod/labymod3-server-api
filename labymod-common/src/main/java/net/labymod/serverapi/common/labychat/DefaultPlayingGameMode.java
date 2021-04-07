@@ -9,6 +9,7 @@ import net.labymod.serverapi.api.player.LabyModPlayerService;
 
 import java.util.UUID;
 
+@Deprecated
 public class DefaultPlayingGameMode implements PlayingGameMode {
 
   private static final String SERVER_GAMEMODE_CHANNEL = "server_gamemode";

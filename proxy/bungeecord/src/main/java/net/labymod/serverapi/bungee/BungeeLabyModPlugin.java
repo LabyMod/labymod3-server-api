@@ -11,11 +11,10 @@ import net.md_5.bungee.api.plugin.PluginManager;
 public class BungeeLabyModPlugin extends Plugin {
 
   private LabyService service;
-  private String pluginVersion;
 
   @Override
   public void onEnable() {
-    this.service = new BungeeLabyService(this);
+    this.service = new BungeeLabyService(this, this.getDescription().getVersion());
     LabyAPI.initialize(this.service);
 
     PayloadChannelRegistrar<String> payloadChannelRegistrar =
@@ -23,7 +22,6 @@ public class BungeeLabyModPlugin extends Plugin {
     payloadChannelRegistrar.registerModernChannelIdentifier("labymod3", "main");
 
     PluginManager pluginManager = this.getProxy().getPluginManager();
-    this.pluginVersion = this.getDescription().getVersion();
 
     pluginManager.registerListener(this, (Listener) this.service.getConnectionService());
     pluginManager.registerListener(this, new BungeeLegacyLabyModPayloadChannel(this.service, this));
@@ -36,7 +34,8 @@ public class BungeeLabyModPlugin extends Plugin {
     return service;
   }
 
+  @Deprecated
   public String getPluginVersion() {
-    return pluginVersion;
+    return this.service.getVersion();
   }
 }

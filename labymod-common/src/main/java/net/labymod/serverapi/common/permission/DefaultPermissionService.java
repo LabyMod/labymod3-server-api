@@ -1,16 +1,15 @@
 package net.labymod.serverapi.common.permission;
 
 import com.google.gson.JsonObject;
-import net.labymod.serverapi.api.LabyService;
-import net.labymod.serverapi.api.payload.PayloadCommunicator;
-import net.labymod.serverapi.api.permission.Permissible;
-import net.labymod.serverapi.api.permission.PermissionService;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
+import net.labymod.serverapi.api.LabyService;
+import net.labymod.serverapi.api.payload.PayloadCommunicator;
+import net.labymod.serverapi.api.permission.Permissible;
+import net.labymod.serverapi.api.permission.PermissionService;
 
 /** A default implementation of the {@link PermissionService}. */
 public class DefaultPermissionService implements PermissionService {
@@ -101,13 +100,15 @@ public class DefaultPermissionService implements PermissionService {
     return this.updatePermission(internalName, false);
   }
 
+  /** {@inheritDoc} */
   @Override
   public PermissionService togglePermission(String internalName) {
     this.getPermission(internalName)
         .ifPresent(permissible -> permissible.setEnabled(!permissible.isEnabled()));
-    return null;
+    return this;
   }
 
+  /** {@inheritDoc} */
   @Override
   public PermissionService updatePermission(String internalName, boolean enabled) {
     this.getPermission(internalName).ifPresent(permissible -> permissible.setEnabled(enabled));

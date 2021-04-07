@@ -10,7 +10,10 @@ import java.util.UUID;
  * <p>In version <b>3.3.1</b>, we introduced a middle click for players. It features custom actions
  * are executed for the player that has been clicked on. A server can add custom buttons to that
  * list of actions.
+ *
+ * @deprecated {@link MenuTransmitter}
  */
+@Deprecated
 public interface Menu {
 
   /**
@@ -18,7 +21,9 @@ public interface Menu {
    *
    * @param entry The menu entry which should be displayed.
    * @return This object for a fluent chaining.
+   * @deprecated {@link MenuTransmitter#addEntry(MenuEntry)}
    */
+  @Deprecated
   Menu addEntry(MenuEntry entry);
 
   /**
@@ -26,19 +31,25 @@ public interface Menu {
    *
    * @param entries An array menu entries which should be displayed.
    * @return This object for a fluent chaining.
+   * @deprecated {@link MenuTransmitter#addEntries(MenuEntry...)}
    */
+  @Deprecated
   Menu addEntries(MenuEntry... entries);
 
   /**
    * Transmits an action menu to the client.
    *
    * @param uniqueId The unique identifier of the receiver.
+   * @deprecated {@link MenuTransmitter#transmit(UUID)}
    */
+  @Deprecated
   void transmit(UUID uniqueId);
 
   /**
    * Transmits an action menu to all online laby users.
+   *
+   * @deprecated {@link MenuTransmitter#broadcastTransmit()}
    */
+  @Deprecated
   void broadcastTransmit();
-
 }

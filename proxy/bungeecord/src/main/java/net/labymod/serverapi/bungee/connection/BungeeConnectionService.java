@@ -1,10 +1,13 @@
 package net.labymod.serverapi.bungee.connection;
 
+import java.util.List;
+import java.util.UUID;
 import net.labymod.serverapi.api.LabyService;
 import net.labymod.serverapi.api.connection.ConnectionService;
 import net.labymod.serverapi.api.extension.AddonExtension;
 import net.labymod.serverapi.api.extension.ModificationExtension;
 import net.labymod.serverapi.api.extension.PackageExtension;
+import net.labymod.serverapi.api.payload.PayloadCommunicator;
 import net.labymod.serverapi.api.permission.PermissionService;
 import net.labymod.serverapi.api.player.LabyModPlayer;
 import net.labymod.serverapi.api.player.LabyModPlayerService;
@@ -17,16 +20,15 @@ import net.md_5.bungee.api.event.PlayerDisconnectEvent;
 import net.md_5.bungee.api.plugin.Listener;
 import net.md_5.bungee.event.EventHandler;
 
-import java.util.List;
-import java.util.UUID;
-
 public class BungeeConnectionService implements Listener, ConnectionService<ProxiedPlayer> {
 
+  private final PayloadCommunicator payloadCommunicator;
   private final PermissionService permissionService;
   private final LabyModPlayer.Factory<ProxiedPlayer> labyModPlayerFactory;
   private final LabyModPlayerService<ProxiedPlayer> labyModPlayerService;
 
   public BungeeConnectionService(LabyService service) {
+    this.payloadCommunicator = service.getPayloadCommunicator();
     this.permissionService = service.getPermissionService();
     this.labyModPlayerFactory = new BungeeLabyModPlayerFactory();
     this.labyModPlayerService = service.getLabyPlayerService();
@@ -74,6 +76,7 @@ public class BungeeConnectionService implements Listener, ConnectionService<Prox
             modifications,
             packages));
 
+    this.payloadCommunicator.sendServerApiMessage(uniqueId);
     this.permissionService.sendPermissions(uniqueId);
   }
 

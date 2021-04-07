@@ -68,7 +68,7 @@ public class DefaultPayloadBuffer implements PayloadBuffer {
               + Short.MAX_VALUE
               + ")");
     } else {
-      this.writeVarIntInfoBuffer(data.length);
+      this.writeVarIntIntoBuffer(data.length);
       this.byteBuf.writeBytes(data);
     }
 
@@ -93,7 +93,7 @@ public class DefaultPayloadBuffer implements PayloadBuffer {
 
   /** {@inheritDoc} */
   @Override
-  public PayloadBuffer writeVarIntInfoBuffer(int input) {
+  public PayloadBuffer writeVarIntIntoBuffer(int input) {
     while ((input & -128) != 0) {
       this.byteBuf.writeByte(input & 127 | 128);
       input >>>= 7;

@@ -7,6 +7,7 @@ import org.bukkit.entity.Player;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.Objects;
 
 public final class NetworkHelper {
 
@@ -95,7 +96,7 @@ public final class NetworkHelper {
     try {
       if (this.networkManagerField == null) {
         this.networkManagerField =
-            reflectionHelper.getField(connection.getClass(), "networkManager");
+            reflectionHelper.getField(Objects.requireNonNull(connection).getClass(), "networkManager");
       }
 
       return networkManagerField.get(connection);
@@ -109,7 +110,7 @@ public final class NetworkHelper {
     try {
 
       if (this.channelField == null) {
-        this.channelField = reflectionHelper.getField(networkManager.getClass(), "channel");
+        this.channelField = reflectionHelper.getField(Objects.requireNonNull(networkManager).getClass(), "channel");
       }
 
       return (Channel) channelField.get(networkManager);

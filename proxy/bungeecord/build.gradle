@@ -14,3 +14,17 @@ dependencies {
     compile(project(":labymod-common"))
     compileOnly("net.md-5:bungeecord-api:1.16-R0.5-SNAPSHOT")
 }
+
+processResources {
+    inputs.property "version", rootProject.version
+
+    from(sourceSets.main.resources.srcDirs) {
+        include "bungee.yml"
+
+        expand 'version': rootProject.version
+    }
+
+    from(sourceSets.main.resources.srcDirs) {
+        exclude "bungee.yml"
+    }
+}

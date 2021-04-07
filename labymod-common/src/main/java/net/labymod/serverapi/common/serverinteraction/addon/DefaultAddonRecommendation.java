@@ -1,6 +1,7 @@
 package net.labymod.serverapi.common.serverinteraction.addon;
 
 import com.google.gson.JsonArray;
+import net.labymod.serverapi.api.LabyService;
 import net.labymod.serverapi.api.payload.PayloadCommunicator;
 import net.labymod.serverapi.api.serverinteraction.addon.AddonRecommendation;
 import net.labymod.serverapi.api.serverinteraction.addon.RecommendedAddon;
@@ -16,8 +17,8 @@ public class DefaultAddonRecommendation implements AddonRecommendation {
   private final PayloadCommunicator payloadCommunicator;
   private final List<RecommendedAddon> recommendedAddons;
 
-  private DefaultAddonRecommendation(PayloadCommunicator payloadCommunicator) {
-    this.payloadCommunicator = payloadCommunicator;
+  public DefaultAddonRecommendation(LabyService service) {
+    this.payloadCommunicator = service.getPayloadCommunicator();
     this.recommendedAddons = new ArrayList<>();
   }
 

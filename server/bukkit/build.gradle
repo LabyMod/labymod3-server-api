@@ -32,3 +32,17 @@ dependencies {
     compileOnly("com.comphenix.protocol:ProtocolLib:4.5.0")
     compileOnly("org.lz4:lz4-java:1.4.1")
 }
+
+processResources {
+    inputs.property "version", rootProject.version
+
+    from(sourceSets.main.resources.srcDirs) {
+        include "plugin.yml"
+
+        expand 'version': rootProject.version
+    }
+
+    from(sourceSets.main.resources.srcDirs) {
+        exclude "plugin.yml"
+    }
+}

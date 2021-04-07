@@ -10,18 +10,15 @@ import org.bukkit.plugin.java.JavaPlugin;
 public class BukkitLabyModPlugin extends JavaPlugin {
 
   private LabyService service;
-  private String pluginVersion;
 
   @Override
   public void onEnable() {
-    this.service = new BukkitLabyService(this);
+    this.service = new BukkitLabyService(this, getDescription().getVersion());
     LabyAPI.initialize(this.service);
 
     PayloadChannelRegistrar<String> payloadChannelRegistrar =
         this.service.getPayloadChannelRegistrar();
     payloadChannelRegistrar.registerModernChannelIdentifier("labymod3", "main");
-
-    this.pluginVersion = getDescription().getVersion();
 
     this.getServer()
         .getPluginManager()
@@ -34,7 +31,8 @@ public class BukkitLabyModPlugin extends JavaPlugin {
   @Override
   public void onDisable() {}
 
+  @Deprecated
   public String getPluginVersion() {
-    return pluginVersion;
+    return this.service.getVersion();
   }
 }

@@ -12,7 +12,10 @@ import java.util.UUID;
  * used to create multi-server-networks. As this does not need any extra proxy software and
  * hardware, it is generally cheaper for a network to connect players directly to the server instead
  * of using an intermediate software like BungeeCord.
+ *
+ * @deprecated Use {@link ServerSwitcherTransmitter}
  */
+@Deprecated
 public interface ServerSwitcher {
 
   /**
@@ -24,7 +27,9 @@ public interface ServerSwitcher {
    * @param address The address of the network / server where the player should be sent to.
    * @param preview {@code true} if information about the network / server should be displayed,
    *     otherwise {@code false}.
+   * @deprecated Use {@link ServerSwitcherTransmitter#transmit(UUID, String, String, boolean)}
    */
+  @Deprecated
   void sendPlayerToServer(UUID uniqueId, String title, String address, boolean preview);
 
   /**
@@ -34,6 +39,8 @@ public interface ServerSwitcher {
    * @param address The address of the network / server where the players should be sent to.
    * @param preview {@code true} if information about the network / server should be displayed,
    *     otherwise {@code false}.
+   * @deprecated Use {@link ServerSwitcherTransmitter#broadcastTransmit(String, String, boolean)}
    */
+  @Deprecated
   void broadcastSendPlayerToServer(String title, String address, boolean preview);
 }

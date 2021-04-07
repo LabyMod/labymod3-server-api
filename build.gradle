@@ -17,30 +17,30 @@ repositories {
 
     maven {
         name = "velocity-repository"
-        url = uri("https://repo.velocitypowered.com/snapshots/")
+        url = "https://repo.velocitypowered.com/snapshots/"
     }
 
     maven {
         name = "bungeecord-repository"
-        url = uri("https://oss.sonatype.org/content/repositories/snapshots")
+        url = "https://oss.sonatype.org/content/repositories/snapshots"
     }
     maven {
         name = "sponge-repository"
-        url = uri("https://repo.spongepowered.org/maven")
+        url = "https://repo.spongepowered.org/maven"
     }
 
     maven {
         name = "bungeecord-repository"
-        url = uri("https://oss.sonatype.org/content/repositories/snapshots")
+        url = "https://oss.sonatype.org/content/repositories/snapshots"
     }
     maven {
         name = "spigot-repository"
-        url = uri("https://hub.spigotmc.org/nexus/content/repositories/snapshots/")
+        url = "https://hub.spigotmc.org/nexus/content/repositories/snapshots/"
     }
 
     maven {
         name = "dmulloy2"
-        url = uri("https://repo.dmulloy2.net/nexus/repository/public/")
+        url = "https://repo.dmulloy2.net/nexus/repository/public/"
     }
 }
 
@@ -49,33 +49,34 @@ configurations {
     compile.extendsFrom shade
 }
 
+
 dependencies {
     compile(project(":labymod-api")) {
         exclude group: "com.google.code.gson"
         exclude group: "com.google.guava"
         exclude group: "io.netty"
     }
-    compile(project(":labymod-common")){
+    compile(project(":labymod-common")) {
         exclude group: "com.google.code.gson"
         exclude group: "com.google.guava"
         exclude group: "io.netty"
     }
-    compile(project(":proxy:bungeecord")){
+    compile(project(":proxy:bungeecord")) {
         exclude group: "com.google.code.gson"
         exclude group: "com.google.guava"
         exclude group: "io.netty"
     }
-    compile(project(":proxy:velocity")){
+    compile(project(":proxy:velocity")) {
         exclude group: "com.google.code.gson"
         exclude group: "com.google.guava"
         exclude group: "io.netty"
     }
-    compile(project(":server:bukkit")){
+    compile(project(":server:bukkit")) {
         exclude group: "com.google.code.gson"
         exclude group: "com.google.guava"
         exclude group: "io.netty"
     }
-    compile(project(":server:sponge")){
+    compile(project(":server:sponge")) {
         exclude group: "com.google.code.gson"
         exclude group: "com.google.guava"
         exclude group: "io.netty"

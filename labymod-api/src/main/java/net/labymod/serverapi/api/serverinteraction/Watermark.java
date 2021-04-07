@@ -10,7 +10,10 @@ import java.util.UUID;
  * <p>This feature will show a LabyMod banner in the bottom right corner. It was made for LabyMod
  * tournaments. A special feature of this watermark is that the server can force an emote to the
  * player without changing the unique identifier.
+ *
+ * @deprecated Use {@link WatermarkTransmitter}.
  */
+@Deprecated
 public interface Watermark {
 
   /**
@@ -19,7 +22,9 @@ public interface Watermark {
    * @param uniqueId The unique identifier of the receiver.
    * @param showWatermark {@code true} if the watermark should be displayed, otherwise {@code
    *     false}.
+   * @deprecated Use {@link WatermarkTransmitter#transmit(UUID, boolean)}
    */
+  @Deprecated
   void displayWatermark(UUID uniqueId, boolean showWatermark);
 
   /**
@@ -27,6 +32,8 @@ public interface Watermark {
    *
    * @param showWatermark {@code true} if the watermark should be displayed, otherwise {@code
    *     false}.
+   * @deprecated Use {@link WatermarkTransmitter#broadcastTransmit(boolean)}
    */
+  @Deprecated
   void broadcastDisplayWatermark(boolean showWatermark);
 }

@@ -9,8 +9,11 @@ import java.util.UUID;
  *
  * <p>It is also possible to display the balance of your economy system. If the user enters a shop
  * or is in a trading situation, you can display the amount of the balance in the top right corner.
- * YOu can also use this feature in games if you have to collect coins.
+ * You can also use this feature in games if you have to collect coins.
+ *
+ * @deprecated Use {@link EconomyDisplayTransmitter}
  */
+@Deprecated
 public interface EconomyDisplay {
 
   /**
@@ -20,7 +23,9 @@ public interface EconomyDisplay {
    * @param economyBalanceType The type of the economy balance.
    * @param showBalanceDisplay {@code true} shows the balance display, otherwise {@code false}.
    * @param balance The balance of the receiver.
+   * @deprecated Use {@link EconomyDisplayTransmitter#transmit(UUID, EconomyBalanceType, boolean, int)}
    */
+  @Deprecated
   void sendBalanceDisplay(
       UUID uniqueId,
       EconomyBalanceType economyBalanceType,
@@ -33,7 +38,9 @@ public interface EconomyDisplay {
    * @param economyBalanceType The type of the economy balance.
    * @param showBalanceDisplay {@code true} shows the balance display, otherwise {@code false}.
    * @param balance The balance of the receiver.
+   * @deprecated Use {@link EconomyDisplayTransmitter#broadcastTransmit(EconomyBalanceType, boolean, int)}
    */
+  @Deprecated
   void broadcastSendBalanceDisplay(
       EconomyBalanceType economyBalanceType, boolean showBalanceDisplay, int balance);
 }

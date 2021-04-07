@@ -57,6 +57,10 @@ public class BungeePayloadCommunicator extends DefaultPayloadCommunicator implem
               }
 
               proxiedPlayer.sendData(channelIdentifier, payload);
+              this.debugger.info(
+                  String.format(
+                      "A payload message was sent to player \"%s\" in channel \"%s\"!",
+                      proxiedPlayer.getName(), channelIdentifier));
             });
   }
 

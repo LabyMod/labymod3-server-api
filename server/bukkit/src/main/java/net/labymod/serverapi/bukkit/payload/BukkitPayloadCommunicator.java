@@ -1,5 +1,6 @@
 package net.labymod.serverapi.bukkit.payload;
 
+import java.util.UUID;
 import net.labymod.serverapi.api.LabyService;
 import net.labymod.serverapi.api.payload.PayloadChannelRegistrar;
 import net.labymod.serverapi.api.payload.PayloadChannelType;
@@ -10,8 +11,6 @@ import net.labymod.serverapi.bukkit.payload.transmitter.BukkitPayloadTransmitter
 import net.labymod.serverapi.common.payload.DefaultPayloadCommunicator;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.messaging.PluginMessageListener;
-
-import java.util.UUID;
 
 public class BukkitPayloadCommunicator extends DefaultPayloadCommunicator
     implements PluginMessageListener {
@@ -24,7 +23,8 @@ public class BukkitPayloadCommunicator extends DefaultPayloadCommunicator
     this.plugin = plugin;
   }
 
-  public void setPayloadChannelRegistrar(final PayloadChannelRegistrar<String> payloadChannelRegistrar) {
+  public void setPayloadChannelRegistrar(
+      final PayloadChannelRegistrar<String> payloadChannelRegistrar) {
     this.payloadChannelRegistrar = payloadChannelRegistrar;
   }
 
@@ -54,6 +54,10 @@ public class BukkitPayloadCommunicator extends DefaultPayloadCommunicator
                   player,
                   bukkitSendPayloadEvent.getChannelIdentifier(),
                   bukkitSendPayloadEvent.getPayload());
+              this.debugger.info(
+                  String.format(
+                      "A payload message was sent to player \"%s\" in channel \"%s\"!",
+                      player.getName(), channelIdentifier));
             });
   }
 

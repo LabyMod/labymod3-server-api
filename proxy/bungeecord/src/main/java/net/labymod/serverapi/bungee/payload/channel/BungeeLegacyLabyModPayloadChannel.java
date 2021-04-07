@@ -1,9 +1,9 @@
 package net.labymod.serverapi.bungee.payload.channel;
 
 import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import io.netty.buffer.Unpooled;
+import java.util.List;
 import net.labymod.serverapi.api.LabyService;
 import net.labymod.serverapi.api.extension.AddonExtension;
 import net.labymod.serverapi.api.extension.ModificationExtension;
@@ -20,8 +20,6 @@ import net.md_5.bungee.api.connection.ProxiedPlayer;
 import net.md_5.bungee.api.plugin.Listener;
 import net.md_5.bungee.event.EventHandler;
 
-import java.util.List;
-
 public class BungeeLegacyLabyModPayloadChannel extends DefaultLegacyLabyModPayloadChannel
     implements Listener {
 
@@ -37,7 +35,7 @@ public class BungeeLegacyLabyModPayloadChannel extends DefaultLegacyLabyModPaylo
 
   @EventHandler
   public void receiveLabyMod3Payload(BungeeReceivePayloadEvent event) {
-    if (!this.isLabyMod3MainChannel(event.getIdentifier())) {
+    if (this.isLabyMod3MainChannel(event.getIdentifier())) {
       return;
     }
 
@@ -75,21 +73,13 @@ public class BungeeLegacyLabyModPayloadChannel extends DefaultLegacyLabyModPaylo
       String version,
       ChunkCachingProtocol chunkCachingProtocol,
       ShadowProtocol shadowProtocol) {
-
     ProxiedPlayer bungeePlayer = (ProxiedPlayer) player;
-
-    JsonObject object = new JsonObject();
-    object.addProperty("version", this.plugin.getPluginVersion());
-    this.service
-        .getPayloadCommunicator()
-        .sendLabyModMessage(bungeePlayer.getUniqueId(), "server_api", object);
-
     this.plugin
         .getProxy()
         .getPluginManager()
         .callEvent(
             new BungeeLabyModPlayerLoginEvent(
-                (ProxiedPlayer) player,
+                bungeePlayer,
                 addons,
                 modifications,
                 version,

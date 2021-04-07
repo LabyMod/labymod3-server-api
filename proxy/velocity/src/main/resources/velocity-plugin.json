@@ -1,0 +1,1 @@
+{"id":"laby_api","name":"LabyApi","version":"${version}","authors":["LabyMedia GmbH"],"dependencies":[],"main":"net.labymod.serverapi.velocity.VelocityLabyModPlugin"}

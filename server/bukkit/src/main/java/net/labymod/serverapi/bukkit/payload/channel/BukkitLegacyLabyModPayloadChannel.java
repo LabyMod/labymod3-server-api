@@ -1,14 +1,13 @@
 package net.labymod.serverapi.bukkit.payload.channel;
 
 import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import io.netty.buffer.Unpooled;
+import java.util.List;
 import net.labymod.serverapi.api.LabyService;
 import net.labymod.serverapi.api.extension.AddonExtension;
 import net.labymod.serverapi.api.extension.ModificationExtension;
 import net.labymod.serverapi.api.payload.PayloadBuffer;
-import net.labymod.serverapi.api.player.LabyModPlayerService;
 import net.labymod.serverapi.api.protocol.ChunkCachingProtocol;
 import net.labymod.serverapi.api.protocol.ShadowProtocol;
 import net.labymod.serverapi.bukkit.BukkitLabyModPlugin;
@@ -21,21 +20,17 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 
-import java.util.List;
-
 public class BukkitLegacyLabyModPayloadChannel extends DefaultLegacyLabyModPayloadChannel
     implements Listener {
 
   private static final JsonParser JSON_PARSER = new JsonParser();
 
   private final BukkitLabyModPlugin plugin;
-  private final LabyModPlayerService<Player> labyModPlayerService;
   private final PayloadBuffer.Factory payloadBufferFactory;
 
   public BukkitLegacyLabyModPayloadChannel(BukkitLabyModPlugin plugin, LabyService service) {
     super(service);
     this.plugin = plugin;
-    this.labyModPlayerService = service.getLabyPlayerService();
     this.payloadBufferFactory = new DefaultPayloadBufferFactory();
   }
 
@@ -73,12 +68,6 @@ public class BukkitLegacyLabyModPayloadChannel extends DefaultLegacyLabyModPaylo
       ChunkCachingProtocol chunkCachingProtocol,
       ShadowProtocol shadowProtocol) {
     Player bukkitPlayer = (Player) player;
-
-    JsonObject object = new JsonObject();
-    object.addProperty("version", this.plugin.getPluginVersion());
-    this.service
-        .getPayloadCommunicator()
-        .sendLabyModMessage(bukkitPlayer.getUniqueId(), "server_api", object);
     this.plugin
         .getServer()
         .getPluginManager()

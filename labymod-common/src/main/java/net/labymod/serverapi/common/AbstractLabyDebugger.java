@@ -2,7 +2,7 @@ package net.labymod.serverapi.common;
 
 import net.labymod.serverapi.api.LabyDebugger;
 
-public class DefaultLabyDebugger implements LabyDebugger {
+public abstract class AbstractLabyDebugger implements LabyDebugger {
 
   private boolean debug;
 

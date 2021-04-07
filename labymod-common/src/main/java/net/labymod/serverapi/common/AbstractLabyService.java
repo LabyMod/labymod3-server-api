@@ -1,6 +1,5 @@
 package net.labymod.serverapi.common;
 
-import net.labymod.serverapi.api.LabyDebugger;
 import net.labymod.serverapi.api.LabyService;
 import net.labymod.serverapi.api.discord.RichPresenceTransmitter;
 import net.labymod.serverapi.api.emote.Emote;
@@ -71,9 +70,6 @@ import net.labymod.serverapi.common.sticker.DefaultStickerTransmitter;
 
 public abstract class AbstractLabyService implements LabyService {
 
-  // Debugger
-  private LabyDebugger labyDebugger;
-
   // Addon recommendation
   private AddonRecommendation addonRecommendation;
   private RecommendedAddon.Factory recommendedAddonFactory;
@@ -139,7 +135,6 @@ public abstract class AbstractLabyService implements LabyService {
   private WatermarkTransmitter watermarkTransmitter;
 
   protected void initialize() {
-    this.labyDebugger = new DefaultLabyDebugger();
 
     // Addon recommendation
     this.addonRecommendation = new DefaultAddonRecommendation(this);
@@ -204,12 +199,6 @@ public abstract class AbstractLabyService implements LabyService {
     // Stickers
     this.stickerFactory = new DefaultStickerFactory();
     this.stickerTransmitter = new DefaultStickerTransmitter(this);
-  }
-
-  /** {@inheritDoc} */
-  @Override
-  public LabyDebugger getLabyDebugger() {
-    return this.labyDebugger;
   }
 
   /** {@inheritDoc} */

@@ -17,19 +17,19 @@ public class DefaultRichPresenceTransmitter implements RichPresenceTransmitter {
     this.payloadCommunicator = service.getPayloadCommunicator();
   }
 
-  /** {@@inheritDoc} */
+  /** {@inheritDoc} */
   @Override
   public void updateRichPresenceTimer(UUID receiverUniqueId, String gameMode, long startTime) {
     this.updateRichPresence(receiverUniqueId, gameMode, startTime, 0L);
   }
 
-  /** {@@inheritDoc} */
+  /** {@inheritDoc} */
   @Override
   public void updateRichPresenceCountdown(UUID receiverUniqueId, String gameMode, long endTime) {
     this.updateRichPresence(receiverUniqueId, gameMode, 0L, System.currentTimeMillis());
   }
 
-  /** {@@inheritDoc} */
+  /** {@inheritDoc} */
   @Override
   public void updateRichPresence(
       UUID receiverUniqueId, boolean hasGame, String gameMode, long startTime, long endTime) {

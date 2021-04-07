@@ -15,3 +15,17 @@ dependencies {
     compileOnly(project(":labymod-common"))
     compileOnly("com.velocitypowered:velocity-api:1.1.0-SNAPSHOT")
 }
+
+processResources {
+    inputs.property "version", rootProject.version
+
+    from(sourceSets.main.resources.srcDirs) {
+        include "velocity-plugin.json"
+
+        expand 'version': rootProject.version
+    }
+
+    from(sourceSets.main.resources.srcDirs) {
+        exclude "velocity-plugin.json"
+    }
+}

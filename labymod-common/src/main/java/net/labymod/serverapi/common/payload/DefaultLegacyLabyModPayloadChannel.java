@@ -3,6 +3,9 @@ package net.labymod.serverapi.common.payload;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
+import java.util.List;
+import java.util.logging.Logger;
+import net.labymod.serverapi.api.LabyDebugger;
 import net.labymod.serverapi.api.LabyService;
 import net.labymod.serverapi.api.extension.AddonExtension;
 import net.labymod.serverapi.api.extension.ExtensionCollector;
@@ -12,13 +15,11 @@ import net.labymod.serverapi.api.protocol.ChunkCachingProtocol;
 import net.labymod.serverapi.api.protocol.Protocol;
 import net.labymod.serverapi.api.protocol.ShadowProtocol;
 
-import java.util.List;
-import java.util.logging.Logger;
-
 public abstract class DefaultLegacyLabyModPayloadChannel {
 
   private static final Logger LOGGER = Logger.getLogger("LMC Channel");
   protected final LabyService service;
+  private final LabyDebugger debugger;
   private final ExtensionCollector<AddonExtension> addonExtensionCollector;
   private final ExtensionCollector<ModificationExtension> modificationExtensionCollector;
   private final ChunkCachingProtocol.Factory chunkCachingProtocolFactory;
@@ -30,26 +31,29 @@ public abstract class DefaultLegacyLabyModPayloadChannel {
     this.modificationExtensionCollector = service.getModificationExtensionCollector();
     this.chunkCachingProtocolFactory = service.getChunkCachingProtocolFactory();
     this.shadowProtocolFactory = service.getShadowProtocolFactory();
+    this.debugger = service.getLabyDebugger();
   }
 
   /**
    * Whether the specified identifier is the LMC channel.
    *
    * @param identifier The identifier to be checked.
-   * @return {@code true} if the specified identifier is the LMC channel, otherwise {@code false}.
+   * @return {@code false} if the specified identifier is the labymod3:main channel, otherwise
+   *     {@code true}.
    */
   public boolean isLabyMod3MainChannel(String identifier) {
-    return identifier.equals("labymod3:main");
+    return !identifier.equals("labymod3:main");
   }
 
   /**
    * Whether the specified identifier is the CCP channel.
    *
    * @param identifier The identifier to be checked.
-   * @return {@code true} if the specified identifier is the CCP channel, otherwise {@code false}.
+   * @return {@code false} if the specified identifier is the labymod3:ccp channel, otherwise {@code
+   *     true}.
    */
   public boolean isLabyMod3CCPChannel(String identifier) {
-    return identifier.equals("labymod3:ccp");
+    return !identifier.equals("labymod3:ccp");
   }
 
   /**
@@ -60,38 +64,42 @@ public abstract class DefaultLegacyLabyModPayloadChannel {
    * @param <T> The player type of the implemented software.
    */
   public <T> void readPayload(T player, PayloadBuffer payloadBuffer) {
-    String messageKey = payloadBuffer.readString();
-    String messageContent = payloadBuffer.readString();
-
-    JsonElement jsonElement;
     try {
-      jsonElement = this.parseMessageContent(messageContent);
-    } catch (JsonParseException exception) {
-      LOGGER.severe(
-          String.format("The specified JSON string is not a valid one! (%s)", messageContent));
-      return;
-    }
+      String messageKey = payloadBuffer.readString();
+      String messageContent = payloadBuffer.readString();
 
-    if (!messageKey.equals("INFO") && jsonElement.isJsonObject()) {
-      this.onReceiveMessage(player, messageKey, jsonElement);
-      return;
-    }
+      JsonElement jsonElement;
+      try {
+        jsonElement = this.parseMessageContent(messageContent);
+      } catch (JsonParseException exception) {
+        this.debugger.error(
+            String.format("The specified JSON string is not a valid one! (%s)", messageContent));
+        return;
+      }
 
-    JsonObject object = jsonElement.getAsJsonObject();
-    String version = null;
+      if (!messageKey.equals("INFO") && jsonElement.isJsonObject()) {
+        this.onReceiveMessage(player, messageKey, jsonElement);
+        return;
+      }
 
-    if (object.has("version")) {
-      version = object.get("version").getAsString();
-    }
+      JsonObject object = jsonElement.getAsJsonObject();
+      String version = null;
 
-    if (version != null) {
-      this.onLabyModPlayerJoin(
-          player,
-          this.addonExtensionCollector.collect(object),
-          this.modificationExtensionCollector.collect(object),
-          version,
-          this.getProtocol("ccp", object),
-          this.getProtocol("shadow", object));
+      if (object.has("version")) {
+        version = object.get("version").getAsString();
+      }
+
+      if (version != null) {
+        this.onLabyModPlayerJoin(
+            player,
+            this.addonExtensionCollector.collect(object),
+            this.modificationExtensionCollector.collect(object),
+            version,
+            this.getProtocol("ccp", object),
+            this.getProtocol("shadow", object));
+      }
+    } catch (Exception exception) {
+      this.debugger.error("An error occurred while reading the payload message", exception);
     }
   }
 

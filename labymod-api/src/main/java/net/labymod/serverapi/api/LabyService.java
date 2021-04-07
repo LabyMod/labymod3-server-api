@@ -42,6 +42,13 @@ import net.labymod.serverapi.api.sticker.StickerTransmitter;
 public interface LabyService {
 
   /**
+   * Retrieves the version of the plugin.
+   *
+   * @return The plugin version.
+   */
+  String getVersion();
+
+  /**
    * Retrieves the debugger of the plugin.
    *
    * @return The plugin debugger.

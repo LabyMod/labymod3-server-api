@@ -25,7 +25,11 @@ import net.labymod.serverapi.api.serverinteraction.TabListCacheTransmitter;
 import net.labymod.serverapi.api.serverinteraction.Watermark;
 import net.labymod.serverapi.api.serverinteraction.WatermarkTransmitter;
 import net.labymod.serverapi.api.serverinteraction.actionmenu.Menu;
+import net.labymod.serverapi.api.serverinteraction.actionmenu.MenuEntry;
 import net.labymod.serverapi.api.serverinteraction.actionmenu.MenuTransmitter;
+import net.labymod.serverapi.api.serverinteraction.addon.AddonRecommendation;
+import net.labymod.serverapi.api.serverinteraction.addon.AddonRecommendationTransmitter;
+import net.labymod.serverapi.api.serverinteraction.addon.RecommendedAddon;
 import net.labymod.serverapi.api.serverinteraction.economy.EconomyDisplay;
 import net.labymod.serverapi.api.serverinteraction.economy.EconomyDisplayTransmitter;
 import net.labymod.serverapi.api.serverinteraction.gui.InputPromptTransmitter;
@@ -36,6 +40,34 @@ import net.labymod.serverapi.api.sticker.StickerTransmitter;
 
 /** This interface represents a service with all possible functions of the LabyMod. */
 public interface LabyService {
+
+  /**
+   * Retrieves the debugger of the plugin.
+   *
+   * @return The plugin debugger.
+   */
+  LabyDebugger getLabyDebugger();
+
+  /**
+   * Retrieves the protocol of the addon recommendation feature.
+   *
+   * @return The addon recommendation protocol.
+   */
+  AddonRecommendation getAddonRecommendation();
+
+  /**
+   * Retrieves the transmitter for the addon recommendation feature.
+   *
+   * @return The addon recommendation transmitter.
+   */
+  AddonRecommendationTransmitter getAddonRecommendationTransmitter();
+
+  /**
+   * Retrieves a factory for recommended addons.
+   *
+   * @return A factory for recommended addons.
+   */
+  RecommendedAddon.Factory getRecommendedAddonFactory();
 
   /**
    * Retrieves the protocol for the cine scopes feature.
@@ -155,6 +187,13 @@ public interface LabyService {
   Menu getMenu();
 
   /**
+   * Retrieves a factory for menu entries.
+   *
+   * @return The menu entry factory.
+   */
+  MenuEntry.Factory getMenuEntryFactory();
+
+  /**
    * Retrieves the transmitter for the menu feature.
    *
    * @return The menu transmitter.
@@ -187,6 +226,11 @@ public interface LabyService {
    */
   PlayingGameModeTransmitter getPlayingGameModeTransmitter();
 
+  /**
+   * Retrieves the communicator for the payload messages.
+   *
+   * @return The payload communicator.
+   */
   PayloadCommunicator getPayloadCommunicator();
 
   /**

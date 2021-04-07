@@ -1,6 +1,6 @@
 package net.labymod.serverapi.api;
 
-public class LabyAPI {
+public final class LabyAPI {
 
   private static LabyService service;
 
@@ -19,6 +19,15 @@ public class LabyAPI {
    * @return The laby service associated with the currently running platform.
    */
   public static LabyService getService() {
-    return service;
+    return LabyAPI.service;
+  }
+
+  /**
+   * Retrieves the debugger of the plugin.
+   *
+   * @return The plugin debugger.
+   */
+  public static LabyDebugger getDebugger() {
+    return LabyAPI.service.getLabyDebugger();
   }
 }

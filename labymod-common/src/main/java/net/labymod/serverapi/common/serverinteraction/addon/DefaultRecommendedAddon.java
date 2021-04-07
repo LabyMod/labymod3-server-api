@@ -1,9 +1,8 @@
 package net.labymod.serverapi.common.serverinteraction.addon;
 
 import com.google.gson.JsonObject;
-import net.labymod.serverapi.api.serverinteraction.addon.RecommendedAddon;
-
 import java.util.UUID;
+import net.labymod.serverapi.api.serverinteraction.addon.RecommendedAddon;
 
 public class DefaultRecommendedAddon implements RecommendedAddon {
 
@@ -11,8 +10,7 @@ public class DefaultRecommendedAddon implements RecommendedAddon {
   private final JsonObject recommendAddonObject;
   private boolean required;
 
-
-  private DefaultRecommendedAddon(UUID publishedUniqueId, boolean required) {
+  public DefaultRecommendedAddon(UUID publishedUniqueId, boolean required) {
     this.publishedUniqueId = publishedUniqueId;
     this.recommendAddonObject = new JsonObject();
     this.required = required;

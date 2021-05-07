@@ -1,6 +1,5 @@
 plugins {
     id("java-library")
-    id("com.github.johnrengelman.shadow") version("6.1.0")
 }
 
 group = "net.labymod"
@@ -9,6 +8,21 @@ version = properties["VERSION"] as String
 java {
     sourceCompatibility = JavaVersion.VERSION_1_8
     targetCompatibility = JavaVersion.VERSION_1_8
+}
+
+allprojects {
+    plugins.withType(JavaPlugin.class) {
+        repositories {
+            maven {
+                name = "jitpack"
+                url = "https://jitpack.io/"
+            }
+        }
+
+        dependencies {
+            compile("com.github.LabyMod:Widgets:1.1.0")
+        }
+    }
 }
 
 repositories {
@@ -55,27 +69,31 @@ configurations {
     compile.extendsFrom shade
 }
 
-
 dependencies {
-    compile(project(":labymod-api"))
-    compile(project(":labymod-common"))
-    compile(project(":proxy:bungeecord"))
-    compile(project(":proxy:velocity"))
-    compile(project(":server:bukkit"))
-    compile(project(":server:sponge"))
-
-    compile("com.github.LabyMod:Widgets:1.1.0")
+    shade(project(":labymod-api"))
+    shade(project(":labymod-common"))
+    shade(project(":proxy:bungeecord"))
+    shade(project(":proxy:velocity"))
+    shade(project(":server:bukkit"))
+    shade(project(":server:sponge"))
+    shade("com.github.LabyMod:Widgets:1.1.0")
 }
 
-shadowJar {
+jar {
 
     configurations {
-        compile {
+        shade {
             exclude group: "com.google.code.gson"
             exclude group: "com.google.guava"
             exclude group: "io.netty"
         }
+        shade.each {
+            dep ->
+                from(project.zipTree(dep)) {
+                    exclude 'META-INF', 'META-INF/**'
+                }
+        }
+
     }
 
-    setClassifier("")
 }

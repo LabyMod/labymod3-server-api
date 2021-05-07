@@ -1,5 +1,6 @@
 package net.labymod.serverapi.common;
 
+import com.google.gson.JsonObject;
 import net.labymod.serverapi.api.LabyService;
 import net.labymod.serverapi.api.discord.RichPresenceTransmitter;
 import net.labymod.serverapi.api.emote.Emote;
@@ -32,6 +33,8 @@ import net.labymod.serverapi.api.serverinteraction.economy.EconomyDisplayTransmi
 import net.labymod.serverapi.api.serverinteraction.gui.InputPromptTransmitter;
 import net.labymod.serverapi.api.serverinteraction.subtile.SubTitle;
 import net.labymod.serverapi.api.serverinteraction.subtile.SubTitleTransmitter;
+import net.labymod.serverapi.api.serverinteraction.widgets.WidgetScreenBuilder;
+import net.labymod.serverapi.api.serverinteraction.widgets.WidgetTransmitter;
 import net.labymod.serverapi.api.sticker.Sticker;
 import net.labymod.serverapi.api.sticker.Sticker.Factory;
 import net.labymod.serverapi.api.sticker.StickerTransmitter;
@@ -65,6 +68,8 @@ import net.labymod.serverapi.common.serverinteraction.economy.DefaultEconomyDisp
 import net.labymod.serverapi.common.serverinteraction.gui.DefaultInputPromptTransmitter;
 import net.labymod.serverapi.common.serverinteraction.subtitle.DefaultSubTitleFactory;
 import net.labymod.serverapi.common.serverinteraction.subtitle.DefaultSubTitleTransmitter;
+import net.labymod.serverapi.common.serverinteraction.widgets.DefaultWidgetScreenBuilder;
+import net.labymod.serverapi.common.serverinteraction.widgets.DefaultWidgetTransmitter;
 import net.labymod.serverapi.common.sticker.DefaultStickerFactory;
 import net.labymod.serverapi.common.sticker.DefaultStickerTransmitter;
 
@@ -121,6 +126,9 @@ public abstract class AbstractLabyService implements LabyService {
   // Sub titles
   private SubTitle.Factory subTitleFactory;
   private SubTitleTransmitter subTitleTransmitter;
+
+  // Widgets
+  private WidgetTransmitter widgetTransmitter;
 
   // Stickers
   private Sticker.Factory stickerFactory;
@@ -195,6 +203,9 @@ public abstract class AbstractLabyService implements LabyService {
     // Sub titles
     this.subTitleFactory = new DefaultSubTitleFactory();
     this.subTitleTransmitter = new DefaultSubTitleTransmitter(this);
+
+    // Widgets
+    this.widgetTransmitter = new DefaultWidgetTransmitter(this);
 
     // Stickers
     this.stickerFactory = new DefaultStickerFactory();
@@ -379,6 +390,24 @@ public abstract class AbstractLabyService implements LabyService {
   @Override
   public SubTitleTransmitter getSubTitleTransmitter() {
     return this.subTitleTransmitter;
+  }
+
+  /** {@inheritDoc} */
+  @Override
+  public WidgetTransmitter getWidgetTransmitter() {
+    return widgetTransmitter;
+  }
+
+  /** {@inheritDoc} */
+  @Override
+  public WidgetScreenBuilder getWidgetScreenBuilder(int id) {
+    return DefaultWidgetScreenBuilder.create(id);
+  }
+
+  /** {@inheritDoc} */
+  @Override
+  public WidgetScreenBuilder getWidgetScreenBuilder(JsonObject screenObject) {
+    return DefaultWidgetScreenBuilder.create(screenObject);
   }
 
   /** {@inheritDoc} */

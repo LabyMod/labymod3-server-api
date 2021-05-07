@@ -22,7 +22,7 @@ jobs:
       - name: Clean
         run: ./gradlew clean
       - name: Build with Gradle
-        run: ./gradlew shadowJar
+        run: ./gradlew build
       - name: Upload jar
         uses: actions/upload-artifact@v2
         with:

@@ -16,12 +16,15 @@ public class DefaultSubTitleTransmitter implements SubTitleTransmitter {
 
   private final LabyModPlayerService<?> playerService;
   private final PayloadCommunicator payloadCommunicator;
-  private final JsonArray subTitles;
+  private JsonArray subTitles;
+
+  private boolean broadcasting;
 
   public DefaultSubTitleTransmitter(LabyService service) {
     this.payloadCommunicator = service.getPayloadCommunicator();
     this.playerService = service.getLabyPlayerService();
     this.subTitles = new JsonArray();
+    this.broadcasting = false;
   }
 
   /** {@inheritDoc} */
@@ -44,13 +47,21 @@ public class DefaultSubTitleTransmitter implements SubTitleTransmitter {
   @Override
   public void transmit(UUID uniqueId) {
     this.payloadCommunicator.sendLabyModMessage(uniqueId, ACCOUNT_SUBTITLE_CHANNEL, this.subTitles);
+    if(!this.broadcasting) {
+      // Resets the sub titles array
+      this.subTitles = new JsonArray();
+    }
   }
 
   /** {@inheritDoc} */
   @Override
   public void broadcastTransmit() {
+    this.broadcasting = true;
     for (LabyModPlayer<?> player : this.playerService.getPlayers()) {
       this.transmit(player.getUniqueId());
     }
+    // Resets the sub titles array
+    this.subTitles = new JsonArray();
+    this.broadcasting = false;
   }
 }

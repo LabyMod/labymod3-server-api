@@ -1,5 +1,6 @@
 package net.labymod.serverapi.api;
 
+import com.google.gson.JsonObject;
 import net.labymod.serverapi.api.connection.ConnectionService;
 import net.labymod.serverapi.api.discord.RichPresenceTransmitter;
 import net.labymod.serverapi.api.emote.Emote;
@@ -35,6 +36,8 @@ import net.labymod.serverapi.api.serverinteraction.economy.EconomyDisplayTransmi
 import net.labymod.serverapi.api.serverinteraction.gui.InputPromptTransmitter;
 import net.labymod.serverapi.api.serverinteraction.subtile.SubTitle;
 import net.labymod.serverapi.api.serverinteraction.subtile.SubTitleTransmitter;
+import net.labymod.serverapi.api.serverinteraction.widgets.WidgetScreenBuilder;
+import net.labymod.serverapi.api.serverinteraction.widgets.WidgetTransmitter;
 import net.labymod.serverapi.api.sticker.Sticker;
 import net.labymod.serverapi.api.sticker.StickerTransmitter;
 
@@ -260,6 +263,29 @@ public interface LabyService {
    * @return The transmitter to transmit sub titles.
    */
   SubTitleTransmitter getSubTitleTransmitter();
+
+  /**
+   * Retrieves the transmitter to transmit the widgets to the laby client.
+   *
+   * @return The transmitter to transmit widgets
+   */
+  WidgetTransmitter getWidgetTransmitter();
+
+  /**
+   * Retrieves a new builder with the given {@code id} for the screen to be built.
+   *
+   * @param id The identifier for the screen that is to be built.
+   * @return A new widget screen builder.
+   */
+  WidgetScreenBuilder getWidgetScreenBuilder(int id);
+
+  /**
+   * Retrieves ta new builder with the given {@code screenObject} for the screen to be built.
+   *
+   * @param screenObject The json object for the screen that is to be built.
+   * @return A new widget screen builder.
+   */
+  WidgetScreenBuilder getWidgetScreenBuilder(JsonObject screenObject);
 
   /**
    * Retrieves a factory for stickers.

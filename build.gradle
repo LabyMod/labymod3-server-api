@@ -14,21 +14,20 @@ java {
 repositories {
     mavenCentral()
     jcenter()
+    // JitPack
+    maven {
+        name = "jitpack"
+        url = "https://jitpack.io/"
+    }
 
+
+    // Velocity
     maven {
         name = "velocity-repository"
         url = "https://repo.velocitypowered.com/snapshots/"
     }
 
-    maven {
-        name = "bungeecord-repository"
-        url = "https://oss.sonatype.org/content/repositories/snapshots"
-    }
-    maven {
-        name = "sponge-repository"
-        url = "https://repo.spongepowered.org/maven"
-    }
-
+    // SpigotMC
     maven {
         name = "bungeecord-repository"
         url = "https://oss.sonatype.org/content/repositories/snapshots"
@@ -38,6 +37,13 @@ repositories {
         url = "https://hub.spigotmc.org/nexus/content/repositories/snapshots/"
     }
 
+    // SpongePowered
+    maven {
+        name = "sponge-repository"
+        url = "https://repo.spongepowered.org/maven"
+    }
+
+    // ProtocolLib
     maven {
         name = "dmulloy2"
         url = "https://repo.dmulloy2.net/nexus/repository/public/"
@@ -51,38 +57,25 @@ configurations {
 
 
 dependencies {
-    compile(project(":labymod-api")) {
-        exclude group: "com.google.code.gson"
-        exclude group: "com.google.guava"
-        exclude group: "io.netty"
-    }
-    compile(project(":labymod-common")) {
-        exclude group: "com.google.code.gson"
-        exclude group: "com.google.guava"
-        exclude group: "io.netty"
-    }
-    compile(project(":proxy:bungeecord")) {
-        exclude group: "com.google.code.gson"
-        exclude group: "com.google.guava"
-        exclude group: "io.netty"
-    }
-    compile(project(":proxy:velocity")) {
-        exclude group: "com.google.code.gson"
-        exclude group: "com.google.guava"
-        exclude group: "io.netty"
-    }
-    compile(project(":server:bukkit")) {
-        exclude group: "com.google.code.gson"
-        exclude group: "com.google.guava"
-        exclude group: "io.netty"
-    }
-    compile(project(":server:sponge")) {
-        exclude group: "com.google.code.gson"
-        exclude group: "com.google.guava"
-        exclude group: "io.netty"
-    }
+    compile(project(":labymod-api"))
+    compile(project(":labymod-common"))
+    compile(project(":proxy:bungeecord"))
+    compile(project(":proxy:velocity"))
+    compile(project(":server:bukkit"))
+    compile(project(":server:sponge"))
+
+    compile("com.github.LabyMod:Widgets:1.1.0")
 }
 
 shadowJar {
+
+    configurations {
+        compile {
+            exclude group: "com.google.code.gson"
+            exclude group: "com.google.guava"
+            exclude group: "io.netty"
+        }
+    }
+
     setClassifier("")
 }

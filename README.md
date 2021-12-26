@@ -11,28 +11,28 @@ Creating Plugin with LabyMod API
 
 ```groovy
 repositories {
-	maven { url 'https://jitpack.io' }
+    maven { url 'https://jitpack.io' }
 }
 
 dependencies {
-	implementation 'com.github.LabyMod:labymod-server-api:Tag'
+    implementation 'com.github.LabyMod:labymod-server-api:Tag'
 }
 ```
 
 ```xml
 <repositories>
-	<repository>
-		   <id>jitpack.io</id>
-		   <url>https://jitpack.io</url>
-	</repository>
+    <repository>
+        <id>jitpack.io</id>
+        <url>https://jitpack.io</url>
+    </repository>
 </repositories>
 
 <dependencies>
-	<dependency>
-	    <groupId>com.github.LabyMod</groupId>
-	    <artifactId>labymod-server-api</artifactId>
-	    <version>Tag</version>
-	</dependency>
+    <dependency>
+        <groupId>com.github.LabyMod</groupId>
+        <artifactId>labymod-server-api</artifactId>
+        <version>Tag</version>
+    </dependency>
 </dependencies>
 ```
 

@@ -24,6 +24,7 @@ public class BungeeLabyModPlugin extends Plugin {
     PluginManager pluginManager = this.getProxy().getPluginManager();
 
     pluginManager.registerListener(this, (Listener) this.service.getConnectionService());
+    pluginManager.registerListener(this, (Listener) this.service.getPayloadCommunicator());
     pluginManager.registerListener(this, new BungeeLegacyLabyModPayloadChannel(this.service, this));
   }
 

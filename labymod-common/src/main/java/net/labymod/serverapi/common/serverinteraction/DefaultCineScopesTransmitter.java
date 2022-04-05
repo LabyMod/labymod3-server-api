@@ -25,8 +25,8 @@ public class DefaultCineScopesTransmitter implements CineScopesTransmitter {
   public void transmit(UUID uniqueId, boolean showCineScopes, int coveragePercent, long duration) {
     JsonObject cineScopeObject = new JsonObject();
 
-    if (coveragePercent < 1) {
-      coveragePercent = 1;
+    if (coveragePercent < 0) {
+      coveragePercent = 0;
     } else if (coveragePercent > 50) {
       coveragePercent = 50;
     }

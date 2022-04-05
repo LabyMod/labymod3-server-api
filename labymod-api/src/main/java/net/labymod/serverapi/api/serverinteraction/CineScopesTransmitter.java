@@ -18,7 +18,7 @@ public interface CineScopesTransmitter {
    * @param showCineScopes {@code true} if the black bar should be fade in, for fade out{@code
    *     false}.
    * @param coveragePercent The height of the black bars in percent. The minimum of the black bars
-   *     is 1% and the maximum is 50%.
+   *     is 0% and the maximum is 50%.
    * @param duration The duration
    */
   void transmit(UUID uniqueId, boolean showCineScopes, int coveragePercent, long duration);

@@ -118,8 +118,6 @@ public class DefaultPermissionService implements PermissionService {
   /** {@inheritDoc} */
   @Override
   public void sendPermissions(UUID receiverUniqueId) {
-    System.out.println("Receiver: " + receiverUniqueId.toString());
-    System.out.println("Content: " + this.getPermissionsAsJson().toString());
     this.payloadCommunicator.sendLabyModMessage(
         receiverUniqueId, PERMISSIONS_KEY, this.getPermissionsAsJson());
   }
